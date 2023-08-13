@@ -1,12 +1,15 @@
 from flask import render_template, request, redirect, url_for
 
+from .queries import *
+
 
 def render_index():
     return render_template("index.html")
 
 
 def render_search_traditional(search_term):
-    return render_template("search.html", search_term=search_term, search_type="search_traditional")
+    entry = query_traditional(search_term)
+    return render_template("search.html", search_term=search_term, search_type="search_traditional", entry=entry)
 
 
 def render_search_simplified(search_term):

@@ -8,23 +8,27 @@ from dataclasses import dataclass
 @dataclass
 class Entry:
     traditional: str
-    _traditionalDifference: str
     simplified: str
-    _simplifiedDifference: str
 
     jyutping: str
-    _yale: str
-    _cantoneseIPA: str
-
     pinyin: str
-    _prettypinyin: str
-    _numberedPinyin: str
-    _zhuyin: str
-    _mandarinIPA: str
+
+    _traditionalDifference: str = None
+    _simplifiedDifference: str = None
+
+    _yale: str = None
+    _cantoneseIPA: str = None
+
+    _prettypinyin: str = None
+    _numberedPinyin: str = None
+    _zhuyin: str = None
+    _mandarinIPA: str = None
 
     definitionsSets: list = None
 
     def __post_init__(self):
+        # TODO: Generate members with _
+        pass
 
 
 @dataclass
@@ -36,11 +40,11 @@ class Definition:
 
 @dataclass
 class DefinitionsSet:
-    definitions: list = None
     source: str
     _sourceShortString: str
     _definitionsSnippet: str
 
+    definitions: list = None
 
 @dataclass
 class SourceSentence:
@@ -69,7 +73,8 @@ class Translation:
 
 @dataclass
 class TranslationSet:
-    translations: list = None
     source: str
     _sourceShortString: str
     _sentenceSnippet: str
+
+    translations: list = None
