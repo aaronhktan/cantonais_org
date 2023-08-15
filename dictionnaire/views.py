@@ -28,5 +28,6 @@ def render_search_french(search_term):
     return render_template("search.html", search_term=search_term, search_type="search_french")
 
 
-def render_entry(search_term):
-    return f"entrée {search_term}"
+def render_entry(entry, search_term="", search_type="search_traditional"):
+    record = get_traditional(entry)
+    return render_template("entry.html", entry=record, search_term=search_term, search_type=search_type)

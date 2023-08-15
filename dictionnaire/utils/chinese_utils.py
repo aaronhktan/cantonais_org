@@ -1,7 +1,21 @@
 from enum import Enum
+from unicodedata import normalize
 
-SPECIAL_CHARACTERS = [".", "。", ",", "，", "!",  "！", "?", "？", "%",  "－",
-                      "…", "⋯",  ".", "·",  "\"", "“",  "”", "$",  "｜",]
+SPECIAL_CHARACTERS = (".", "。", ",", "，", "!",  "！", "?", "？", "%",  "－",
+                      "…", "⋯",  ".", "·",  "\"", "“",  "”", "$",  "｜",)
+
+JYUTPING_INITIALS = ("b",  "p", "m",  "f",  "d",
+                     "t",  "n", "l",  "g",  "k",
+                     "ng", "h", "gw", "kw", "w",
+                     "z",  "c", "s",  "j",  "m")
+
+JYUTPING_FINALS = ("a",   "aa",  "aai", "aau", "aam", "aan", "aang", "aap", "aat",
+                   "aak", "ai",  "au",  "am",  "an",  "ang", "ap",   "at",  "ak",
+                   "e",   "ei",  "eu",  "em",  "en",  "eng", "ep",   "ek",  "i",
+                   "iu",  "im",  "in",  "ing", "ip",  "it",  "ik",   "o",   "oi",
+                   "ou",  "on",  "ong", "ot",  "ok",  "u",   "ui",   "un",  "ung",
+                   "ut",  "uk",  "oe",  "oet", "eoi", "eon", "oeng", "eot", "oek",
+                   "yu",  "yun", "yut", "m",   "ng")
 
 
 class EntryColourPhoneticType(Enum):
@@ -10,7 +24,7 @@ class EntryColourPhoneticType(Enum):
     MANDARIN = 2
 
 
-def applyColours(original: str, tones: list[int], cantoneseToneColours: list[str], MandarinToneColours: list[str], phoneticType: EntryColourPhoneticType) -> str:
+def apply_colours(original: str, tones: list[int], cantoneseToneColours: list[str], MandarinToneColours: list[str], phoneticType: EntryColourPhoneticType) -> str:
     """Adds HTML tags to each Chinese character with colours
     corresponding to the character's tone.
 
@@ -27,10 +41,14 @@ def applyColours(original: str, tones: list[int], cantoneseToneColours: list[str
     pass
 
 
-def compareStrings(original: str, comparison: str) -> str:
+def compare_strings(original: str, comparison: str) -> str:
     """Compares original and comparison, replacing Chinese
     characters that are the same between the two strings with
     a dash character
+
+    This function **DOES NOT** compare graphemes - it only
+    compares code points! It also normalizes Unicode codepoints
+    using NFC normalization.
 
     Args:
         original (str): String of Chinese characters
@@ -40,10 +58,15 @@ def compareStrings(original: str, comparison: str) -> str:
         str: Same as "comparison" arg but characters that are the
         same between original and comparison are replaced with a dash
     """
-    pass
+    res = ""
+
+    original, comparison = normalize(original), normalize(comparison)
+    for idx, codepoint in original:
+        res += codepoint if original[idx] == comparison[idx] else "－"
+    return res
 
 
-def jyutpingToYale(jyutping: str, useSpacesToSegment: bool = False) -> str:
+def jyutping_to_yale(jyutping: str, useSpacesToSegment: bool = False) -> str:
     """Converts Jyutping romanization to Yale romanization
 
     Args:
@@ -60,7 +83,7 @@ def jyutpingToYale(jyutping: str, useSpacesToSegment: bool = False) -> str:
     pass
 
 
-def jyutpingToIPA(jyutping: str, useSpacesToSegment: bool = False) -> str:
+def jyutping_to_IPA(jyutping: str, useSpacesToSegment: bool = False) -> str:
     """Converts Jyutping romanization to Cantonese Sinological IPA
 
     Args:
@@ -77,7 +100,7 @@ def jyutpingToIPA(jyutping: str, useSpacesToSegment: bool = False) -> str:
     pass
 
 
-def prettyPinyin(pinyin: str) -> str:
+def pretty_pinyin(pinyin: str) -> str:
     """Converts raw Pinyin in database (with u: and digits for tones)
     to the conventional Hanyu Pinyin representation
 
@@ -90,7 +113,7 @@ def prettyPinyin(pinyin: str) -> str:
     pass
 
 
-def numberedPinyin(pinyin: str) -> str:
+def numbered_pinyin(pinyin: str) -> str:
     """Converts raw Pinyin in database (with u:) to representation
     using the ü but retaining digits for tones
 
@@ -103,7 +126,7 @@ def numberedPinyin(pinyin: str) -> str:
     pass
 
 
-def pinyinWithV(pinyin: str) -> str:
+def pinyin_with_v(pinyin: str) -> str:
     """Converts raw Pinyin in database (with u:) to representation
     using "v" to represent "ü" but retaining digits for tones.
 
@@ -116,7 +139,7 @@ def pinyinWithV(pinyin: str) -> str:
     pass
 
 
-def pinyinToZhuyin(pinyin: str, useSpacesToSegment: bool = False) -> str:
+def pinyin_to_zhuyin(pinyin: str, useSpacesToSegment: bool = False) -> str:
     """Converts raw Pinyin in database to Zhuyin/Bopomofo.
 
     Args:
@@ -133,7 +156,7 @@ def pinyinToZhuyin(pinyin: str, useSpacesToSegment: bool = False) -> str:
     pass
 
 
-def pinyinToIPA(pinyin: str, useSpacesToSegment: bool = False) -> str:
+def pinyin_to_IPA(pinyin: str, useSpacesToSegment: bool = False) -> str:
     """Convert raw Pinyin in database to Mandarin Sinological IPA.
 
     Args:
@@ -148,3 +171,165 @@ def pinyinToIPA(pinyin: str, useSpacesToSegment: bool = False) -> str:
         str: String of Mandarin Sinological IPA syllables
     """
     pass
+
+
+def segment_pinyin(string: str, remove_special_characters: bool = True, remove_glob_characters: bool = True) -> list[str]:
+    """Segments Pinyin by looking at valid Pinyin initials and finals.
+    Can be configured to remove special characters and/or
+    wildcard delimiter (glob) characters.
+
+    Args:
+        string (str): String of valid Pinyin syllables, possibly with special characters or glob characters
+        removeSpecialCharacters (bool, optional): Do not include special characters in output list. Defaults to True.
+        removeGlobCharacters (bool, optional): Do not include glob characters in output list. Defaults to True.
+
+    Returns:
+        list[str]: List where each string is a valid Pinyin syllable, special character, or glob character
+    """
+    pass
+
+
+def segment_jyutping(string: str, remove_special_characters: bool = True,
+                     remove_glob_characters: bool = True) -> list[str]:
+    """Segments Jyutping by looking at valid Jyutping initials and finals.
+    Can be configured to remove special characters and/or
+    wildcard delimiter (glob) characters.
+
+    Args:
+        string (str): String of valid Jyutping syllables, possibly with
+            special characters or glob characters
+        removeSpecialCharacters (bool, optional): Do not include special
+            characters in output list. Defaults to True.
+        removeGlobCharacters (bool, optional): Do not include glob characters
+            in output list. Defaults to True.
+
+    Returns:
+        list[str]: List where each string is a valid Jyutping syllable,
+            special character, or glob character
+    """
+    start_idx, end_idx, initial_found = 0, 0, False
+    res = []
+
+    while end_idx < len(string):
+        component_found = False
+
+        curr_string = string[end_idx].lower()
+        is_special_character = curr_string in SPECIAL_CHARACTERS
+        is_glob_character = (curr_string.strip() == "*"
+                             or curr_string.strip() == "?")
+
+        if (curr_string == " " or curr_string == "'"
+                or is_special_character or is_glob_character):
+            if initial_found:
+                # Whitespace, apostrophes, special characters, and glob
+                # characters mean that we *must* split a syllable
+                syllable = string[start_idx:end_idx]
+                res.append(syllable)
+                start_idx = end_idx
+                initial_found = False
+
+            if not remove_glob_characters and is_glob_character:
+                # Whitespace matters for glob characters! Consume
+                # the next or previous whitespace if it exists and the
+                # whitespace was not consumed by another syllable
+                glob_start_idx = end_idx
+                glob_end_idx = glob_start_idx + 1
+
+                if ((end_idx >= 1) and (string[end_idx - 1] == " ")
+                        and (res and res[-1][-1] != " ")):
+                    # Keep whitespace preceding the glob character ONLY IF
+                    # whitespace was not already added to the previous syllable
+                    glob_start_idx -= 1
+                if ((len(string) > (end_idx + 1))
+                        and (string[end_idx + 1] == " ")):
+                    # If there is whitespace succeeding the glob character,
+                    # add it to this syllable, and mark the whitespace as
+                    # being consumed by incrementing end_idx
+                    glob_end_idx += 1
+                    end_idx += 1
+
+                glob_str = string[glob_start_idx:glob_end_idx]
+                res.append(glob_str)
+
+                start_idx = end_idx
+            elif not remove_special_characters and is_special_character:
+                special_char = curr_string
+                res.append(special_char)
+
+            start_idx += 1
+            end_idx += 1
+            continue
+
+        if curr_string.isnumeric():
+            # Digits are only valid after a final, or after an initial
+            # that functions as a final (such as m or ng). This block
+            # checks for the latter case.
+            if initial_found:
+                initial = string[start_idx:end_idx]
+                if initial in JYUTPING_FINALS:
+                    initial_with_digit = initial + curr_string
+                    res.append(initial_with_digit)
+                    end_idx += 1
+                    start_idx = end_idx
+                    initial_found = False
+                    continue
+
+        for initial_len in range(2, 0, -1):
+            # Initials can be length 2 or less; check for longer initials
+            # before checking for shorter initials
+            curr_string = string[end_idx:end_idx+initial_len].lower()
+
+            if curr_string not in JYUTPING_INITIALS:
+                continue
+
+            if initial_found:
+                # Multiple initials in a row are only valid if what the
+                # algorithm initially analyzed as an initial was actually
+                # a final.
+                # This might happen for a string like (mgoi), where "m" could
+                # be parsed as an initial followed by "g" as an initial.
+                # In this case, the first initial is a valid syllable if it
+                # can be a syllable per se; in that case, it would also be
+                # a member of JYUTPING_FINALS
+                first_initial = string[start_idx:end_idx]
+                if first_initial in JYUTPING_FINALS:
+                    res.append(first_initial)
+                    start_idx = end_idx
+
+            end_idx += initial_len
+            initial_found = True
+            component_found = True
+
+        if component_found:
+            continue
+
+        for final_len in range(4, 0, -1):
+            # Finals (nucleus + coda) can be length 4 or less; check for longer
+            # finals before checking for shorter finals
+            curr_string = string[end_idx:end_idx+final_len].lower()
+            if curr_string in JYUTPING_FINALS:
+                end_idx += final_len
+                if end_idx < len(string):
+                    if string[end_idx].isnumeric():
+                        # Append the digit following this final to the syllable
+                        end_idx += 1
+                syllable = string[start_idx:end_idx]
+                res.append(syllable)
+                start_idx = end_idx
+                component_found = True
+                initial_found = False
+                break
+
+        if component_found:
+            continue
+
+        end_idx += 1
+
+    # Add whatever's left in the search term, minus whitespace
+    last_word = string[start_idx:]
+    last_word = ' '.join(last_word.split())
+    last_word = last_word.strip()
+    if last_word and last_word != "'":
+        res.append(last_word)
+
+    return res

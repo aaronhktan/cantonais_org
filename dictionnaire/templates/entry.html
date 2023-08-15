@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}{{ search_term }} {% endblock %}
+{% block head %}
+{{ super() }}
+{% endblock %}
+{% block search_term %}value="{{ search_term }}"{% endblock %}
+{% block search_term_mobile %}value="{{ search_term }}"{% endblock %}
+{% block search_type_traditional %}{{ "selected" if search_type == "search_traditional" else ""}}{% endblock %}
+{% block search_type_traditional_mobile %}{{ "selected" if search_type == "search_traditional" else ""}}{% endblock %}
+{% block search_type_simplified %}{{ "selected" if search_type == "search_simplified" else ""}}{% endblock %}
+{% block search_type_simplified_mobile %}{{ "selected" if search_type == "search_simplified" else ""}}{% endblock %}
+{% block search_type_jyutping %}{{ "selected" if search_type == "search_jyutping" else ""}}{% endblock %}
+{% block search_type_jyutping_mobile %}{{ "selected" if search_type == "search_jyutping" else ""}}{% endblock %}
+{% block search_type_pinyin %}{{ "selected" if search_type == "search_pinyin" else ""}}{% endblock %}
+{% block search_type_pinyin_mobile %}{{ "selected" if search_type == "search_pinyin" else ""}}{% endblock %}
+{% block search_type_french %}{{ "selected" if search_type == "search_french" else ""}}{% endblock %}
+{% block search_type_french_mobile %}{{ "selected" if search_type == "search_french" else ""}}{% endblock %}
+{% block content %}
+<h1>{{ entry.traditional }}</h1>
+<p>{{ entry }}</p>
+{% endblock %}

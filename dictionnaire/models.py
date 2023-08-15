@@ -1,50 +1,26 @@
 from dataclasses import dataclass
 
+from .utils import chinese_utils
+
 # Python doesn't really have a good way to hide fields,
 # so I'm just gonna use a single underscore prefix to
 # denote a read-only member of a class
 
 
 @dataclass
-class Entry:
-    traditional: str
-    simplified: str
-
-    jyutping: str
-    pinyin: str
-
-    _traditionalDifference: str = None
-    _simplifiedDifference: str = None
-
-    _yale: str = None
-    _cantoneseIPA: str = None
-
-    _prettypinyin: str = None
-    _numberedPinyin: str = None
-    _zhuyin: str = None
-    _mandarinIPA: str = None
-
-    definitionsSets: list = None
-
-    def __post_init__(self):
-        # TODO: Generate members with _
-        pass
+class Translation:
+    translation: str
+    language: str
 
 
 @dataclass
-class Definition:
-    definitionContent: str
-    label: str
-    sentences: list = None
-
-
-@dataclass
-class DefinitionsSet:
+class TranslationSet:
     source: str
     _sourceShortString: str
-    _definitionsSnippet: str
+    _sentenceSnippet: str
 
-    definitions: list = None
+    translations: list[Translation] = None
+
 
 @dataclass
 class SourceSentence:
@@ -62,19 +38,57 @@ class SourceSentence:
     _zhuyin: str
     _mandarinIPA: str
 
-    translations: list = None
+    translations: list[TranslationSet] = None
 
 
 @dataclass
-class Translation:
-    translation: str
-    language: str
+class Definition:
+    definition_content: str
+    label: str
+    sentences: list[SourceSentence] = None
 
 
 @dataclass
-class TranslationSet:
+class DefinitionsSet:
     source: str
     _sourceShortString: str
-    _sentenceSnippet: str
+    _definitionsSnippet: str
 
-    translations: list = None
+    definitions: list[Definition] = None
+
+
+@dataclass
+class Entry:
+    traditional: str
+    simplified: str
+
+    jyutping: str
+    pinyin: str
+
+    _traditional_difference: str = None
+    _simplified_difference: str = None
+
+    _yale: str = None
+    _cantonese_IPA: str = None
+
+    _pretty_pinyin: str = None
+    _numbered_pinyin: str = None
+    _zhuyin: str = None
+    _mandarin_IPA: str = None
+
+    definitions_sets: list[DefinitionsSet] = None
+
+    def __post_init__(self):
+        # Generate all the read-only fields
+        self._traditional_difference = chinese_utils.compare_strings(
+            self.simplified, self.traditional)
+        self._simplified_difference = chinese_utils.compare_strings(
+            self.traditional, self.simplified)
+
+        self._yale = chinese_utils.jyutping_to_yale(self.jyutping)
+        self._cantonese_IPA = chinese_utils.jyutping_to_IPA(self.jyutping)
+
+        self._pretty_pinyin = chinese_utils.pretty_pinyin(self.pinyin)
+        self._numbered_pinyin = chinese_utils.numbered_pinyin(self.pinyin)
+        self._zhuyin = chinese_utils.pinyin_to_zhuyin(self.pinyin)
+        self._mandarin_IPA = chinese_utils.pinyin_to_zhuyin(self.pinyin)
