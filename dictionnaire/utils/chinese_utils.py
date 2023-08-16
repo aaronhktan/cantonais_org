@@ -17,6 +17,16 @@ JYUTPING_FINALS = ("a",   "aa",  "aai", "aau", "aam", "aan", "aang", "aap", "aat
                    "ut",  "uk",  "oe",  "oet", "eoi", "eon", "oeng", "eot", "oek",
                    "yu",  "yun", "yut", "m",   "ng")
 
+PINYIN_INITIALS = ("b", "p", "m",  "f",  "d",  "t",
+                   "n", "l", "g",  "k",  "h",  "j",
+                   "q", "x", "zh", "ch", "sh", "r",
+                   "z", "c", "s")
+
+PINYIN_FINALS = ("a",   "e",   "ai",   "ei",   "ao",   "ou", "an", "ang", "en",
+                 "ang", "eng", "ong",  "er",   "i",    "ia", "ie", "iao", "iu",
+                 "ian", "in",  "iang", "ing",  "iong", "u",  "ua", "uo",  "uai",
+                 "ui",  "uan", "un",   "uang", "u",    "u:", "ue", "u:e", "o")
+
 
 class EntryColourPhoneticType(Enum):
     NONE = 0
@@ -60,8 +70,9 @@ def compare_strings(original: str, comparison: str) -> str:
     """
     res = ""
 
-    original, comparison = normalize(original), normalize(comparison)
-    for idx, codepoint in original:
+    original, comparison = normalize(
+        "NFC", original), normalize("NFC", comparison)
+    for idx, codepoint in enumerate(original):
         res += codepoint if original[idx] == comparison[idx] else "－"
     return res
 
@@ -173,22 +184,6 @@ def pinyin_to_IPA(pinyin: str, useSpacesToSegment: bool = False) -> str:
     pass
 
 
-def segment_pinyin(string: str, remove_special_characters: bool = True, remove_glob_characters: bool = True) -> list[str]:
-    """Segments Pinyin by looking at valid Pinyin initials and finals.
-    Can be configured to remove special characters and/or
-    wildcard delimiter (glob) characters.
-
-    Args:
-        string (str): String of valid Pinyin syllables, possibly with special characters or glob characters
-        removeSpecialCharacters (bool, optional): Do not include special characters in output list. Defaults to True.
-        removeGlobCharacters (bool, optional): Do not include glob characters in output list. Defaults to True.
-
-    Returns:
-        list[str]: List where each string is a valid Pinyin syllable, special character, or glob character
-    """
-    pass
-
-
 def segment_jyutping(string: str, remove_special_characters: bool = True,
                      remove_glob_characters: bool = True) -> list[str]:
     """Segments Jyutping by looking at valid Jyutping initials and finals.
@@ -207,13 +202,14 @@ def segment_jyutping(string: str, remove_special_characters: bool = True,
         list[str]: List where each string is a valid Jyutping syllable,
             special character, or glob character
     """
+    string = string.lower()
     start_idx, end_idx, initial_found = 0, 0, False
     res = []
 
     while end_idx < len(string):
         component_found = False
 
-        curr_string = string[end_idx].lower()
+        curr_string = string[end_idx]
         is_special_character = curr_string in SPECIAL_CHARACTERS
         is_glob_character = (curr_string.strip() == "*"
                              or curr_string.strip() == "?")
@@ -277,7 +273,7 @@ def segment_jyutping(string: str, remove_special_characters: bool = True,
         for initial_len in range(2, 0, -1):
             # Initials can be length 2 or less; check for longer initials
             # before checking for shorter initials
-            curr_string = string[end_idx:end_idx+initial_len].lower()
+            curr_string = string[end_idx:end_idx+initial_len]
 
             if curr_string not in JYUTPING_INITIALS:
                 continue
@@ -306,12 +302,131 @@ def segment_jyutping(string: str, remove_special_characters: bool = True,
         for final_len in range(4, 0, -1):
             # Finals (nucleus + coda) can be length 4 or less; check for longer
             # finals before checking for shorter finals
-            curr_string = string[end_idx:end_idx+final_len].lower()
+            curr_string = string[end_idx:end_idx+final_len]
             if curr_string in JYUTPING_FINALS:
                 end_idx += final_len
                 if end_idx < len(string):
                     if string[end_idx].isnumeric():
-                        # Append the digit following this final to the syllable
+                        # Append the tone digit following the final to the
+                        # syllable
+                        end_idx += 1
+                syllable = string[start_idx:end_idx]
+                res.append(syllable)
+                start_idx = end_idx
+                component_found = True
+                initial_found = False
+                break
+
+        if component_found:
+            continue
+
+        end_idx += 1
+
+    # Add whatever's left in the search term, minus whitespace
+    last_word = string[start_idx:]
+    last_word = ' '.join(last_word.split())
+    last_word = last_word.strip()
+    if last_word and last_word != "'":
+        res.append(last_word)
+
+    return res
+
+
+def segment_pinyin(string: str, remove_special_characters: bool = True,
+                   remove_glob_characters: bool = True) -> list[str]:
+    """Segments Pinyin by looking at valid Pinyin initials and finals.
+    Can be configured to remove special characters and/or
+    wildcard delimiter (glob) characters.
+
+    Args:
+        string (str): String of valid Pinyin syllables, possibly with special
+            characters or glob characters
+        removeSpecialCharacters (bool, optional): Do not include special
+            characters in output list. Defaults to True.
+        removeGlobCharacters (bool, optional): Do not include glob characters
+            in output list. Defaults to True.
+
+    Returns:
+        list[str]: List where each string is a valid Pinyin syllable, special
+            character, or glob character
+    """
+    string = string.lower()
+    start_idx, end_idx, initial_found = 0, 0, False
+    res = []
+
+    while end_idx < len(string):
+        component_found = False
+
+        curr_string = string[end_idx]
+        is_special_character = curr_string in SPECIAL_CHARACTERS
+        is_glob_character = (curr_string.strip() == "*"
+                             or curr_string.strip() == "?")
+
+        if (curr_string == " " or curr_string == "'"
+                or is_special_character or is_glob_character):
+            if initial_found:
+                # Whitespace, apostrophes, special characters, and glob
+                # characters mean that we *must* split a syllable
+                syllable = string[start_idx:end_idx]
+                res.append(syllable)
+                start_idx = end_idx
+                initial_found = False
+
+            if not remove_glob_characters and is_glob_character:
+                # Whitespace matters for glob characters! Consume
+                # the next or previous whitespace if it exists and the
+                # whitespace was not consumed by another syllable
+                glob_start_idx = end_idx
+                glob_end_idx = glob_start_idx + 1
+
+                if ((end_idx >= 1) and (string[end_idx - 1] == " ")
+                        and (res and res[-1][-1] != " ")):
+                    # Keep whitespace preceding the glob character ONLY IF
+                    # whitespace was not already added to the previous syllable
+                    glob_start_idx -= 1
+                if ((len(string) > (end_idx + 1))
+                        and (string[end_idx + 1] == " ")):
+                    # If there is whitespace succeeding the glob character,
+                    # add it to this syllable, and mark the whitespace as
+                    # being consumed by incrementing end_idx
+                    glob_end_idx += 1
+                    end_idx += 1
+
+                glob_str = string[glob_start_idx:glob_end_idx]
+                res.append(glob_str)
+
+                start_idx = end_idx
+            elif not remove_special_characters and is_special_character:
+                special_char = curr_string
+                res.append(special_char)
+
+            start_idx += 1
+            end_idx += 1
+            continue
+
+        for initial_len in range(2, 0, -1):
+            # Initials can be length 2 or less; check for longer initials
+            # before checking for shorter initials
+            curr_string = string[end_idx:end_idx+initial_len]
+            if curr_string in PINYIN_INITIALS:
+                end_idx += initial_len
+                component_found = True
+                initial_found = True
+                break
+
+        if component_found:
+            continue
+
+        for final_len in range(4, 0, -1):
+            # Finals (nucleus + coda) can be length 4 or less; check for longer
+            # finals before checking for shorter finals
+            curr_string = string[end_idx:end_idx+final_len]
+            if curr_string in PINYIN_FINALS:
+                end_idx += final_len
+                if end_idx < len(string):
+                    if string[end_idx].isnumeric():
+                        # Append the tone digit following the final to the
+                        # syllable
                         end_idx += 1
                 syllable = string[start_idx:end_idx]
                 res.append(syllable)
