@@ -19,7 +19,7 @@
   <nav class="navbar sticky-top navbar-expand-lg bg-danger" data-bs-theme="dark">
     <div class="container">
       <a class="navbar-brand" href="{{ request.root_url }}">
-        <img src="{{ url_for('static', filename='img/icon.svg') }}" alt="Jyut Dictionary" width="50" height="50"
+        <img src="{{ url_for('static', filename='img/icon.svg') }}" alt="Jyut Dictionary" width="30" height="30"
           class="d-inline-block align-text-mid">
         cantonais.org
       </a>
@@ -48,10 +48,10 @@
   <form method="post">
     <div class="container-fluid bg-body-tertiary bg-dark">
       <div class="container">
-        <div class="input-group d-none d-md-flex flex-nowrap py-4">
-          <input name="search_term" class="form-control rounded-start w-100" type="text"
+        <div class="input-group d-none d-md-flex flex-nowrap py-3 mx-auto" style="max-width: 50rem;">
+          <input name="search_term" class="form-control rounded-start w-25" type="text"
             placeholder="Rechercher dans le dictionnaire..." {% block search_term %}{% endblock %}>
-          <select name="search_type" class="form-select flex-shrink-0" style="width: 20rem;">
+          <select name="search_type" class="form-select flex-shrink-0">
             <option value="search_traditional" {% block search_type_traditional %}{% endblock %}>Caractères traditionnels</option>
             <option value="search_simplified" {% block search_type_simplified %}{% endblock %}>Caractères simplifiés</option>
             <option value="search_jyutping" {% block search_type_jyutping %}{% endblock %}>Jyutping</option>
@@ -66,7 +66,7 @@
   <form method="post">
     <div class="container-fluid bg-body-tertiary bg-dark">
       <div class="container">
-        <div class="d-flex d-md-none flex-column py-4 gap-2">
+        <div class="d-flex d-md-none flex-column py-3 gap-2">
           <div class="input-group flex">
             <input name="search_term_mobile" class="form-control rounded-start" type="text"
               placeholder="Rechercher dans le dictionnaire..."{% block search_term_mobile %}{% endblock %}>
