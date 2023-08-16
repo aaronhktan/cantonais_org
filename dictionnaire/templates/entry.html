@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "dictionary.html" %}
 {% block title %}{{ search_term }} {% endblock %}
 {% block head %}
 {{ super() }}
@@ -16,6 +16,6 @@
 {% block search_type_french %}{{ "selected" if search_type == "search_french" else ""}}{% endblock %}
 {% block search_type_french_mobile %}{{ "selected" if search_type == "search_french" else ""}}{% endblock %}
 {% block content %}
-<h1>{{ entry.traditional }}</h1>
+<h1 class="display-4">{{ entry.traditional }}</h1>
 <p>{{ entry }}</p>
 {% endblock %}

@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, g
+from flask import Flask, g, render_template
 from cantonais_org.dictionnaire.urls import dictionary_app
 
 app = Flask(__name__)
@@ -19,4 +19,4 @@ def teardown_db(exception):
 
 @app.route("/")
 def hello_world():
-    return "<p>Hello, World!</p>"
+    return render_template("base.html")

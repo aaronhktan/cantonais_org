@@ -59,6 +59,8 @@ def search_french(search_term):
     return render_search_french(search_term)
 
 
-@dictionary_app.route("/entree/<entry>")
+@dictionary_app.route("/entree/<entry>", methods=('GET', 'POST'))
 def entry_view(entry):
+    if request.method == 'POST':
+        return redirect_post()
     return render_entry(entry)

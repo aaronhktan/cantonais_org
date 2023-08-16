@@ -125,7 +125,7 @@ matching_entries AS (
     record = c.fetchone()
 
     entry = Entry(traditional=record[0], simplified=record[1],
-                  jyutping=record[2], pinyin=record[3], definitionsSets=None)
+                  jyutping=record[2], pinyin=record[3], definitions_sets=None)
     return entry
 
 def get_traditional(traditional):
