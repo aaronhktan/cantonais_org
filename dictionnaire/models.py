@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from .utils import chinese_utils
+from .utils import chinese_utils, default_settings
 
 # Python doesn't really have a good way to hide fields,
 # so I'm just gonna use a single underscore prefix to
@@ -65,21 +65,29 @@ class Entry:
     jyutping: str
     pinyin: str
 
-    _traditional_difference: str = None
-    _simplified_difference: str = None
+    _coloured_traditional: str | None = None
 
-    _yale: str = None
-    _cantonese_IPA: str = None
+    _traditional_difference: str | None = None
+    _simplified_difference: str | None = None
 
-    _pretty_pinyin: str = None
-    _numbered_pinyin: str = None
-    _zhuyin: str = None
-    _mandarin_IPA: str = None
+    _yale: str | None = None
+    _cantonese_IPA: str | None = None
 
-    definitions_sets: list[DefinitionsSet] = None
+    _pretty_pinyin: str | None = None
+    _numbered_pinyin: str | None = None
+    _zhuyin: str | None = None
+    _mandarin_IPA: str | None = None
+
+    definitions_sets: list[DefinitionsSet] | None = None
 
     def __post_init__(self):
         # Generate all the read-only fields
+        self._coloured_traditional = chinese_utils.apply_colours(
+            self.traditional, chinese_utils.extract_jyutping_tones(
+                self.jyutping),
+            default_settings.DEFAULT_JYUTPING_TONES
+        )
+
         self._traditional_difference = chinese_utils.compare_strings(
             self.simplified, self.traditional)
         self._simplified_difference = chinese_utils.compare_strings(

@@ -1,6 +1,6 @@
 from flask import render_template, request, redirect, url_for
 
-from .queries import *
+from . import queries
 
 
 def render_index():
@@ -8,26 +8,31 @@ def render_index():
 
 
 def render_search_traditional(search_term):
-    entry = query_traditional(search_term)
-    return render_template("search.html", search_term=search_term, search_type="search_traditional", entry=entry)
+    entry = queries.query_traditional(search_term)
+    return render_template("search.html", search_term=search_term,
+                           search_type="search_traditional", entry=entry)
 
 
 def render_search_simplified(search_term):
-    return render_template("search.html", search_term=search_term, search_type="search_simplified")
+    return render_template("search.html", search_term=search_term,
+                           search_type="search_simplified")
 
 
 def render_search_jyutping(search_term):
-    return render_template("search.html", search_term=search_term, search_type="search_jyutping")
+    return render_template("search.html", search_term=search_term,
+                           search_type="search_jyutping")
 
 
 def render_search_pinyin(search_term):
-    return render_template("search.html", search_term=search_term, search_type="search_pinyin")
+    return render_template("search.html", search_term=search_term,
+                           search_type="search_pinyin")
 
 
 def render_search_french(search_term):
-    return render_template("search.html", search_term=search_term, search_type="search_french")
+    return render_template("search.html", search_term=search_term,
+                           search_type="search_french")
 
 
 def render_entry(entry, search_term="", search_type="search_traditional"):
-    record = get_traditional(entry)
+    record = queries.get_traditional(entry)
     return render_template("entry.html", entry=record, search_term=search_term, search_type=search_type)

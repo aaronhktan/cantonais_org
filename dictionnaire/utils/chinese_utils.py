@@ -17,6 +17,8 @@ JYUTPING_FINALS = ("a",   "aa",  "aai", "aau", "aam", "aan", "aang", "aap", "aat
                    "ut",  "uk",  "oe",  "oet", "eoi", "eon", "oeng", "eot", "oek",
                    "yu",  "yun", "yut", "m",   "ng")
 
+JYUTPING_TONES = (1, 2, 3, 4, 5, 6)
+
 PINYIN_INITIALS = ("b", "p", "m",  "f",  "d",  "t",
                    "n", "l", "g",  "k",  "h",  "j",
                    "q", "x", "zh", "ch", "sh", "r",
@@ -27,28 +29,84 @@ PINYIN_FINALS = ("a",   "e",   "ai",   "ei",   "ao",   "ou", "an", "ang", "en",
                  "ian", "in",  "iang", "ing",  "iong", "u",  "ua", "uo",  "uai",
                  "ui",  "uan", "un",   "uang", "u",    "u:", "ue", "u:e", "o")
 
+PINYIN_TONES = (1, 2, 3, 4, 5)
 
-class EntryColourPhoneticType(Enum):
-    NONE = 0
-    CANTONESE = 1
-    MANDARIN = 2
+SAME_CHARACTER_STRING = "－"
 
 
-def apply_colours(original: str, tones: list[int], cantoneseToneColours: list[str], MandarinToneColours: list[str], phoneticType: EntryColourPhoneticType) -> str:
+def extract_jyutping_tones(string: str) -> list[int]:
+    """Get the list of tones from a valid Jyutping string
+
+    Args:
+        string (str): String of valid Jyutping syllables
+
+    Returns:
+        list[int]: A list of the tones in those syllables
+    """
+    res = []
+    for c in string:
+        if c.isnumeric() and int(c) in JYUTPING_TONES:
+            res.append(int(c))
+    return res
+
+
+def extract_pinyin_tones(string: str) -> list[int]:
+    """Get the list of tones from a valid Pinyin string
+
+    Args:
+        string (str): String of valid Pinyin syllables
+
+    Returns:
+        list[int]: A list of the tones in those syllables
+    """
+    res = []
+    for c in string:
+        if c.isnumeric() and int(c) in PINYIN_TONES:
+            res.append(int(c))
+    return res
+
+
+def apply_colours(original: str, tones: list[int], tone_colours: list[str]) -> str:
     """Adds HTML tags to each Chinese character with colours
     corresponding to the character's tone.
 
     Args:
         original (str): String of Chinese characters to be coloured in
         tones (list[int]): List of tone numbers
-        cantoneseToneColours (list[str]): Tone colours for Cantonese
-        mandarinToneColours (list[str]): Tone colours for Mandarin
-        phoneticType (EntryColourPhoneticType): Language with which to colour in characters
+        ton_colours (list[str]): RGB tone colours
+        phoneticType (EntryColourPhoneticType): Language with which to colour
+            in characters
 
     Returns:
         str: string of Chinese characters with HTML tags for colours
     """
-    pass
+    res = ""
+    tone_idx = 0
+
+    for codepoint in original:
+        if codepoint == SAME_CHARACTER_STRING:
+            # Don't add colours to the same character string
+            # But since they represent a character, increment the tone index
+            res += codepoint
+            tone_idx += 1
+            continue
+
+        is_alphabetic = codepoint.isupper() or codepoint.islower()
+        if codepoint in SPECIAL_CHARACTERS or is_alphabetic:
+            # Don't add colours to special characters or letters
+            # because the dictionary doesn't have tones for them
+            res += codepoint
+            continue
+
+        if tone_idx >= len(tones):
+            res += codepoint
+            continue
+
+        tone = tones[tone_idx]
+        res += f"<span style=\"color: {tone_colours[tone]}\">{codepoint}</span>"
+        tone_idx += 1
+
+    return res
 
 
 def compare_strings(original: str, comparison: str) -> str:
@@ -73,7 +131,7 @@ def compare_strings(original: str, comparison: str) -> str:
     original, comparison = normalize(
         "NFC", original), normalize("NFC", comparison)
     for idx, codepoint in enumerate(original):
-        res += codepoint if original[idx] == comparison[idx] else "－"
+        res += codepoint if original[idx] == comparison[idx] else SAME_CHARACTER_STRING
     return res
 
 
