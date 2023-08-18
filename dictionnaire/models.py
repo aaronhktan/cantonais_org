@@ -66,9 +66,12 @@ class Entry:
     pinyin: str
 
     _coloured_traditional: str | None = None
+    _coloured_simplified: str | None = None
 
     _traditional_difference: str | None = None
+    _coloured_traditional_difference: str | None = None
     _simplified_difference: str | None = None
+    _coloured_simplified_difference: str | None = None
 
     _yale: str | None = None
     _cantonese_IPA: str | None = None
@@ -87,11 +90,26 @@ class Entry:
                 self.jyutping),
             default_settings.DEFAULT_JYUTPING_TONES
         )
+        self._coloured_simplified = chinese_utils.apply_colours(
+            self.traditional, chinese_utils.extract_jyutping_tones(
+                self.jyutping),
+            default_settings.DEFAULT_JYUTPING_TONES
+        )
 
         self._traditional_difference = chinese_utils.compare_strings(
             self.simplified, self.traditional)
+        self._coloured_traditional_difference = chinese_utils.apply_colours(
+            self._traditional_difference, chinese_utils.extract_jyutping_tones(
+                self.jyutping),
+            default_settings.DEFAULT_JYUTPING_TONES
+        )
         self._simplified_difference = chinese_utils.compare_strings(
             self.traditional, self.simplified)
+        self._coloured_simplified_difference = chinese_utils.apply_colours(
+            self._simplified_difference, chinese_utils.extract_jyutping_tones(
+                self.jyutping),
+            default_settings.DEFAULT_JYUTPING_TONES
+        )
 
         self._yale = chinese_utils.jyutping_to_yale(self.jyutping)
         self._cantonese_IPA = chinese_utils.jyutping_to_IPA(self.jyutping)
