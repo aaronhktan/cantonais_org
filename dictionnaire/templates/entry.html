@@ -1,5 +1,5 @@
 {% extends "dictionary.html" %}
-{% block title %}{{ search_term }} {% endblock %}
+{% block title %}{{ entry.traditional }} | {{ entry.simplified }}{% endblock %}
 {% block head %}
 {{ super() }}
 {% endblock %}
