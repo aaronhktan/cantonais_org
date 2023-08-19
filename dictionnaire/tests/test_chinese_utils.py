@@ -104,6 +104,41 @@ class TestJyutpingToYale(TestCase):
         self.assertEqual(res, "mit")
 
 
+class TestJyutpingToIPA(TestCase):
+    def test_simple(self):
+        res = chinese_utils.jyutping_to_IPA("joeng4 sing4")
+        self.assertEqual(res, "jœ̽ːŋ˨˩ sɪŋ˨˩")
+
+    def test_no_spaces(self):
+        res = chinese_utils.jyutping_to_IPA("faa1sing4")
+        self.assertEqual(res, "fäː˥ sɪŋ˨˩")
+
+    def test_spaces_to_segment(self):
+        res = chinese_utils.jyutping_to_IPA("joeng4 sing4",
+                                            use_spaces_to_segment=True)
+        self.assertEqual(res, "jœ̽ːŋ˨˩ sɪŋ˨˩")
+
+    def test_preprocess_initial(self):
+        res = chinese_utils.jyutping_to_IPA("zyu2 sung3")
+        self.assertEqual(res, "t͡ʃyː˧˥ sʊŋ˧")
+    
+    def test_special_syllable(self):
+        res = chinese_utils.jyutping_to_IPA("m4")
+        self.assertEqual(res, "m̩˨˩")
+
+    def test_checked_tone(self):
+        res = chinese_utils.jyutping_to_IPA("sik6 si2 o1 faan6")
+        self.assertEqual(res, "sɪk̚˨ siː˧˥ ɔː˥ fäːn˨")
+
+    def test_special_final(self):
+        res = chinese_utils.jyutping_to_IPA("uk1 kei2 jan4")
+        self.assertEqual(res, "ʊk̚˥ kʰei̯˧˥ jɐn˨˩")
+
+    def test_no_tone(self):
+        res = chinese_utils.jyutping_to_yale("mok")
+        self.assertEqual(res, "mok")
+
+
 class TestJyutpingSegmentation(TestCase):
     def test_simple(self):
         res = chinese_utils.segment_jyutping("m4 goi1")

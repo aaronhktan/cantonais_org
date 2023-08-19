@@ -49,6 +49,76 @@ YALE_VOWEL_REPLACEMENTS = {
     "u": ("ū", "ú", "u", "ù", "ú", "u"),
 }
 
+CANTONESE_IPA_REGEX = re.compile(r"([bcdfghjklmnpqrstvwxyz]?"
+                                 r"[bcdfghjklmnpqrstvwxyz]"
+                                 r"?)([a@e>i|o~u^y][eo]?)([iuymngptk]?g?)([1-9])")
+CANTONESE_IPA_PREPROCESS_INITIAL_REGEX = {
+    re.compile(r"([zcs])yu"): r"\1hyu",
+    re.compile(r"([zc])oe"): r"\1hoe",
+    re.compile(r"([zc])eo"): r"\1heo",
+}
+CANTONESE_IPA_SPECIAL_SYLLABLE_REGEX = re.compile(r"^(h?)([mn]g?)([1-6])$")
+CANTONESE_IPA_TONE_REGEX = re.compile("[1-6]")
+CANTONESE_IPA_CHECKED_TONES_REGEX = re.compile("([ptk])([136])")
+
+CANTONESE_IPA_SPECIAL_FINALS = {
+    "a": "@",
+    "yu": "y",
+    "@@": "a",
+    "uk": "^k",
+    "ik": "|k",
+    "ou": "~u",
+    "eoi": "eoy",
+    "ung": "^ng",
+    "ing": "|ng",
+    "ei": ">i",
+}
+
+CANTONESE_IPA_INITIALS = {
+    "b": "p",
+    "p": "pʰ",
+    "d": "t",
+    "t": "tʰ",
+    "g": "k",
+    "k": "kʰ",
+    "ng": "ŋ",
+    "gw": "kʷ",
+    "kw": "kʷʰ",
+    "zh": "t͡ʃ",
+    "ch": "t͡ʃʰ",
+    "sh": "ʃ",
+    "z": "t͡s",
+    "c": "t͡sʰ",
+}
+
+CANTONESE_IPA_NUCLEI = {
+    "a": "äː",
+    "@": "ɐ",
+    "e": "ɛː",
+    ">": "e",
+    "i": "iː",
+    "|": "ɪ",
+    "o": "ɔː",
+    "~": "o",
+    "oe": "œ̽ː",
+    "eo": "ɵ",
+    "u": "uː",
+    "^": "ʊ",
+    "y": "yː",
+}
+
+CANTONESE_IPA_CODAS = {
+    "i": "i̯",
+    "u": "u̯",
+    "y": "y̯",
+    "ng": "ŋ",
+    "p": "p̚",
+    "t": "t̚",
+    "k": "k̚",
+}
+
+CANTONESE_IPA_TONES = ("˥", "˧˥", "˧", "˨˩", "˩˧", "˨", "˥", "˧", "˨")
+
 PINYIN_INITIALS = ("b", "p", "m",  "f",  "d",  "t",
                    "n", "l", "g",  "k",  "h",  "j",
                    "q", "x", "zh", "ch", "sh", "r",
@@ -273,12 +343,12 @@ def jyutping_to_yale(jyutping: str,
     return " ".join(res)
 
 
-def jyutping_to_IPA(jyutping: str, useSpacesToSegment: bool = False) -> str:
+def jyutping_to_IPA(jyutping: str, use_spaces_to_segment: bool = False) -> str:
     """Converts Jyutping romanization to Cantonese Sinological IPA
 
     Args:
         jyutping (str): String of valid Jyutping syllables
-        useSpacesToSegment (bool, optional): By default, this function
+        use_spaces_to_segment (bool, optional): By default, this function
         attempts to separate Jyutping syllables via valid Jyutping finals.
         When this argument is True, disables Jyutping final detection and
         instead assumes each space-separated string is a valid Jyutping
@@ -287,7 +357,93 @@ def jyutping_to_IPA(jyutping: str, useSpacesToSegment: bool = False) -> str:
     Returns:
         str: String of Cantonese Sinological IPA syllables
     """
-    pass
+    def convert_ipa_syllable(syllable):
+        initial = ""
+        nucleus = ""
+        coda = ""
+        tone = ""
+
+        match = CANTONESE_IPA_REGEX.match(syllable)
+        if not match:
+            return syllable
+
+        if match.group(1):
+            if match.group(1) in CANTONESE_IPA_INITIALS:
+                initial = CANTONESE_IPA_INITIALS[match.group(1)]
+            else:
+                initial = match.group(1)
+
+        if match.group(2):
+            if match.group(2) in CANTONESE_IPA_NUCLEI:
+                nucleus = CANTONESE_IPA_NUCLEI[match.group(2)]
+            else:
+                nucleus = match[2]
+
+        if match.group(3):
+            if match.group(3) in CANTONESE_IPA_CODAS:
+                coda = CANTONESE_IPA_CODAS[match.group(3)]
+            else:
+                coda = match.group(3)
+
+        if match.group(4):
+            tone = CANTONESE_IPA_TONES[int(match.group(4)) - 1]
+
+        return f"{initial}{nucleus}{coda}{tone}"
+
+    res = []
+
+    if use_spaces_to_segment:
+        new_jyutping = ""
+        for c in jyutping:
+            new_jyutping += f" {c} " if c in SPECIAL_CHARACTERS else c
+        syllables = new_jyutping.split()
+    else:
+        syllables = segment_jyutping(
+            jyutping, remove_special_characters=False,
+            remove_glob_characters=False)
+
+    for syllable in syllables:
+        if (len(syllable) == 1) or (syllable in SPECIAL_CHARACTERS):
+            # Most numbers, single characters, etc are not Jyutping
+            res.append(syllable)
+            continue
+
+        # If there is no tone, the syllable cannot be converted to IPA
+        tone = -1
+        for jyutping_tone in JYUTPING_TONES:
+            if syllable.find(str(jyutping_tone)) != -1:
+                tone = jyutping_tone
+                break
+        if tone == -1:
+            res.append(syllable)
+            continue
+
+        # Do some pre-processing for initials
+        for pattern, repl in CANTONESE_IPA_PREPROCESS_INITIAL_REGEX.items():
+            syllable = pattern.sub(repl, syllable)
+
+        # Convert special syllables
+        match = CANTONESE_IPA_SPECIAL_SYLLABLE_REGEX.match(syllable)
+        if match:
+            syllable = syllable.replace("m", "m̩")
+            syllable = syllable.replace("ng", "ŋ̍")
+            syllable = CANTONESE_IPA_TONE_REGEX.sub(
+                CANTONESE_IPA_TONES[tone - 1], syllable)
+
+        # Replace checked tones
+        match = CANTONESE_IPA_CHECKED_TONES_REGEX.match(syllable)
+        if match:
+            syllable = syllable.replace("1", "7")
+            syllable = syllable.replace("3", "8")
+            syllable = syllable.replace("6", "9")
+
+        # More preprocessing
+        for spec, repl in CANTONESE_IPA_SPECIAL_FINALS.items():
+            syllable = syllable.replace(spec, repl)
+
+        res.append(convert_ipa_syllable(syllable))
+
+    return " ".join(res)
 
 
 def pretty_pinyin(pinyin: str) -> str:
