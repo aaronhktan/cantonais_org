@@ -9,7 +9,7 @@ DB_PATH = os.environ["CANTONAIS_ORG_DB_PATH"]
 
 
 def get_db():
-    if 'db' not in g:
+    if "db" not in g:
         g.db = sqlite3.connect(DB_PATH)
 
     return g.db
