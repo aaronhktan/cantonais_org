@@ -9,13 +9,14 @@ JYUTPING_INITIALS = ("b",  "p", "m",  "f",  "d",
                      "ng", "h", "gw", "kw", "w",
                      "z",  "c", "s",  "j",  "m")
 
-JYUTPING_FINALS = ("a",   "aa",  "aai", "aau", "aam", "aan", "aang", "aap", "aat",
-                   "aak", "ai",  "au",  "am",  "an",  "ang", "ap",   "at",  "ak",
-                   "e",   "ei",  "eu",  "em",  "en",  "eng", "ep",   "ek",  "i",
-                   "iu",  "im",  "in",  "ing", "ip",  "it",  "ik",   "o",   "oi",
-                   "ou",  "on",  "ong", "ot",  "ok",  "u",   "ui",   "un",  "ung",
-                   "ut",  "uk",  "oe",  "oet", "eoi", "eon", "oeng", "eot", "oek",
-                   "yu",  "yun", "yut", "m",   "ng")
+JYUTPING_FINALS = ("a",   "aa",  "aai", "aau",  "aam", "aan", "aang", "aap",
+                   "aat", "aak", "ai",  "au",   "am",  "an",  "ang",  "ap",
+                   "at",  "ak",  "e",   "ei",   "eu",  "em",  "en",   "eng",
+                   "ep",  "ek",  "i",   "iu",   "im",  "in",  "ing",  "ip",
+                   "it",  "ik",  "o",   "oi",   "ou",  "on",  "ong",  "ot",
+                   "ok",  "u",   "ui",  "un",   "ung", "ut",  "uk",   "oe",
+                   "oet", "eoi", "eon", "oeng", "eot", "oek", "yu",   "yun",
+                   "yut", "m",   "ng")
 
 JYUTPING_TONES = (1, 2, 3, 4, 5, 6)
 
@@ -51,7 +52,8 @@ YALE_VOWEL_REPLACEMENTS = {
 
 CANTONESE_IPA_REGEX = re.compile(r"([bcdfghjklmnpqrstvwxyz]?"
                                  r"[bcdfghjklmnpqrstvwxyz]"
-                                 r"?)([a@e>i|o~u^y][eo]?)([iuymngptk]?g?)([1-9])")
+                                 r"?)([a@e>i|o~u^y][eo]?)"
+                                 r"([iuymngptk]?g?)([1-9])")
 CANTONESE_IPA_PREPROCESS_INITIAL_REGEX = {
     re.compile(r"([zcs])yu"): r"\1hyu",
     re.compile(r"([zc])oe"): r"\1hoe",
@@ -124,12 +126,25 @@ PINYIN_INITIALS = ("b", "p", "m",  "f",  "d",  "t",
                    "q", "x", "zh", "ch", "sh", "r",
                    "z", "c", "s")
 
-PINYIN_FINALS = ("a",   "e",   "ai",   "ei",   "ao",   "ou", "an", "ang", "en",
-                 "ang", "eng", "ong",  "er",   "i",    "ia", "ie", "iao", "iu",
-                 "ian", "in",  "iang", "ing",  "iong", "u",  "ua", "uo",  "uai",
-                 "ui",  "uan", "un",   "uang", "u",    "u:", "ue", "u:e", "o")
+PINYIN_FINALS = ("a",   "e",   "ai",  "ei",  "ao",   "ou",  "an",   "ang",
+                 "en",  "ang", "eng", "ong", "er",   "i",   "ia",   "ie",
+                 "iao", "iu",  "ian", "in",  "iang", "ing", "iong", "u",
+                 "ua",  "uo",  "uai", "ui",  "uan",  "un",  "uang", "u",
+                 "u:",  "ue",  "u:e", "o")
 
 PINYIN_TONES = (1, 2, 3, 4, 5)
+
+PINYIN_PRIORITY_DIACRITIC = ("a", "e", "o")
+PINYIN_SECONDARY_DIACRITIC = ("i", "u", "ü")
+
+PINYIN_TONE_REPLACEMENTS = {
+    "a": ("ā", "á", "ǎ", "à", "a"),
+    "e": ("ē", "é", "ě", "è", "e"),
+    "i": ("ī", "í", "ǐ", "ì", "i"),
+    "o": ("ō", "ó", "ǒ", "ò", "o"),
+    "u": ("ū", "ú", "ǔ", "ù", "u"),
+    "ü": ("ǖ", "ǘ", "ǚ", "ǜ", "ü"),
+}
 
 SAME_CHARACTER_STRING = "－"
 
@@ -166,7 +181,8 @@ def extract_pinyin_tones(pinyin: str) -> list[int]:
     return res
 
 
-def apply_colours(original: str, tones: list[int], tone_colours: list[str]) -> str:
+def apply_colours(original: str, tones: list[int],
+                  tone_colours: list[str]) -> str:
     """Adds HTML tags to each Chinese character with colours
     corresponding to the character's tone.
 
@@ -456,7 +472,66 @@ def pretty_pinyin(pinyin: str) -> str:
     Returns:
         str: String of pretty Pinyin syllables
     """
-    pass
+    if not pinyin:
+        return pinyin
+
+    syllables = pinyin.split()
+    if not syllables:
+        return pinyin
+
+    res = []
+
+    for syllable in syllables:
+        if (len(syllable) == 1) or (syllable in SPECIAL_CHARACTERS):
+            # Most numbers, single characters, etc are not Jyutping
+            res.append(syllable)
+            continue
+
+        # If there is no tone, the syllable cannot be converted to IPA
+        tone = -1
+        for pinyin_tone in PINYIN_TONES:
+            if syllable.find(str(pinyin_tone)) != -1:
+                tone = pinyin_tone
+                break
+        if tone == -1:
+            res.append(syllable)
+            continue
+
+        syllable = syllable.replace("u:", "ü")
+
+        # In Pinyin, the diacritic is always placed over the first
+        # A, E, or O if they exist.
+        diacritic_vowel_idx = float("inf")
+        diacritic_vowel = None
+        for priority_vowel in PINYIN_PRIORITY_DIACRITIC:
+            idx = syllable.find(priority_vowel)
+            if idx != -1 and idx < diacritic_vowel_idx:
+                diacritic_vowel_idx = idx
+                diacritic_vowel = priority_vowel
+        # Otherwise, the diacritic goes on the last U or I
+        if not diacritic_vowel:
+            diacritic_vowel_idx = float("-inf")
+            for secondary_vowel in PINYIN_SECONDARY_DIACRITIC:
+                idx = syllable.find(secondary_vowel)
+                if idx != -1 and idx > diacritic_vowel_idx:
+                    diacritic_vowel_idx = idx
+                    diacritic_vowel = secondary_vowel
+        if not diacritic_vowel:
+            # No vowel to put an accent on was found :(
+            res.append(syllable)
+            continue
+
+        # Add the diacritic
+        syllable = syllable.replace(
+            diacritic_vowel,
+            PINYIN_TONE_REPLACEMENTS[diacritic_vowel][tone - 1],
+            1)
+        
+        # Remove the tone
+        syllable = syllable[:-1]
+        res.append(syllable)
+    
+    return " ".join(res)
 
 
 def numbered_pinyin(pinyin: str) -> str:

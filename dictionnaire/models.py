@@ -19,7 +19,7 @@ class TranslationSet:
     _sourceShortString: str
     _sentenceSnippet: str
 
-    translations: list[Translation] = None
+    translations: list[Translation] | None = None
 
 
 @dataclass
@@ -38,14 +38,14 @@ class SourceSentence:
     _zhuyin: str
     _mandarinIPA: str
 
-    translations: list[TranslationSet] = None
+    translations: list[TranslationSet] | None = None
 
 
 @dataclass
 class Definition:
     definition_content: str
     label: str
-    sentences: list[SourceSentence] = None
+    sentences: list[SourceSentence] | None = None
 
 
 @dataclass
@@ -54,7 +54,7 @@ class DefinitionsSet:
     _sourceShortString: str
     _definitionsSnippet: str
 
-    definitions: list[Definition] = None
+    definitions: list[Definition] | None = None
 
 
 @dataclass

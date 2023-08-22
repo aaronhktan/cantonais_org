@@ -99,6 +99,11 @@ class TestJyutpingToYale(TestCase):
         res = chinese_utils.jyutping_to_yale("m4 hai6")
         self.assertEqual(res, "m̀h haih")
 
+    def test_tones(self):
+        res = chinese_utils.jyutping_to_yale(
+            "saam1 gau2 sei3 ling4 ng5 ji6 cat1 baat3 luk6")
+        self.assertEqual(res, "sāam gáu sei lìhng ńgh yih chāt baat luhk")
+
     def test_no_tone(self):
         res = chinese_utils.jyutping_to_yale("mit")
         self.assertEqual(res, "mit")
@@ -121,7 +126,7 @@ class TestJyutpingToIPA(TestCase):
     def test_preprocess_initial(self):
         res = chinese_utils.jyutping_to_IPA("zyu2 sung3")
         self.assertEqual(res, "t͡ʃyː˧˥ sʊŋ˧")
-    
+
     def test_special_syllable(self):
         res = chinese_utils.jyutping_to_IPA("m4")
         self.assertEqual(res, "m̩˨˩")
@@ -134,9 +139,38 @@ class TestJyutpingToIPA(TestCase):
         res = chinese_utils.jyutping_to_IPA("uk1 kei2 jan4")
         self.assertEqual(res, "ʊk̚˥ kʰei̯˧˥ jɐn˨˩")
 
+    def test_tones(self):
+        res = chinese_utils.jyutping_to_IPA(
+            "saam1 gau2 sei3 ling4 ng5 ji6 cat1 baat3 luk6")
+        self.assertEqual(
+            res, "säːm˥ kɐu̯˧˥ sei̯˧ lɪŋ˨˩ ŋ̍˩˧ jiː˨ t͡sʰɐt̚˥ päːt̚˧ lʊk̚˨")
+
     def test_no_tone(self):
         res = chinese_utils.jyutping_to_yale("mok")
         self.assertEqual(res, "mok")
+
+
+class TestPrettyPinyin(TestCase):
+    def test_simple(self):
+        res = chinese_utils.pretty_pinyin("shuai4 ge1")
+        self.assertEqual(res, "shuài gē")
+
+    def test_secondary_vowel(self):
+        res = chinese_utils.pretty_pinyin("hui4 tu2")
+        self.assertEqual(res, "huì tú")
+
+    def test_umlaut(self):
+        res = chinese_utils.pretty_pinyin("nu:3 hai2")
+        self.assertEqual(res, "nǚ hái")
+
+    def test_tones(self):
+        res = chinese_utils.pretty_pinyin("ma1 ma2 ma3 ma4")
+        self.assertEqual(
+            res, "mā má mǎ mà")
+
+    def test_no_tone(self):
+        res = chinese_utils.pretty_pinyin("nu")
+        self.assertEqual(res, "nu")
 
 
 class TestJyutpingSegmentation(TestCase):
