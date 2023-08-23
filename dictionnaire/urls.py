@@ -47,11 +47,10 @@ def search_traditional(search_term):
 def search_simplified(search_term):
     if request.method == "POST":
         return redirect_post()
-    resp = make_response(views.render_search_simplified(search_term))
 
+    resp = make_response(views.render_search_simplified(search_term))
     resp.set_cookie("search_term", search_term)
     resp.set_cookie("search_type", search_simplified.__name__)
-
     return resp
 
 
@@ -60,7 +59,11 @@ def search_simplified(search_term):
 def search_jyutping(search_term):
     if request.method == "POST":
         return redirect_post()
-    return views.render_search_jyutping(search_term)
+
+    resp = make_response(views.render_search_jyutping(search_term))
+    resp.set_cookie("search_term", search_term)
+    resp.set_cookie("search_type", search_jyutping.__name__)
+    return resp
 
 
 @dictionary_app.route("/recherche/pinyin/<search_term>",
@@ -68,7 +71,11 @@ def search_jyutping(search_term):
 def search_pinyin(search_term):
     if request.method == "POST":
         return redirect_post()
-    return views.render_search_pinyin(search_term)
+
+    resp = make_response(views.render_search_pinyin(search_term))
+    resp.set_cookie("search_term", search_term)
+    resp.set_cookie("search_type", search_pinyin.__name__)
+    return resp
 
 
 @dictionary_app.route("/recherche/fr/<search_term>",
@@ -76,7 +83,11 @@ def search_pinyin(search_term):
 def search_french(search_term):
     if request.method == "POST":
         return redirect_post()
-    return views.render_search_french(search_term)
+
+    resp = make_response(views.render_search_pinyin(search_term))
+    resp.set_cookie("search_term", search_term)
+    resp.set_cookie("search_type", search_french.__name__)
+    return resp
 
 
 @dictionary_app.route("/entree/<entry>",

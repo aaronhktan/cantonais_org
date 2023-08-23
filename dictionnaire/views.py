@@ -26,8 +26,9 @@ def render_search_jyutping(search_term):
 
 
 def render_search_pinyin(search_term):
+    entry = queries.query_pinyin(search_term)
     return render_template("search.html", search_term=search_term,
-                           search_type="search_pinyin")
+                           search_type="search_pinyin", entry=entry)
 
 
 def render_search_french(search_term):
