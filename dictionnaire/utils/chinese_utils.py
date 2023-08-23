@@ -146,6 +146,49 @@ PINYIN_TONE_REPLACEMENTS = {
     "ü": ("ǖ", "ǘ", "ǚ", "ǜ", "ü"),
 }
 
+ZHUYIN_PREPROCESS_INITIAL_REGEX = {
+    re.compile(r"([jqx])u"): r"\1v",
+    re.compile(r"([zcs]h?)i"): r"\1",
+    re.compile(r"([r])i"): r"\1",
+}
+ZHUYIN_PREPROCESS_FINAL_REGEX = {
+    re.compile(r"^ng([012345])$"): r"ㄫ\1",
+    re.compile(r"^hm([012345])$"): r"ㄏㄇ\1",
+    re.compile(r"^hng([012345])$"): r"ㄏㄫ\1",
+    re.compile(r"^er([012345])$"): r"ㄦ\1",
+}
+ZHUYIN_INITIAL_REGEX = re.compile(r"^([bpmfdtnlgkhjqxzcsr]?h?)")
+ZHUYIN_FINAL_REGEX = re.compile(
+    r"([aeiouêvyw]?[aeioun]?[aeioung]?[ng]?)(r?)([012345])$")
+
+ZHUYIN_INITIALS = {
+    "b": "ㄅ",  "p": "ㄆ", "m": "ㄇ", "f": "ㄈ",  "d": "ㄉ",
+    "t": "ㄊ",  "n": "ㄋ", "l": "ㄌ", "g": "ㄍ",  "k": "ㄎ",
+    "h": "ㄏ",  "j": "ㄐ", "q": "ㄑ", "x": "ㄒ",  "z": "ㄗ",
+    "c": "ㄘ",  "s": "ㄙ", "r": "ㄖ", "zh": "ㄓ", "ch": "ㄔ",
+    "sh": "ㄕ",
+}
+
+ZHUYIN_FINALS = {
+    "yuan": "ㄩㄢ", "iang": "ㄧㄤ", "yang": "ㄧㄤ", "uang": "ㄨㄤ",
+    "wang": "ㄨㄤ", "ying": "ㄧㄥ", "weng": "ㄨㄥ", "iong": "ㄩㄥ",
+    "yong": "ㄩㄥ", "uai": "ㄨㄞ",  "wai": "ㄨㄞ",  "yai": "ㄧㄞ",
+    "iao": "ㄧㄠ",  "yao": "ㄧㄠ",  "ian": "ㄧㄢ",  "yan": "ㄧㄢ",
+    "uan": "ㄨㄢ",  "wan": "ㄨㄢ",  "van": "ㄩㄢ",  "ang": "ㄤ",
+    "yue": "ㄩㄝ",  "wei": "ㄨㄟ",  "you": "ㄧㄡ",  "yin": "ㄧㄣ",
+    "wen": "ㄨㄣ",  "yun": "ㄩㄣ",  "eng": "ㄥ",   "ing": "ㄧㄥ",
+    "ong": "ㄨㄥ",  "io": "ㄧㄛ",   "yo": "ㄧㄛ",   "ia": "ㄧㄚ",
+    "ya": "ㄧㄚ",   "ua": "ㄨㄚ",   "wa": "ㄨㄚ",   "ai": "ㄞ",
+    "ao": "ㄠ",    "an": "ㄢ",    "ie": "ㄧㄝ",   "ye": "ㄧㄝ",
+    "uo": "ㄨㄛ",   "wo": "ㄨㄛ",   "ue": "ㄩㄝ",   "ve": "ㄩㄝ",
+    "ei": "ㄟ",    "ui": "ㄨㄟ",   "ou": "ㄡ",     "iu": "ㄧㄡ",
+    "en": "ㄣ",    "in": "ㄧㄣ",   "un": "ㄨㄣ",   "vn": "ㄩㄣ",
+    "yi": "ㄧ",    "wu": "ㄨ",    "yu": "ㄩ",    "a": "ㄚ",
+    "e": "ㄜ",     "o": "ㄛ",     "i": "ㄧ",     "u": "ㄨ",
+    "v": "ㄩ",     "ê": "ㄝ",
+}
+ZHUYIN_TONES = ("", "", "ˊ", "ˇ", "ˋ", "˙")
+
 SAME_CHARACTER_STRING = "－"
 
 
@@ -447,7 +490,7 @@ def jyutping_to_IPA(jyutping: str, use_spaces_to_segment: bool = False) -> str:
                 CANTONESE_IPA_TONES[tone - 1], syllable)
 
         # Replace checked tones
-        match = CANTONESE_IPA_CHECKED_TONES_REGEX.match(syllable)
+        match = CANTONESE_IPA_CHECKED_TONES_REGEX.search(syllable)
         if match:
             syllable = syllable.replace("1", "7")
             syllable = syllable.replace("3", "8")
@@ -483,11 +526,11 @@ def pretty_pinyin(pinyin: str) -> str:
 
     for syllable in syllables:
         if (len(syllable) == 1) or (syllable in SPECIAL_CHARACTERS):
-            # Most numbers, single characters, etc are not Jyutping
+            # Most numbers, single characters, etc are not Pinyin
             res.append(syllable)
             continue
 
-        # If there is no tone, the syllable cannot be converted to IPA
+        # If there is no tone, the syllable cannot be converted
         tone = -1
         for pinyin_tone in PINYIN_TONES:
             if syllable.find(str(pinyin_tone)) != -1:
@@ -560,10 +603,13 @@ def pinyin_with_v(pinyin: str) -> str:
     Returns:
         str: String of numbered Pinyin syllables with v
     """
-    pass
+    if not pinyin:
+        return pinyin
+
+    return pinyin.replace("u:", "v")
 
 
-def pinyin_to_zhuyin(pinyin: str, useSpacesToSegment: bool = False) -> str:
+def pinyin_to_zhuyin(pinyin: str, use_spaces_to_segment: bool = False) -> str:
     """Converts raw Pinyin in database to Zhuyin/Bopomofo.
 
     Args:
@@ -577,7 +623,68 @@ def pinyin_to_zhuyin(pinyin: str, useSpacesToSegment: bool = False) -> str:
     Returns:
         str: String of Zhuyin syllables
     """
-    pass
+    if not pinyin:
+        return pinyin
+
+    res = []
+
+    if use_spaces_to_segment:
+        syllables = pinyin.split()
+    else:
+        syllables = segment_pinyin(pinyin)
+
+    for syllable in syllables:
+        if (len(syllable) == 1) or (syllable in SPECIAL_CHARACTERS):
+            # Most numbers, single characters, etc are not Pinyin
+            res.append(syllable)
+            continue
+
+        # If there is no tone, the syllable cannot be converted to Zhuyin
+        tone = -1
+        for pinyin_tone in PINYIN_TONES:
+            if syllable.find(str(pinyin_tone)) != -1:
+                tone = pinyin_tone
+                break
+        if tone == -1:
+            res.append(syllable)
+            continue
+
+        syllable = pinyin_with_v(syllable)
+
+        # Handle some special cases for Zhuyin
+        for pattern, repl in ZHUYIN_PREPROCESS_INITIAL_REGEX.items():
+            syllable = pattern.sub(repl, syllable)
+        for pattern, repl in ZHUYIN_PREPROCESS_FINAL_REGEX.items():
+            syllable = pattern.sub(repl, syllable)
+
+        # Handle general case
+        match = ZHUYIN_INITIAL_REGEX.search(syllable)
+        if match:
+            if match.group(1):
+                syllable = ZHUYIN_INITIAL_REGEX.sub(
+                    ZHUYIN_INITIALS[match.group(1)], syllable)
+
+        match = ZHUYIN_FINAL_REGEX.search(syllable)
+        if match:
+            final, er = "", ""
+            if match.group(1):
+                final = ZHUYIN_FINALS[match.group(1)]
+            if match.group(2):
+                er = "ㄦ"
+            syllable = ZHUYIN_FINAL_REGEX.sub(final + er, syllable)
+
+        er_idx = syllable.find("ㄦ")
+        if tone == 5:
+            syllable = ZHUYIN_TONES[tone] + syllable
+        elif er_idx != -1 and syllable != "ㄦ":
+            syllable = syllable[:er_idx] + \
+                ZHUYIN_TONES[tone] + syllable[er_idx:]
+        else:
+            syllable = syllable + ZHUYIN_TONES[tone]
+
+        res.append(syllable)
+
+    return " ".join(res)
 
 
 def pinyin_to_IPA(pinyin: str, useSpacesToSegment: bool = False) -> str:
@@ -836,11 +943,15 @@ def segment_pinyin(pinyin: str, remove_special_characters: bool = True,
             curr_string = pinyin[end_idx:end_idx+final_len]
             if curr_string in PINYIN_FINALS:
                 end_idx += final_len
-                if end_idx < len(pinyin):
-                    if pinyin[end_idx].isnumeric():
-                        # Append the tone digit following the final to the
-                        # syllable
-                        end_idx += 1
+                if end_idx < len(pinyin) and pinyin[end_idx] == "r":
+                    # Append erhua to syllable if present
+                    end_idx += 1
+
+                if end_idx < len(pinyin) and pinyin[end_idx].isnumeric():
+                    # Append the tone digit following the final to the
+                    # syllable
+                    end_idx += 1
+
                 syllable = pinyin[start_idx:end_idx]
                 res.append(syllable)
                 start_idx = end_idx

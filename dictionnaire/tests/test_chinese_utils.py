@@ -78,6 +78,18 @@ class TestJyutpingToYale(TestCase):
         res = chinese_utils.jyutping_to_yale("si1 zi2 saan1")
         self.assertEqual(res, "sī jí sāan")
 
+    def test_reject_no_tone(self):
+        res = chinese_utils.jyutping_to_yale("joeng")
+        self.assertEqual(res, "joeng")
+
+    def test_reject_single_letter(self):
+        res = chinese_utils.jyutping_to_yale("a")
+        self.assertEqual(res, "a")
+
+    def test_reject_special_character(self):
+        res = chinese_utils.jyutping_to_yale("-")
+        self.assertEqual(res, "-")
+
     def test_no_spaces(self):
         res = chinese_utils.jyutping_to_yale("si1zi2saan1")
         self.assertEqual(res, "sī jí sāan")
@@ -113,6 +125,18 @@ class TestJyutpingToIPA(TestCase):
     def test_simple(self):
         res = chinese_utils.jyutping_to_IPA("joeng4 sing4")
         self.assertEqual(res, "jœ̽ːŋ˨˩ sɪŋ˨˩")
+
+    def test_reject_no_tone(self):
+        res = chinese_utils.jyutping_to_IPA("joeng")
+        self.assertEqual(res, "joeng")
+
+    def test_reject_single_letter(self):
+        res = chinese_utils.jyutping_to_IPA("a")
+        self.assertEqual(res, "a")
+
+    def test_reject_special_character(self):
+        res = chinese_utils.jyutping_to_IPA("-")
+        self.assertEqual(res, "-")
 
     def test_no_spaces(self):
         res = chinese_utils.jyutping_to_IPA("faa1sing4")
@@ -155,6 +179,18 @@ class TestPrettyPinyin(TestCase):
         res = chinese_utils.pretty_pinyin("shuai4 ge1")
         self.assertEqual(res, "shuài gē")
 
+    def test_reject_no_tone(self):
+        res = chinese_utils.pretty_pinyin("ba")
+        self.assertEqual(res, "ba")
+
+    def test_reject_single_letter(self):
+        res = chinese_utils.pretty_pinyin("a")
+        self.assertEqual(res, "a")
+
+    def test_reject_special_character(self):
+        res = chinese_utils.pretty_pinyin("-")
+        self.assertEqual(res, "-")
+
     def test_secondary_vowel(self):
         res = chinese_utils.pretty_pinyin("hui4 tu2")
         self.assertEqual(res, "huì tú")
@@ -177,6 +213,63 @@ class TestNumberedPinyin(TestCase):
     def test_simple(self):
         res = chinese_utils.numbered_pinyin("nu:3 hai2")
         self.assertEqual(res, "nü3 hai2")
+
+
+class TestPinyinWithV(TestCase):
+    def test_simple(self):
+        res = chinese_utils.pinyin_with_v("nu:3 hai2")
+        self.assertEqual(res, "nv3 hai2")
+
+
+class TestPinyinToZhuyin(TestCase):
+    def test_simple(self):
+        res = chinese_utils.pinyin_to_zhuyin("ba1 da2 tong1")
+        self.assertEqual(res, "ㄅㄚ ㄉㄚˊ ㄊㄨㄥ")
+
+    def test_reject_no_tone(self):
+        res = chinese_utils.pinyin_to_zhuyin("ba")
+        self.assertEqual(res, "ba")
+
+    def test_reject_single_letter(self):
+        res = chinese_utils.pinyin_to_zhuyin("a")
+        self.assertEqual(res, "a")
+
+    def test_reject_special_character(self):
+        res = chinese_utils.pinyin_to_zhuyin("-")
+        self.assertEqual(res, "-")
+
+    def test_no_spaces(self):
+        res = chinese_utils.pinyin_to_zhuyin("ba1da2tong1")
+        self.assertEqual(res, "ㄅㄚ ㄉㄚˊ ㄊㄨㄥ")
+
+    def test_use_spaces_to_segment(self):
+        res = chinese_utils.pinyin_to_zhuyin("ba1 da2 tong1",
+                                             use_spaces_to_segment=True)
+        self.assertEqual(res, "ㄅㄚ ㄉㄚˊ ㄊㄨㄥ")
+
+    def test_special_initials(self):
+        res = chinese_utils.pinyin_to_zhuyin("qu4")
+        self.assertEqual(res, "ㄑㄩˋ")
+
+        res = chinese_utils.pinyin_to_zhuyin("chi1")
+        self.assertEqual(res, "ㄔ")
+
+        res = chinese_utils.pinyin_to_zhuyin("ri4")
+        self.assertEqual(res, "ㄖˋ")
+
+    def test_special_finals(self):
+        res = chinese_utils.pinyin_to_zhuyin("hm5")
+        self.assertEqual(res, "˙ㄏㄇ")
+
+        res = chinese_utils.pinyin_to_zhuyin("hng5")
+        self.assertEqual(res, "˙ㄏㄫ")
+
+        res = chinese_utils.pinyin_to_zhuyin("er2")
+        self.assertEqual(res, "ㄦˊ")
+
+    def test_erhua(self):
+        res = chinese_utils.pinyin_to_zhuyin("quanr1")
+        self.assertEqual(res, "ㄑㄩㄢㄦ")
 
 
 class TestJyutpingSegmentation(TestCase):
