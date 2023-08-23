@@ -173,6 +173,12 @@ class TestPrettyPinyin(TestCase):
         self.assertEqual(res, "nu")
 
 
+class TestNumberedPinyin(TestCase):
+    def test_simple(self):
+        res = chinese_utils.numbered_pinyin("nu:3 hai2")
+        self.assertEqual(res, "nü3 hai2")
+
+
 class TestJyutpingSegmentation(TestCase):
     def test_simple(self):
         res = chinese_utils.segment_jyutping("m4 goi1")

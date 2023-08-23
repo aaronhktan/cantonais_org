@@ -14,8 +14,9 @@ def render_search_traditional(search_term):
 
 
 def render_search_simplified(search_term):
+    entry = queries.query_simplified(search_term)
     return render_template("search.html", search_term=search_term,
-                           search_type="search_simplified")
+                           search_type="search_simplified", entry=entry)
 
 
 def render_search_jyutping(search_term):

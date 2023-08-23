@@ -47,7 +47,12 @@ def search_traditional(search_term):
 def search_simplified(search_term):
     if request.method == "POST":
         return redirect_post()
-    return views.render_search_simplified(search_term)
+    resp = make_response(views.render_search_simplified(search_term))
+
+    resp.set_cookie("search_term", search_term)
+    resp.set_cookie("search_type", search_simplified.__name__)
+
+    return resp
 
 
 @dictionary_app.route("/recherche/jyutping/<search_term>",

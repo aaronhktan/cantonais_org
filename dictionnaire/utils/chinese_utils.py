@@ -526,11 +526,11 @@ def pretty_pinyin(pinyin: str) -> str:
             diacritic_vowel,
             PINYIN_TONE_REPLACEMENTS[diacritic_vowel][tone - 1],
             1)
-        
+
         # Remove the tone
         syllable = syllable[:-1]
         res.append(syllable)
-    
+
     return " ".join(res)
 
 
@@ -544,7 +544,10 @@ def numbered_pinyin(pinyin: str) -> str:
     Returns:
         str: String of numbered Pinyin syllables with ü
     """
-    pass
+    if not pinyin:
+        return pinyin
+
+    return pinyin.replace("u:", "ü")
 
 
 def pinyin_with_v(pinyin: str) -> str:
