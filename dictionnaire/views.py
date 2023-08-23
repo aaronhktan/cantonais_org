@@ -20,8 +20,9 @@ def render_search_simplified(search_term):
 
 
 def render_search_jyutping(search_term):
+    entry = queries.query_jyutping(search_term)
     return render_template("search.html", search_term=search_term,
-                           search_type="search_jyutping")
+                           search_type="search_jyutping", entry=entry)
 
 
 def render_search_pinyin(search_term):

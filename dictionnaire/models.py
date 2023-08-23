@@ -117,4 +117,4 @@ class Entry:
         self._pretty_pinyin = chinese_utils.pretty_pinyin(self.pinyin)
         self._numbered_pinyin = chinese_utils.numbered_pinyin(self.pinyin)
         self._zhuyin = chinese_utils.pinyin_to_zhuyin(self.pinyin)
-        self._mandarin_IPA = chinese_utils.pinyin_to_zhuyin(self.pinyin)
+        self._mandarin_IPA = chinese_utils.pinyin_to_IPA(self.pinyin)
