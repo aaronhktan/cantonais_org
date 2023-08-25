@@ -29,16 +29,26 @@ class SourceSentence:
     traditional: str
 
     jyutping: str
-    _yale: str
-    _cantoneseIPA: str
-
     pinyin: str
-    _prettypinyin: str
-    _numberedPinyin: str
-    _zhuyin: str
-    _mandarinIPA: str
+
+    _yale: str | None = None
+    _cantonese_IPA: str | None = None
+
+    _pretty_pinyin: str | None = None
+    _numbered_pinyin: str | None = None
+    _zhuyin: str | None = None
+    _mandarin_IPA: str | None = None
 
     translations: list[TranslationSet] | None = None
+
+    def __post_init__(self):
+        self._yale = chinese_utils.jyutping_to_yale(self.jyutping)
+        self._cantonese_IPA = chinese_utils.jyutping_to_IPA(self.jyutping)
+
+        self._pretty_pinyin = chinese_utils.pretty_pinyin(self.pinyin)
+        self._numbered_pinyin = chinese_utils.numbered_pinyin(self.pinyin)
+        self._zhuyin = chinese_utils.pinyin_to_zhuyin(self.pinyin)
+        self._mandarin_IPA = chinese_utils.pinyin_to_IPA(self.pinyin)
 
 
 @dataclass
@@ -51,10 +61,13 @@ class Definition:
 @dataclass
 class DefinitionsSet:
     source: str
-    _sourceShortString: str
-    _definitionsSnippet: str
-
     definitions: list[Definition] | None = None
+    _definitions_snippet: str | None = None
+
+    def __post_init__(self):
+        # Generate the definitions snippet
+        self._definitions_snippet = "; ".join(
+            definition.definition_content for definition in self.definitions)
 
 
 @dataclass

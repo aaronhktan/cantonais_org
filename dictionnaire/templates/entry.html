@@ -17,5 +17,5 @@
 {% block search_type_french_mobile %}{{ "selected" if search_type == "search_french" else ""}}{% endblock %}
 {% block content %}
 <h1 class="display-4">{{ entry._coloured_traditional|safe }}</h1>
-<p>{{ entry }}</p>
+<p>{{ entry|safe }}</p>
 {% endblock %}

@@ -19,4 +19,6 @@
 <h1 class="display-4"><a href="{{ url_for('dictionary_app.entry_view', entry=entry.traditional) }}">{{ entry._coloured_traditional|safe }}</a></h1>
 <p>{{ search_type }}</p>
 <p>{{ entry }}</p>
+<p>{{ entry.definitions_sets[0].definitions[0].definition_content.replace("\n", "<br>") | safe }} </p>
+
 {% endblock %}

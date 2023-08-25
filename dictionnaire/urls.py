@@ -1,7 +1,6 @@
 from flask import Blueprint, make_response, request, redirect, url_for
 from . import views
 
-
 dictionary_app = Blueprint("dictionary_app", __name__, static_folder="static",
                            static_url_path="dictionnaire/static",
                            template_folder="templates")

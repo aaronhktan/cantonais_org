@@ -1,9 +1,12 @@
+import json
 import os
 import sqlite3
 
 from flask import g
 
-from .models import Entry
+from .models import (Definition, DefinitionsSet, Entry,
+                     SourceSentence, Translation, TranslationSet)
+from .utils import chinese_utils, query_utils
 
 DB_PATH = os.environ["CANTONAIS_ORG_DB_PATH"]
 
@@ -471,9 +474,30 @@ matching_entries AS (
     return entry
 
 
-def query_jyutping(jyutping):
+def query_jyutping(jyutping: str) -> Entry | None:
     db = get_db()
     c = db.cursor()
+
+    # Exact match is specified by enclosing the query in double-quotes
+    search_exact_match = (
+        len(jyutping) >= 3 and jyutping[0] == "\"" and jyutping[-1] == "\"")
+    # Wildcard character should only be appended if the last character is not "$"
+    append_wildcard = not (jyutping[-1] == "$")
+
+    if search_exact_match:
+        # Remove the double-quotes
+        jyutping_syllables = jyutping[1:-1].split()
+    else:
+        jyutping_syllables = chinese_utils.segment_jyutping(jyutping)
+
+    if search_exact_match:
+        query_param = " ".join(jyutping_syllables)
+    else:
+        query_param = query_utils.construct_romanization_query(
+            jyutping_syllables, "?")
+
+    if append_wildcard and not search_exact_match:
+        query_param += "*"
 
     c.execute(
         """
@@ -575,16 +599,44 @@ matching_entries AS (
  SELECT traditional, simplified, jyutping, pinyin, definitions FROM
   matching_entries
 """,
-        (jyutping,)
+        (query_param,)
     )
 
-    record = c.fetchone()
+    records = c.fetchall()
+    if not records:
+        return None
 
-    entry = Entry(traditional=record[0], simplified=record[1],
-                  jyutping=record[2], pinyin=record[3], definitions_sets=None)
-    return entry
+    for record in records:
+        sets = []
+        definitions_col = json.loads(record[4])
+        for definitions_group in definitions_col:
+            definitions = []
+            for definition in definitions_group["definitions"]:
+                sentences = []
+                for sentence in definition["sentences"]:
+                    translations = []
+                    for translation in sentence["translations"]:
+                        translations.append(translation)
+                    sentences.append(SourceSentence(sentence["language"],
+                                                    sentence["simplified"],
+                                                    sentence["traditional"],
+                                                    sentence["jyutping"],
+                                                    sentence["pinyin"],
+                                                    translations=translations))
+                definition_content = definition["definition"].replace(r"\n","\n")
+                print(definition_content)
+                definitions.append(Definition(definition_content,
+                                              definition["label"], sentences))
+            sets.append(DefinitionsSet(definitions_group["source"],
+                                       definitions))
 
-def query_pinyin(pinyin):
+        entry = Entry(traditional=record[0], simplified=record[1],
+                      jyutping=record[2], pinyin=record[3],
+                      definitions_sets=sets)
+        return entry
+
+
+def query_pinyin(pinyin: str) -> Entry | None:
     db = get_db()
     c = db.cursor()
 
@@ -691,7 +743,9 @@ matching_entries AS (
         (pinyin,)
     )
 
-    record = c.fetchone()
+    record = c.fetchall()
+    if not record:
+        return None
 
     entry = Entry(traditional=record[0], simplified=record[1],
                   jyutping=record[2], pinyin=record[3], definitions_sets=None)
