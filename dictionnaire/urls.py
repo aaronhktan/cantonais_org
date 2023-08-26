@@ -83,7 +83,7 @@ def search_french(search_term):
     if request.method == "POST":
         return redirect_post()
 
-    resp = make_response(views.render_search_pinyin(search_term))
+    resp = make_response(views.render_search_french(search_term))
     resp.set_cookie("search_term", search_term)
     resp.set_cookie("search_type", search_french.__name__)
     return resp

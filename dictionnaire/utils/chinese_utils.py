@@ -774,10 +774,21 @@ def pinyin_to_IPA(pinyin: str, use_spaces_to_segment: bool = False) -> str:
             if not match:
                 return syllable
 
+            conversion_failure = False
             if match.group(1):
-                initial = MANDARIN_IPA_INITIALS[match.group(1)]
+                if match.group(1) not in MANDARIN_IPA_INITIALS:
+                    conversion_failure = True
+                else:
+                    initial = MANDARIN_IPA_INITIALS[match.group(1)]
             if match.group(2):
-                final = MANDARIN_IPA_FINALS[match.group(2)]
+                if match.group(2) not in MANDARIN_IPA_FINALS:
+                    conversion_failure = True
+                else:
+                    final = MANDARIN_IPA_FINALS[match.group(2)]
+            
+            # Exit early if any initial or final could not be converted
+            if conversion_failure:
+                return match.group(1), match.group(2)
 
         # Replace close front unrounded vowel with syllable retroflex sibilant
         # fricative (+ voiced retroflex approximant if erhua) in Pinyin
@@ -848,6 +859,7 @@ def pinyin_to_IPA(pinyin: str, use_spaces_to_segment: bool = False) -> str:
             glottal = "ˀ"
 
         # Mark close front rounded vowel with v instead of "u"
+        syllable_without_tone = syllable_without_tone.replace("u:", "v")
         syllable_without_tone = MANDARIN_CLOSE_FRONT_ROUNDED_VOWEL_REGEX.sub(
             r"\1v", syllable_without_tone)
 
