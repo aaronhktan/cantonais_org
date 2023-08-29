@@ -16,12 +16,12 @@
 {% block search_type_french %}{{ "selected" if search_type == "search_french" else ""}}{% endblock %}
 {% block search_type_french_mobile %}{{ "selected" if search_type == "search_french" else ""}}{% endblock %}
 {% block content %}
-<div class="list-group mx-auto" style="max-width: 50rem;">
+<div class="list-group mx-auto py-3" style="max-width: 50rem;">
     {% if entries %}
     {% for entry in entries %}
     <a href="{{ url_for('dictionary_app.entry_view', entry=entry.traditional) }}"
-        class="list-group-item list-group-item-action">
-        <div class="ms-2 me-auto">
+        class="list-group-item list-group-item-action m-0 p-0">
+        <div class="m-3">
             <div class="fs-3 lh-sm">{{ entry._coloured_traditional|safe }} [{{
                 entry._coloured_simplified_difference|safe }}]</div>
             <div>{{ entry.jyutping }} ({{ entry._pretty_pinyin }})</div>
