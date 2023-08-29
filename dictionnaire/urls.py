@@ -24,7 +24,11 @@ def redirect_post():
 def index():
     if request.method == "POST":
         return redirect_post()
-    return views.render_index()
+
+    search_term = request.cookies.get("search_term")
+    search_type = request.cookies.get("search_type")
+
+    return views.render_index(search_term, search_type)
 
 
 @dictionary_app.route("/recherche/traditionnel/<search_term>",

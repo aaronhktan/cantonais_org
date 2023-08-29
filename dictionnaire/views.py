@@ -3,8 +3,9 @@ from flask import render_template
 from . import queries
 
 
-def render_index():
-    return render_template("index.html")
+def render_index(search_term, search_type):
+    return render_template("index.html", search_term=search_term,
+                           search_type=search_type)
 
 
 def render_search_traditional(search_term):

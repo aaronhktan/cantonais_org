@@ -16,10 +16,19 @@
 {% block search_type_french %}{{ "selected" if search_type == "search_french" else ""}}{% endblock %}
 {% block search_type_french_mobile %}{{ "selected" if search_type == "search_french" else ""}}{% endblock %}
 {% block content %}
-{% for entry in entries %}
-<h1 class="display-4"><a href="{{ url_for('dictionary_app.entry_view', entry=entry.traditional) }}">{{ entry._coloured_traditional|safe }}</a></h1>
-<p>{{ entry }}</p>
-<p>{{ entry.definitions_sets[0].definitions[0].definition_content.replace("\n", "<br>") | safe }} </p>
-{% endfor %}
-
+<div class="list-group mx-auto" style="max-width: 50rem;">
+    {% if entries %}
+    {% for entry in entries %}
+    <a href="{{ url_for('dictionary_app.entry_view', entry=entry.traditional) }}"
+        class="list-group-item list-group-item-action">
+        <div class="ms-2 me-auto">
+            <div class="fs-3 lh-sm">{{ entry._coloured_traditional|safe }} [{{
+                entry._coloured_simplified_difference|safe }}]</div>
+            <div>{{ entry.jyutping }} ({{ entry._pretty_pinyin }})</div>
+            <div>{{ entry.definitions_sets[0]._definitions_snippet.replace("\n", "<br>") }}</div>
+        </div>
+    </a>
+    {% endfor %}
+    {% endif %}
+</div>
 {% endblock %}

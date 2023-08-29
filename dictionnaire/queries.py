@@ -1,11 +1,9 @@
-import json
 import os
 import sqlite3
 
 from flask import g
 
-from .models import (Definition, DefinitionsSet, Entry,
-                     SourceSentence, Translation, TranslationSet)
+from .models import Entry
 from .utils import chinese_utils, query_utils
 
 DB_PATH = os.environ["CANTONAIS_ORG_DB_PATH"]
@@ -372,44 +370,7 @@ matching_entries AS (
     if not records:
         return None
 
-    res = []
-    for record in records:
-        sets = []
-        definitions_col = json.loads(record[4])
-        for definitions_group in definitions_col:
-            definitions = []
-            for definition in definitions_group["definitions"]:
-                if not definition:
-                    continue
-
-                sentences = []
-                for sentence in definition["sentences"]:
-                    if not sentence:
-                        continue
-
-                    translations = []
-                    for translation in sentence["translations"]:
-                        translations.append(translation)
-                    sentences.append(
-                        SourceSentence(sentence["language"],
-                                       sentence["simplified"],
-                                       sentence["traditional"],
-                                       sentence["jyutping"],
-                                       sentence["pinyin"],
-                                       translations=translations))
-
-                definition_content = definition["definition"].replace(
-                    r"\n", "\n")
-                definitions.append(Definition(definition_content,
-                                              definition["label"], sentences))
-            sets.append(DefinitionsSet(definitions_group["source"],
-                                       definitions))
-
-        res.append(Entry(traditional=record[0], simplified=record[1],
-                         jyutping=record[2], pinyin=record[3],
-                         definitions_sets=sets))
-
-    return res
+    return query_utils.parse_returned_records(records)
 
 
 def query_simplified(simplified: str) -> list[Entry] | None:
@@ -538,44 +499,7 @@ matching_entries AS (
     if not records:
         return None
 
-    res = []
-    for record in records:
-        sets = []
-        definitions_col = json.loads(record[4])
-        for definitions_group in definitions_col:
-            definitions = []
-            for definition in definitions_group["definitions"]:
-                if not definition:
-                    continue
-
-                sentences = []
-                for sentence in definition["sentences"]:
-                    if not sentence:
-                        continue
-
-                    translations = []
-                    for translation in sentence["translations"]:
-                        translations.append(translation)
-                    sentences.append(
-                        SourceSentence(sentence["language"],
-                                       sentence["simplified"],
-                                       sentence["traditional"],
-                                       sentence["jyutping"],
-                                       sentence["pinyin"],
-                                       translations=translations))
-
-                definition_content = definition["definition"].replace(
-                    r"\n", "\n")
-                definitions.append(Definition(definition_content,
-                                              definition["label"], sentences))
-            sets.append(DefinitionsSet(definitions_group["source"],
-                                       definitions))
-
-        res.append(Entry(traditional=record[0], simplified=record[1],
-                         jyutping=record[2], pinyin=record[3],
-                         definitions_sets=sets))
-
-    return res
+    return query_utils.parse_returned_records(records)
 
 
 def query_jyutping(jyutping: str) -> Entry | None:
@@ -710,44 +634,7 @@ matching_entries AS (
     if not records:
         return None
 
-    res = []
-    for record in records:
-        sets = []
-        definitions_col = json.loads(record[4])
-        for definitions_group in definitions_col:
-            definitions = []
-            for definition in definitions_group["definitions"]:
-                if not definition:
-                    continue
-
-                sentences = []
-                for sentence in definition["sentences"]:
-                    if not sentence:
-                        continue
-
-                    translations = []
-                    for translation in sentence["translations"]:
-                        translations.append(translation)
-                    sentences.append(
-                        SourceSentence(sentence["language"],
-                                       sentence["simplified"],
-                                       sentence["traditional"],
-                                       sentence["jyutping"],
-                                       sentence["pinyin"],
-                                       translations=translations))
-
-                definition_content = definition["definition"].replace(
-                    r"\n", "\n")
-                definitions.append(Definition(definition_content,
-                                              definition["label"], sentences))
-            sets.append(DefinitionsSet(definitions_group["source"],
-                                       definitions))
-
-        res.append(Entry(traditional=record[0], simplified=record[1],
-                         jyutping=record[2], pinyin=record[3],
-                         definitions_sets=sets))
-
-    return res
+    return query_utils.parse_returned_records(records)
 
 
 def query_pinyin(pinyin: str) -> list[Entry] | None:
@@ -882,44 +769,7 @@ matching_entries AS (
     if not records:
         return None
 
-    res = []
-    for record in records:
-        sets = []
-        definitions_col = json.loads(record[4])
-        for definitions_group in definitions_col:
-            definitions = []
-            for definition in definitions_group["definitions"]:
-                if not definition:
-                    continue
-
-                sentences = []
-                for sentence in definition["sentences"]:
-                    if not sentence:
-                        continue
-
-                    translations = []
-                    for translation in sentence["translations"]:
-                        translations.append(translation)
-                    sentences.append(
-                        SourceSentence(sentence["language"],
-                                       sentence["simplified"],
-                                       sentence["traditional"],
-                                       sentence["jyutping"],
-                                       sentence["pinyin"],
-                                       translations=translations))
-
-                definition_content = definition["definition"].replace(
-                    r"\n", "\n")
-                definitions.append(Definition(definition_content,
-                                              definition["label"], sentences))
-            sets.append(DefinitionsSet(definitions_group["source"],
-                                       definitions))
-
-        res.append(Entry(traditional=record[0], simplified=record[1],
-                         jyutping=record[2], pinyin=record[3],
-                         definitions_sets=sets))
-
-    return res
+    return query_utils.parse_returned_records(records)
 
 
 def query_full_text(param: str) -> list[Entry] | None:
@@ -1046,41 +896,4 @@ SELECT traditional, simplified, jyutping, pinyin, definitions FROM
     if not records:
         return None
 
-    res = []
-    for record in records:
-        sets = []
-        definitions_col = json.loads(record[4])
-        for definitions_group in definitions_col:
-            definitions = []
-            for definition in definitions_group["definitions"]:
-                if not definition:
-                    continue
-
-                sentences = []
-                for sentence in definition["sentences"]:
-                    if not sentence:
-                        continue
-
-                    translations = []
-                    for translation in sentence["translations"]:
-                        translations.append(translation)
-                    sentences.append(
-                        SourceSentence(sentence["language"],
-                                       sentence["simplified"],
-                                       sentence["traditional"],
-                                       sentence["jyutping"],
-                                       sentence["pinyin"],
-                                       translations=translations))
-
-                definition_content = definition["definition"].replace(
-                    r"\n", "\n")
-                definitions.append(Definition(definition_content,
-                                              definition["label"], sentences))
-            sets.append(DefinitionsSet(definitions_group["source"],
-                                       definitions))
-
-        res.append(Entry(traditional=record[0], simplified=record[1],
-                         jyutping=record[2], pinyin=record[3],
-                         definitions_sets=sets))
-
-    return res
+    return query_utils.parse_returned_records(records)

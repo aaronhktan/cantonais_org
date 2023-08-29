@@ -19,8 +19,8 @@
   <nav class="navbar sticky-top navbar-expand-lg bg-danger" data-bs-theme="dark">
     <div class="container">
       <a class="navbar-brand" href="{{ request.root_url }}">
-        <img src="{{ url_for('static', filename='img/icon.svg') }}" alt="Jyut Dictionary" width="30" height="30"
-          class="d-inline-block align-text-mid">
+        <img src="{{ url_for('static', filename='img/icon.svg') }}" alt="Jyut Dictionary" width="24" height="24"
+          class="d-inline-block align-text-top">
         cantonais.org
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
@@ -47,7 +47,6 @@
     </div>
   </nav>
 
-  <!-- Optional toolbar to display under header -->
   {% block toolbar %}{% endblock %}
 
   <!-- Body -->

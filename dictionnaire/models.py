@@ -66,8 +66,14 @@ class DefinitionsSet:
 
     def __post_init__(self):
         # Generate the definitions snippet
-        self._definitions_snippet = "; ".join(
-            definition.definition_content for definition in self.definitions)
+        definition_contents = []
+        for definition in self.definitions:
+            newline_idx = definition.definition_content.find("\n")
+            if newline_idx != -1:
+                definition_contents.append(definition.definition_content[:newline_idx])
+            else:
+                definition_contents.append(definition.definition_content)
+        self._definitions_snippet = "; ".join(definition_contents)
 
 
 @dataclass
