@@ -1,5 +1,5 @@
 {% extends "dictionary.html" %}
-{% block title %}{{ entry.traditional }} | {{ entry.simplified }}{% endblock %}
+{% block title %}{{ headword }}{% endblock %}
 {% block head %}
 {{ super() }}
 {% endblock %}
@@ -16,6 +16,37 @@
 {% block search_type_french %}{{ "selected" if search_type == "search_french" else ""}}{% endblock %}
 {% block search_type_french_mobile %}{{ "selected" if search_type == "search_french" else ""}}{% endblock %}
 {% block content %}
-<h1 class="display-4">{{ entry._coloured_traditional|safe }}</h1>
-<p>{{ entry|safe }}</p>
+<div class="mx-auto pt-2 pt-md-4" style="max-width: 50rem">
+    {% if entries %}
+    {% for entry in entries %}
+    <h1 class="display-4 pt-1">{{ entry._coloured_traditional|safe }} [{{ entry._coloured_simplified_difference|safe }}]</h1>
+    <p>
+        <span class="text-secondary">Jyutping</span> {{ entry.jyutping }}
+        <br><span class="text-secondary">Pinyin</span> {{ entry._pretty_pinyin }}
+    </p>
+    {% for definition_set in entry.definitions_sets %}
+    <div class="card my-2 my-md-3">
+        <div class="card-header">
+            <span class="text-secondary">{{ definition_set.source }}</span>
+        </div>
+        <div class="card-body">
+            <ol class="ps-4 ps-sm-3 mb-0">
+                {% for definition in definition_set.definitions %}
+                <li>
+                    {% if definition.label %}
+                    <span class="text-secondary">{{ definition.label }}</span>
+                    <br>
+                    {% endif %}
+                    {{ definition.definition_content.replace("\n", "<br>")|safe }}
+                </li>
+                {% endfor %}
+            </ol>
+        </div>
+    </div>
+    {% endfor %}
+    <p class="pb-1"></p>
+    {% endfor %}
+    {% else %}
+    {% endif %}
+</div>
 {% endblock %}

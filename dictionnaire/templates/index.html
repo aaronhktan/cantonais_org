@@ -3,8 +3,12 @@
 {% block head %}
 {{ super() }}
 {% endblock %}
+{% if search_term %}
 {% block search_term %}value="{{ search_term }}"{% endblock %}
-{% block search_term_mobile %}value="{{ search_term }}"{% endblock %}
+{% endif %}
+{% if search_term_mobile %}
+{% block search_term_mobile %}value="{{ search_term_mobile }}"{% endblock %}
+{% endif %}
 {% block search_type_traditional %}{{ "selected" if search_type == "search_traditional" else ""}}{% endblock %}
 {% block search_type_traditional_mobile %}{{ "selected" if search_type == "search_traditional" else ""}}{% endblock %}
 {% block search_type_simplified %}{{ "selected" if search_type == "search_simplified" else ""}}{% endblock %}
