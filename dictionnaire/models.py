@@ -42,13 +42,17 @@ class SourceSentence:
     translations: list[TranslationSet] | None = None
 
     def __post_init__(self):
-        self._yale = chinese_utils.jyutping_to_yale(self.jyutping)
-        self._cantonese_IPA = chinese_utils.jyutping_to_IPA(self.jyutping)
+        self._yale = chinese_utils.jyutping_to_yale(
+            self.jyutping, use_spaces_to_segment=True)
+        self._cantonese_IPA = chinese_utils.jyutping_to_IPA(
+            self.jyutping, use_spaces_to_segment=True)
 
         self._pretty_pinyin = chinese_utils.pretty_pinyin(self.pinyin)
         self._numbered_pinyin = chinese_utils.numbered_pinyin(self.pinyin)
-        self._zhuyin = chinese_utils.pinyin_to_zhuyin(self.pinyin)
-        self._mandarin_IPA = chinese_utils.pinyin_to_IPA(self.pinyin)
+        self._zhuyin = chinese_utils.pinyin_to_zhuyin(
+            self.pinyin, use_spaces_to_segment=True)
+        self._mandarin_IPA = chinese_utils.pinyin_to_IPA(
+            self.pinyin, use_spaces_to_segment=True)
 
 
 @dataclass
@@ -70,7 +74,8 @@ class DefinitionsSet:
         for definition in self.definitions:
             newline_idx = definition.definition_content.find("\n")
             if newline_idx != -1:
-                definition_contents.append(definition.definition_content[:newline_idx])
+                definition_contents.append(
+                    definition.definition_content[:newline_idx])
             else:
                 definition_contents.append(definition.definition_content)
         self._definitions_snippet = "; ".join(definition_contents)
