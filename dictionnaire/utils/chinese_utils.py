@@ -731,6 +731,10 @@ def pinyin_to_zhuyin(pinyin: str, use_spaces_to_segment: bool = False) -> str:
         if match:
             final, er = "", ""
             if match.group(1):
+                if match.group(1) not in ZHUYIN_FINALS:
+                    # Failed to match final, give up
+                    res.append(syllable)
+                    continue
                 final = ZHUYIN_FINALS[match.group(1)]
             if match.group(2):
                 er = "ㄦ"
