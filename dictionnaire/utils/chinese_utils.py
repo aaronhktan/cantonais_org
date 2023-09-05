@@ -266,8 +266,11 @@ def extract_jyutping_tones(jyutping: str) -> list[int]:
     """
     res = []
     for c in jyutping:
-        if c.isnumeric() and int(c) in JYUTPING_TONES:
-            res.append(int(c))
+        try:
+            if c.isnumeric() and int(c) in JYUTPING_TONES:
+                res.append(int(c))
+        except:
+            pass
     return res
 
 
@@ -282,8 +285,11 @@ def extract_pinyin_tones(pinyin: str) -> list[int]:
     """
     res = []
     for c in pinyin:
-        if c.isnumeric() and int(c) in PINYIN_TONES:
-            res.append(int(c))
+        try:
+            if c.isnumeric() and int(c) in PINYIN_TONES:
+                res.append(int(c))
+        except:
+            pass
     return res
 
 

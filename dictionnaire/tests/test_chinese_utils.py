@@ -14,6 +14,11 @@ class TestExtractJyutpingTones(TestCase):
         res = chinese_utils.extract_jyutping_tones(string)
         self.assertEqual(res, [3, 5])
 
+    def test_bad_numeric(self):
+        string = "㒃"
+        res = chinese_utils.extract_jyutping_tones(string)
+        self.assertEqual(res, [])
+
 
 class TestExtractPinyinTones(TestCase):
     def test_simple(self):
@@ -25,6 +30,11 @@ class TestExtractPinyinTones(TestCase):
         string = "xiang1gang3"
         res = chinese_utils.extract_pinyin_tones(string)
         self.assertEqual(res, [1, 3])
+
+    def test_bad_numeric(self):
+        string = "㒃"
+        res = chinese_utils.extract_pinyin_tones(string)
+        self.assertEqual(res, [])
 
 
 class TestApplyColours(TestCase):
@@ -270,6 +280,10 @@ class TestPinyinToZhuyin(TestCase):
     def test_erhua(self):
         res = chinese_utils.pinyin_to_zhuyin("quanr1")
         self.assertEqual(res, "ㄑㄩㄢㄦ")
+
+    def test_malformed(self):
+        res = chinese_utils.pinyin_to_zhuyin("chzng2 quanr1")
+        self.assertEqual(res, "chzng2 ㄑㄩㄢㄦ")
 
 class TestPinyinToIPA(TestCase):
     def test_simple(self):
