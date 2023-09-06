@@ -57,26 +57,28 @@ def parse_returned_records(records: list[str]) -> list[Entry]:
                     continue
 
                 sentences = []
-                for sentence in definition["sentences"]:
-                    if not sentence:
-                        continue
+                if "sentences" in definition:
+                    for sentence in definition["sentences"]:
+                        if not sentence:
+                            continue
 
-                    translations = []
-                    if sentence["translations"]:
-                        for translation in sentence["translations"]:
-                            translations.append(translation)
-                    sentences.append(
-                        SourceSentence(sentence["language"],
-                                       sentence["simplified"],
-                                       sentence["traditional"],
-                                       sentence["jyutping"],
-                                       sentence["pinyin"],
-                                       translations=translations))
+                        translations = []
+                        if sentence["translations"]:
+                            for translation in sentence["translations"]:
+                                translations.append(translation)
+                        sentences.append(
+                            SourceSentence(sentence["language"],
+                                           sentence["simplified"],
+                                           sentence["traditional"],
+                                           sentence["jyutping"],
+                                           sentence["pinyin"],
+                                           translations=translations))
 
                 definition_content = definition["definition"].replace(
                     r"\n", "\n")
+                label = definition["label"] if "label" in definition else ""
                 definitions.append(Definition(definition_content,
-                                              definition["label"], sentences))
+                                              label, sentences))
             sets.append(DefinitionsSet(definitions_group["source"],
                                        definitions))
 
