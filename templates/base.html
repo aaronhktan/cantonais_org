@@ -1,17 +1,17 @@
 <!doctype html>
-<html lang="fr" data-bs-theme="dark">
+<html lang="fr" class="h-100" data-bs-theme="dark">
 
 <head>
   {% block head %}
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap-icons.min.css') }}">
   <title>{% block title %}{% endblock %} | cantonais.org</title>
   {% endblock %}
 </head>
 
-<body>
+<body class="h-100">
   <script src="{{ url_for('static', filename='js/jquery-3.7.0.min.js') }}"></script>
   <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
 

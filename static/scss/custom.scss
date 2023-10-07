@@ -1,0 +1,30 @@
+@import "../bootstrap/scss/functions"; 
+
+// $input-focus-border-color: rgb(204, 0, 1);
+// $input-btn-focus-box-shadow: 0 0 0 0.25rem rgba(204, 0, 1, 0.25);
+// $form-select-focus-box-shadow: 0 0 0 0.25rem rgba(204, 0, 1, 0.25);
+$input-focus-border-color: none;
+$input-btn-focus-box-shadow: none;
+$form-select-focus-box-shadow: none;
+
+@import "../bootstrap/scss/variables";
+
+// Set the $primary variable
+$primary: rgb(204, 0, 1);
+// Merge with existing $theme-colors map
+$theme-colors: map-merge($theme-colors, (
+  "primary": $primary
+));
+
+
+@import "../bootstrap/scss/bootstrap";
+
+// Generate breakpoint-specific width classes
+$sizes: ( 25: 25%, 50: 50%, 75: 75%, 100: 100%, );
+@each $breakpoint in map-keys($grid-breakpoints) {
+  @each $size, $length in $sizes {
+    @include media-breakpoint-up($breakpoint) {
+      .w-#{$breakpoint}-#{$size} {width: $length !important;}
+    }
+  }
+}

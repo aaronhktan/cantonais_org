@@ -20,5 +20,17 @@
 {% block search_type_french %}{{ "selected" if search_type == "search_french" else ""}}{% endblock %}
 {% block search_type_french_mobile %}{{ "selected" if search_type == "search_french" else ""}}{% endblock %}
 {% block content %}
-<h1>Index</h1>
+<div class="container-md">
+    <div class="d-flex py-3 flex-column flex-md-row justify-content-center align-items-center">
+        <div class="flex-shrink-0">
+            <img src="{{ url_for('static', filename='img/icon.svg') }}" class="rounded mx-auto d-block p-3 img-fluid"
+                style="height:10rem; width: 10rem;" alt="logo">
+        </div>
+        <div class="ms-md-3 w-md-50 flex-grow-0">
+            <h2 class="text-center">
+                Bienvenue sur cantonais.org, le site de référence de la langue cantonaise!
+            </h2>
+        </div>
+    </div>
+</div>
 {% endblock %}
