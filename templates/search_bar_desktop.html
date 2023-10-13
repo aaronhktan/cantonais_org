@@ -1,0 +1,14 @@
+<div class="input-group d-none d-md-flex flex-nowrap">
+  <input name="search_term" class="form-control rounded-start w-25" type="text"
+    placeholder="Rechercher dans le dictionnaire..." {% block search_term %}{% endblock %}>
+  <select name="search_type" class="form-select flex-shrink-0">
+    <option value="search_traditional" {% block search_type_traditional %}{% endblock %}>Caractères traditionnels
+    </option>
+    <option value="search_simplified" {% block search_type_simplified %}{% endblock %}>Caractères simplifiés
+    </option>
+    <option value="search_jyutping" {% block search_type_jyutping %}{% endblock %}>Jyutping</option>
+    <option value="search_pinyin" {% block search_type_pinyin %}{% endblock %}>Pinyin</option>
+    <option value="search_french" {% block search_type_french %}{% endblock %}>Français</option>
+  </select>
+  <button class="input-group-text btn btn-primary" type="submit">Rechercher</button>
+</div>

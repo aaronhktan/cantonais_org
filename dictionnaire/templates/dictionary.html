@@ -4,43 +4,15 @@
 {% block toolbar %}
 <!-- Searchbar -->
 <form class="sticky-top" method="post">
-  <div class="container-fluid bg-body-tertiary bg-dark">
-    <div class="container">
-      <div class="input-group d-none d-md-flex flex-nowrap py-3 mx-auto" style="max-width: 50rem;">
-        <input name="search_term" class="form-control rounded-start w-25" type="text"
-          placeholder="Rechercher dans le dictionnaire..." {% block search_term %}{% endblock %}>
-        <select name="search_type" class="form-select flex-shrink-0">
-          <option value="search_traditional" {% block search_type_traditional %}{% endblock %}>Caractères traditionnels
-          </option>
-          <option value="search_simplified" {% block search_type_simplified %}{% endblock %}>Caractères simplifiés
-          </option>
-          <option value="search_jyutping" {% block search_type_jyutping %}{% endblock %}>Jyutping</option>
-          <option value="search_pinyin" {% block search_type_pinyin %}{% endblock %}>Pinyin</option>
-          <option value="search_french" {% block search_type_french %}{% endblock %}>Français</option>
-        </select>
-        <button class="input-group-text btn btn-danger" type="submit">Rechercher</button>
-      </div>
+  <div class="container-fluid py-0 py-md-3 bg-body-tertiary bg-dark">
+    <div class="container mx-auto p-0" style="max-width: 50rem">
+      {% include "search_bar_desktop.html" %}
     </div>
   </div>
 </form>
 <form class="sticky-top" method="post">
-  <div class="container-fluid bg-body-tertiary bg-dark">
-    <div class="d-flex d-md-none flex-column py-3 gap-2">
-      <div class="input-group flex">
-        <input name="search_term_mobile" class="form-control rounded-start" type="text"
-          placeholder="Rechercher dans le dictionnaire..." {% block search_term_mobile %}{% endblock %}>
-        <button class="input-group-text btn btn-danger flex-shrink-0" type="submit"><i class="bi-search"></i></button>
-      </div>
-      <select name="search_type_mobile" class="form-select">
-        <option value="search_traditional" {% block search_type_traditional_mobile %}{% endblock %}>Caractères
-          traditionnels</option>
-        <option value="search_simplified" {% block search_type_simplified_mobile %}{% endblock %}>Caractères
-          simplifiés</option>
-        <option value="search_jyutping" {% block search_type_jyutping_mobile %}{% endblock %}>Jyutping</option>
-        <option value="search_pinyin" {% block search_type_pinyin_mobile %}{% endblock %}>Pinyin</option>
-        <option value="search_french" {% block search_type_french_mobile %}{% endblock %}>Français</option>
-      </select>
-    </div>
+  <div class="container-fluid py-3 py-md-0 bg-body-tertiary bg-dark">
+    {% include "search_bar_mobile.html" %}
   </div>
 </form>
 {% endblock %}
