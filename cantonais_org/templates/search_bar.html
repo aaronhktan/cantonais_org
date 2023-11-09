@@ -1,0 +1,36 @@
+{% macro desktop_input(search_term, search_type='') -%}
+<div class="input-group d-none d-md-flex flex-nowrap">
+  <input name="search_term" class="form-control rounded-start w-25" type="text"
+    placeholder="Rechercher dans le dictionnaire..." value="{{ search_term }}">
+  <select name="search_type" class="form-select flex-shrink-0">
+    <option value="search_traditional" {% if search_type=="search_traditional" %}selected{% endif %}>Caractères
+      traditionnels
+    </option>
+    <option value="search_simplified" {% if search_type=="search_simplified" %}selected{% endif %}>Caractères simplifiés
+    </option>
+    <option value="search_jyutping" {% if search_type=="search_jyutping" %}selected{% endif %}>Jyutping</option>
+    <option value="search_pinyin" {% if search_type=="search_pinyin" %}selected{% endif %}>Pinyin</option>
+    <option value="search_french" {% if search_type=="search_french" %}selected{% endif %}>Français</option>
+  </select>
+  <button class="input-group-text btn btn-primary" type="submit">Rechercher</button>
+</div>
+{%- endmacro %}
+
+{% macro mobile_input(search_term, search_type='') -%}
+<div class="d-flex d-md-none flex-column gap-2">
+  <div class="input-group flex">
+    <input name="search_term_mobile" class="form-control rounded-start" type="text"
+      placeholder="Rechercher dans le dictionnaire..." value="{{ search_term }}">
+    <button class="input-group-text btn btn-primary flex-shrink-0" type="submit"><i class="bi-search"></i></button>
+  </div>
+  <select name="search_type_mobile" class="form-select">
+    <option value="search_traditional" {% if search_type=="search_traditional" %}selected{% endif %}>Caractères
+      traditionnels</option>
+    <option value="search_simplified" {% if search_type=="search_simplified" %}selected{% endif %}>Caractères
+      simplifiés</option>
+    <option value="search_jyutping" {% if search_type=="search_jyutping" %}selected{% endif %}>Jyutping</option>
+    <option value="search_pinyin" {% if search_type=="search_pinyin" %}selected{% endif %}>Pinyin</option>
+    <option value="search_french" {% if search_type=="search_french" %}selected{% endif %}>Français</option>
+  </select>
+</div>
+{%- endmacro %}

@@ -26,12 +26,9 @@ def index():
         return redirect_post()
 
     search_term = request.cookies.get("search_term") or ""
-    search_term_mobile = request.cookies.get("search_term_mobile") or ""
     search_type = request.cookies.get("search_type") or ""
-    search_type_mobile = request.cookies.get("search_type_mobile") or ""
 
-    return views.render_index(search_term, search_term_mobile,
-                              search_type, search_type_mobile)
+    return views.render_index(search_term, search_type)
 
 
 @dictionary_app.route("/recherche/traditionnel/<search_term>",
@@ -43,9 +40,7 @@ def search_traditional(search_term):
     resp = make_response(views.render_search_traditional(search_term))
 
     resp.set_cookie("search_term", search_term)
-    resp.set_cookie("search_term_mobile", search_term)
     resp.set_cookie("search_type", search_traditional.__name__)
-    resp.set_cookie("search_type_mobile", search_traditional.__name__)
 
     return resp
 
@@ -59,9 +54,7 @@ def search_simplified(search_term):
     resp = make_response(views.render_search_simplified(search_term))
 
     resp.set_cookie("search_term", search_term)
-    resp.set_cookie("search_term_mobile", search_term)
     resp.set_cookie("search_type", search_simplified.__name__)
-    resp.set_cookie("search_type_mobile", search_simplified.__name__)
 
     return resp
 
@@ -75,9 +68,7 @@ def search_jyutping(search_term):
     resp = make_response(views.render_search_jyutping(search_term))
 
     resp.set_cookie("search_term", search_term)
-    resp.set_cookie("search_term_mobile", search_term)
     resp.set_cookie("search_type", search_jyutping.__name__)
-    resp.set_cookie("search_type_mobile", search_jyutping.__name__)
 
     return resp
 
@@ -91,9 +82,7 @@ def search_pinyin(search_term):
     resp = make_response(views.render_search_pinyin(search_term))
 
     resp.set_cookie("search_term", search_term)
-    resp.set_cookie("search_term_mobile", search_term)
     resp.set_cookie("search_type", search_pinyin.__name__)
-    resp.set_cookie("search_type_mobile", search_pinyin.__name__)
 
     return resp
 
@@ -107,9 +96,7 @@ def search_french(search_term):
     resp = make_response(views.render_search_french(search_term))
 
     resp.set_cookie("search_term", search_term)
-    resp.set_cookie("search_term_mobile", search_term)
     resp.set_cookie("search_type", search_french.__name__)
-    resp.set_cookie("search_type_mobile", search_french.__name__)
 
     return resp
 
@@ -121,9 +108,6 @@ def entry_view(entry):
         return redirect_post()
 
     search_term = request.cookies.get("search_term") or ""
-    search_term_mobile = request.cookies.get("search_term_mobile") or ""
     search_type = request.cookies.get("search_type") or ""
-    search_type_mobile = request.cookies.get("search_type_mobile") or ""
 
-    return views.render_entry(entry, search_term, search_term_mobile,
-                              search_type, search_type_mobile)
+    return views.render_entry(entry, search_term, search_type)

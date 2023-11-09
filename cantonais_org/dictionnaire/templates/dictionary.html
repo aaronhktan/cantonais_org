@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% import "search_bar.html" as search_bar with context %}
 {% block title %}{{ search_term }}{% endblock %}
 
 {% block toolbar %}
@@ -6,13 +7,13 @@
 <form class="sticky-top" method="post">
   <div class="container-fluid py-0 py-md-3 bg-body-tertiary bg-dark">
     <div class="container mx-auto p-0" style="max-width: 50rem">
-      {% include "search_bar_desktop.html" %}
+      {{ search_bar.desktop_input(search_term, search_type) }}
     </div>
   </div>
 </form>
 <form class="sticky-top" method="post">
   <div class="container-fluid py-3 py-md-0 bg-body-tertiary bg-dark">
-    {% include "search_bar_mobile.html" %}
+    {{ search_bar.mobile_input(search_term, search_type) }}
   </div>
 </form>
 {% endblock %}

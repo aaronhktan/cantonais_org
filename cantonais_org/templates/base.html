@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap-icons.min.css') }}">
-  <title>{% block title %}{% endblock %} | cantonais.org</title>
+  <title>{% block title %}{% endblock %}cantonais.org</title>
   {% endblock %}
 </head>
 
@@ -50,7 +50,7 @@
   {% block toolbar %}{% endblock %}
 
   <!-- Body -->
-  <div class="container-fluid bg-body bg-dark">
+  <div class="container-fluid bg-body bg-dark p-0">
     <div id="content">{% block content %}{% endblock %}</div>
   </div>
 </body>
