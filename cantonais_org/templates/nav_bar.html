@@ -1,0 +1,33 @@
+{% macro navbar(sticky=true) -%}
+<nav class="navbar sticky-top navbar-expand-lg bg-primary w-100" {% if sticky==false %}style="position:fixed;"{% endif %}
+  data-bs-theme="dark">
+  <div class="container">
+    <a class="navbar-brand" href="{{ request.root_url }}">
+      <img src="{{ url_for('static', filename='img/icon.svg') }}" alt="Jyut Dictionary" width="24" height="24"
+        class="d-inline-block align-text-top">
+      cantonais.org
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active text-uppercase" aria-current="page"
+            href="{{ url_for('dictionary_app.index') }}">Dictionnaire</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-uppercase" href="#">Ressources</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-uppercase" href="#">Télécharger</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-uppercase" href="#">À propos</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+{%- endmacro %}

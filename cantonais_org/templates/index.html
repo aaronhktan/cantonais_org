@@ -1,111 +1,31 @@
 {% extends "base.html" %}
+{% import "nav_bar.html" as nav_bar %}
 {% import "search_bar.html" as search_bar with context %}
+{% block navbar %}
+{{ nav_bar.navbar(false) }}
+{% endblock %}
 {% block content %}
-<div class="position-relative w-100 h-100 o-hidden top-0">
-  <div class="container py-5 py-md-0 min-vh-md-75 d-flex flex-column justify-content-center">
-    <div class="row mx-0 pt-3">
-      <div class="flex-shrink-0">
-        <img src="{{ url_for('static', filename='img/icon.svg') }}" class="rounded mx-auto d-block p-3 img-fluid"
-          style="height:10rem; width: 10rem;" alt="logo">
-      </div>
-      <div class="d-flex py-1 flex-column flex-md-row justify-content-center align-items-center">
-        <div class="ms-md-3 w-md-75 flex-grow-0">
-          <h2 class="text-center">
-            Bienvenue sur cantonais.org, le site de référence de la langue cantonaise!
-          </h2>
-          <p class="text-body-secondary text-center">
-            Un projet crée par Aaron Tan 🇨🇦
-          </p>
-        </div>
-      </div>
+<div class="container py-5 py-md-0 vh-100 d-flex flex-column justify-content-center">
+  <div class="row mx-0 pt-3">
+    <div class="flex-shrink-0">
+      <img src="{{ url_for('static', filename='img/icon.svg') }}" class="rounded mx-auto d-block p-3 img-fluid"
+        style="height:10rem; width: 10rem;" alt="logo">
     </div>
-    <div class="row pt-3 mx-auto w-100 w-lg-75">
-      {{ search_bar.desktop_input(search_term, search_type) }}
-      {{ search_bar.mobile_input(search_term_mobile, search_type_mobile) }}
-    </div>
-  </div>
-  <div class="container">
-    <div class="row py-3 g-3">
-      <div class="col-md-6">
-        <div class="row">
-          <div class="col-md">
-            <div class="card bg-body-tertiary" style="--bs-bg-opacity: .75;">
-              <div class="card-header">
-                DICTIONNAIRE
-              </div>
-              <div class="card-body d-flex flex-column flex-wrap">
-                <p>
-                  Avec plus de 70 000 mots et expressions, dont plus de 20 000 propres au cantonais,
-                  ce site héberge le plus grand dictionnaire cantonais-français en ligne. Chaque mot et
-                  expression a été traduit à main pour une qualité supérieure à la traduction automatique.
-                </p>
-                <a href="/dictionnaire/" class="align-self-end btn btn-primary">
-                  Rechercher dans le dictionnaire →
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="row pt-3">
-          <div class="col-md">
-            <div class="card bg-body-tertiary" style="--bs-bg-opacity: .75;">
-              <div class="card-header">
-                TÉLÉCHARGER
-              </div>
-              <div class="card-body d-flex flex-column flex-wrap">
-                <p>
-                  Pas d'Internet? Pas de problème! Le dictionnaire est aussi offert en format .txt qu'on
-                  peut ouvrir avec n'importe quel éditeur de texte. Vous pouvez aussi télécharger
-                  l'application Jyut pour l'accès hors-ligne sur Windows ou Mac.
-                </p>
-                <a href="/telecharger/" class="btn btn-primary align-self-end">
-                  Téléchargez le dictionnaire →
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="row">
-          <div class="col-md">
-            <div class="card bg-body-tertiary" style="--bs-bg-opacity: .75;">
-              <div class="card-header">
-                RESSOURCES
-              </div>
-              <div class="card-body d-flex flex-column flex-wrap">
-                <p>
-                  Savez-vous comment prononcer le mot en cantonais? Apprenez à lire le Jyutping, le
-                  système de romanisation pour la langue cantonaise, et bien plus encore avec les
-                  ressources sur ce site!
-                </p>
-                <a href="/ressources/" class="btn btn-primary align-self-end">
-                  Voir les ressources →
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="row py-3">
-          <div class="col-md">
-            <div class="card bg-body-tertiary" style="--bs-bg-opacity: .75;">
-              <div class="card-header">
-                À PROPOS
-              </div>
-              <div class="card-body d-flex flex-column flex-wrap">
-                <p>
-                  Plusieurs personnes ont aidé à réviser le dictionnaire et le contenu de ce site web.
-                  Découvrez qui ils sont et comment vous pouvez nous aider!
-                </p>
-                <a href="/ressources/" class="btn btn-primary align-self-end">
-                  En savoir plus →
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
+    <div class="d-flex py-1 flex-column flex-md-row justify-content-center align-items-center">
+      <div class="ms-md-3 w-md-75 flex-grow-0">
+        <h2 class="text-center">
+          Bienvenue sur cantonais.org, le site de référence de la langue cantonaise!
+        </h2>
+        <p class="text-body-secondary text-center">
+          Un projet crée par Aaron Tan 🇨🇦
+        </p>
       </div>
     </div>
   </div>
+  <div class="row pt-3 mx-auto w-100 w-lg-75">
+    {{ search_bar.desktop_input(search_term, search_type) }}
+    {{ search_bar.mobile_input(search_term_mobile, search_type_mobile) }}
+  </div>
+</div>
 </div>
 {% endblock %}

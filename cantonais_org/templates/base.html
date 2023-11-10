@@ -15,43 +15,10 @@
   <script src="{{ url_for('static', filename='js/jquery-3.7.0.min.js') }}"></script>
   <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
 
-  <!-- Header -->
-  <nav class="navbar sticky-top navbar-expand-lg bg-primary" data-bs-theme="dark">
-    <div class="container">
-      <a class="navbar-brand" href="{{ request.root_url }}">
-        <img src="{{ url_for('static', filename='img/icon.svg') }}" alt="Jyut Dictionary" width="24" height="24"
-          class="d-inline-block align-text-top">
-        cantonais.org
-      </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link active text-uppercase" aria-current="page"
-              href="{{ url_for('dictionary_app.index') }}">Dictionnaire</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link text-uppercase" href="#">Ressources</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link text-uppercase" href="#">Télécharger</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link text-uppercase" href="#">À propos</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
-
-  {% block toolbar %}{% endblock %}
-
-  <!-- Body -->
-  <div class="container-fluid bg-body bg-dark p-0">
-    <div id="content">{% block content %}{% endblock %}</div>
+  <div class="bg-body bg-dark p-0">
+    {% block navbar %}{% endblock %}
+    {% block toolbar %}{% endblock %}
+    {% block content %}{% endblock %}
   </div>
 </body>
 

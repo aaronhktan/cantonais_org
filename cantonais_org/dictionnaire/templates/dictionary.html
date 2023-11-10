@@ -1,9 +1,13 @@
 {% extends "base.html" %}
+{% import "nav_bar.html" as nav_bar %}
 {% import "search_bar.html" as search_bar with context %}
 {% block title %}{{ search_term }}{% endblock %}
 
+{% block navbar %}
+{{ nav_bar.navbar() }}
+{% endblock %}
+
 {% block toolbar %}
-<!-- Searchbar -->
 <form class="sticky-top" method="post">
   <div class="container-fluid py-0 py-md-3 bg-body-tertiary bg-dark">
     <div class="container mx-auto p-0" style="max-width: 50rem">
