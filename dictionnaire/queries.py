@@ -8,6 +8,8 @@ from .utils import chinese_utils, query_utils
 
 DB_PATH = os.environ["CANTONAIS_ORG_DB_PATH"]
 
+print(f"database path: {DB_PATH}")
+
 
 def get_db():
     if "db" not in g:

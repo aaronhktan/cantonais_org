@@ -1,7 +1,12 @@
 import os
 
 from flask import Flask, g, render_template, redirect, request, url_for
-from .dictionnaire.urls import dictionary_app
+try:
+    # For Gunicorn
+    from dictionnaire.urls import dictionary_app
+except:
+    # For local development
+    from .dictionnaire.urls import dictionary_app
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = os.environ["CANTONAIS_ORG_SECRET_KEY"]
