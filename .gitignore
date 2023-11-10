@@ -210,4 +210,4 @@ tags
 .nfs*
 
 # Project-specific folders
-cantonais_org/db/*
+db/*

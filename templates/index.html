@@ -23,8 +23,12 @@
     </div>
   </div>
   <div class="row pt-3 mx-auto w-100 w-lg-75">
-    {{ search_bar.desktop_input(search_term, search_type) }}
-    {{ search_bar.mobile_input(search_term_mobile, search_type_mobile) }}
+    <form method="post">
+      {{ search_bar.desktop_input(search_term, search_type) }}
+    </form>
+    <form method="post">
+      {{ search_bar.mobile_input(search_term_mobile, search_type_mobile) }}
+    </form>
   </div>
 </div>
 </div>
