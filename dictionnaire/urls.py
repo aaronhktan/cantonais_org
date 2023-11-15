@@ -16,6 +16,9 @@ def redirect_post():
     else:
         search_type = request.form["search_type_mobile"]
 
+    # Remove whitespace surrounding the search term
+    search_term = search_term.strip()
+
     return redirect(url_for(f"dictionary_app.{search_type}",
                             search_term=search_term))
 
