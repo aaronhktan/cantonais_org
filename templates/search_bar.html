@@ -1,7 +1,7 @@
 {% macro desktop_input(search_term, search_type='') -%}
 <div class="input-group d-none d-md-flex flex-nowrap">
   <input name="search_term" class="form-control rounded-start w-25" type="text"
-    placeholder="Rechercher dans le dictionnaire..." value="{{ search_term }}">
+    placeholder="Rechercher dans le dictionnaire..." value="{{ search_term }}" spellcheck="false">
   <select name="search_type" class="form-select flex-shrink-0">
     <option value="search_traditional" {% if search_type=="search_traditional" %}selected{% endif %}>Caractères
       traditionnels
@@ -20,7 +20,7 @@
 <div class="d-flex d-md-none flex-column gap-2">
   <div class="input-group flex">
     <input name="search_term_mobile" class="form-control rounded-start" type="text"
-      placeholder="Rechercher dans le dictionnaire..." value="{{ search_term }}">
+      placeholder="Rechercher dans le dictionnaire..." value="{{ search_term }}" spellcheck="false">
     <button class="input-group-text btn btn-primary flex-shrink-0" type="submit"><i class="bi-search"></i></button>
   </div>
   <select name="search_type_mobile" class="form-select">
