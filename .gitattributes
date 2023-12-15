@@ -1,4 +1,4 @@
-/static/bootstrap/* linguist-vendored
-/static/css/* linguist-vendored
+static/bootstrap/** linguist-vendored
+static/css/* linguist-vendored
 static/img/icon.svg linguist-vendored
 static/js/* linguist-vendored
