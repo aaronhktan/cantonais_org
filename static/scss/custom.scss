@@ -67,3 +67,7 @@ $sizes: (
     }
   }
 }
+
+img:-moz-loading {
+  visibility: hidden;
+}

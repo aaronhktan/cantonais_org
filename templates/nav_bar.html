@@ -1,10 +1,11 @@
 {% macro navbar(sticky=true) -%}
-<nav class="navbar sticky-top navbar-expand-lg bg-primary w-100" {% if sticky==false %}style="position:fixed;"{% endif %}
-  data-bs-theme="dark">
+<nav class="navbar sticky-top navbar-expand-lg bg-primary w-100" {% if sticky==false %}style="position:fixed;" {% endif
+  %} data-bs-theme="dark">
   <div class="container">
     <a class="navbar-brand" href="{{ request.root_url }}">
       <img src="{{ url_for('static', filename='img/icon.svg') }}" alt="Jyut Dictionary" width="24" height="24"
-        class="d-inline-block align-text-top">
+        class="d-inline-block align-text-top" style="color: transparent;" onload="this.style.color='unset'"
+        onerror="this.style.color='unset'">
       cantonais.org
     </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"

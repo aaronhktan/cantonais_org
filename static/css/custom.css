@@ -12367,5 +12367,8 @@ textarea.form-control-lg {
     min-height: 100vh !important;
   }
 }
+img:-moz-loading {
+  visibility: hidden;
+}
 
 /*# sourceMappingURL=custom.css.map */

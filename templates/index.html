@@ -9,7 +9,8 @@
   <div class="row mx-0 pt-3">
     <div class="flex-shrink-0">
       <img src="{{ url_for('static', filename='img/icon.svg') }}" class="rounded mx-auto d-block p-3 img-fluid"
-        style="height:10rem; width: 10rem;" alt="logo">
+        style="height:10rem; width: 10rem; color: transparent;" onload="this.style.color='unset'"
+        onerror="this.style.color='unset'" alt="logo">
     </div>
     <div class="d-flex py-1 flex-column flex-md-row justify-content-center align-items-center">
       <div class="ms-md-3 w-md-75 flex-grow-0">
