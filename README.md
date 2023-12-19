@@ -15,6 +15,7 @@ pyenv activate cantonais_org
 2. Téléchargez les dépendances:
 ```
 pip3 install -r requirements.txt
+npm install
 ```
 3. Téléchargez la base de données à partir de [jyutdictionary.com](https://jyutdictionary.com/#download-addon). Attention, le site est en anglais!
 4. Définissez les variables d’environnement:
@@ -27,7 +28,11 @@ python3
 export export CANTONAIS_ORG_SECRET_KEY="<chaîne_de_caractères>"
 export CANTONAIS_ORG_DB_PATH="<chemin_d'accès_de_la_base_de_données>"
 ```
-5. Lancez le serveur: `flask --app app run`
+5. Générez les actifs statiques:
+```
+purgecss --config purgecss.config.js
+```
+6. Lancez le serveur: `flask --app app run`
 
 ## Déploiement logiciel (sur Debian)
 1. Installez nginx, supervisor et gunicorn: `sudo apt install nginx supervisor gunicorn`
