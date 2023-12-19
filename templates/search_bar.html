@@ -3,7 +3,7 @@
   <input name="search_term" class="form-control rounded-start w-25" type="search"
     placeholder="Rechercher dans le dictionnaire..." value="{{ search_term }}" autofocus="autofocus" autocomplete="off"
     autocorrect="off" autocapitalize="false" spellcheck="false">
-  <select name="search_type" class="form-select flex-shrink-0">
+  <select name="search_type" class="form-select flex-shrink-0" aria-label="Sélection de langue">
     <option value="search_traditional" {% if search_type=="search_traditional" %}selected{% endif %}>Caractères
       traditionnels
     </option>
@@ -23,9 +23,10 @@
     <input name="search_term_mobile" class="form-control rounded-start" type="search"
       placeholder="Rechercher dans le dictionnaire..." value="{{ search_term }}" autocomplete="off" autocorrect="off"
       autocapitalize="false" spellcheck="false">
-    <button class="input-group-text btn btn-primary flex-shrink-0" type="submit"><i class="bi-search"></i></button>
+    <button class="input-group-text btn btn-primary flex-shrink-0" type="submit" aria-label="Rechercher"><i
+        class="bi-search"></i></button>
   </div>
-  <select name="search_type_mobile" class="form-select">
+  <select name="search_type_mobile" class="form-select" aria-label="Sélection de langue">
     <option value="search_traditional" {% if search_type=="search_traditional" %}selected{% endif %}>Caractères
       traditionnels</option>
     <option value="search_simplified" {% if search_type=="search_simplified" %}selected{% endif %}>Caractères
