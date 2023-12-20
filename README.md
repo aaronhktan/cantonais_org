@@ -8,6 +8,8 @@ echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.zshrc
 echo '[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.zshrc
 echo 'eval "$(pyenv init -)"' >> ~/.zshrc
 
+source ~/.zshrc
+
 pyenv install 3.12.1
 pyenv virtualenv cantonais_org
 pyenv activate cantonais_org
@@ -25,7 +27,7 @@ python3
 >>> uuid.uuid4().hex
 '<chaîne_de_caractères>'
 
-export export CANTONAIS_ORG_SECRET_KEY="<chaîne_de_caractères>"
+export CANTONAIS_ORG_SECRET_KEY="<chaîne_de_caractères>"
 export CANTONAIS_ORG_DB_PATH="<chemin_d'accès_de_la_base_de_données>"
 ```
 5. Générez les actifs statiques:
@@ -35,12 +37,12 @@ purgecss --config purgecss.config.js
 6. Lancez le serveur: `flask --app app run`
 
 ## Déploiement logiciel (sur Debian)
-1. Installez nginx, supervisor et gunicorn: `sudo apt install nginx supervisor gunicorn`
+1. Installez nginx et supervisor: `sudo apt install nginx supervisor`
 2. Créez le fichier `/etc/nginx/sites-enabled/cantonais_org` avec ces contenus:
 ```
 server {
     listen 80;
-    server_name <votre_adresse_ip_ici>;
+    server_name <votre_adresse_ip_ou_nom_de_domaine_ici>;
 
     location / {
         proxy_pass http://127.0.0.1:8000;
