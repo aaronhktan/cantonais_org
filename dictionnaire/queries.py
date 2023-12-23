@@ -290,7 +290,8 @@ def query_jyutping(jyutping: str) -> Entry | None:
         # Remove the double-quotes
         jyutping_syllables = jyutping[1:-1].split()
     else:
-        jyutping_syllables = chinese_utils.segment_jyutping(jyutping)
+        jyutping_syllables = chinese_utils.segment_jyutping(jyutping, 
+                                                            remove_glob_characters=False)
 
     if search_exact_match:
         query_param = " ".join(jyutping_syllables)
