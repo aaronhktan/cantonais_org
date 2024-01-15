@@ -280,27 +280,7 @@ def query_jyutping(jyutping: str) -> Entry | None:
     db = get_db()
     c = db.cursor()
 
-    # Exact match is specified by enclosing the query in double-quotes
-    search_exact_match = (
-        len(jyutping) >= 3 and jyutping[0] == "\"" and jyutping[-1] == "\"")
-    # Wildcard character should only be appended if the last character is not "$"
-    append_wildcard = not (jyutping[-1] == "$")
-
-    if search_exact_match:
-        # Remove the double-quotes
-        jyutping_syllables = jyutping[1:-1].split()
-    else:
-        jyutping_syllables = chinese_utils.segment_jyutping(jyutping, 
-                                                            remove_glob_characters=False)
-
-    if search_exact_match:
-        query_param = " ".join(jyutping_syllables)
-    else:
-        query_param = query_utils.construct_romanization_query(
-            jyutping_syllables, "?")
-
-    if append_wildcard and not search_exact_match:
-        query_param += "*"
+    query_param = query_utils.prepare_jyutping_bind_values(jyutping)
 
     c.execute(
         """
@@ -355,30 +335,36 @@ SELECT traditional, simplified, jyutping, pinyin, definitions FROM
     return query_utils.parse_returned_records(records)
 
 
+def query_jyutping_exists(pinyin: str) -> bool:
+    db = get_db()
+    c = db.cursor()
+
+    globTerm = query_utils.prepare_jyutping_bind_values(pinyin)
+
+    c.execute(
+        """
+SELECT EXISTS ( 
+  SELECT 
+    rowid 
+  FROM entries 
+  WHERE jyutping GLOB ? 
+) AS existence 
+"""
+    , (globTerm,)
+    )
+
+    records = c.fetchall()
+    if not records:
+        return None
+
+    return query_utils.parse_existence(records)
+
+
 def query_pinyin(pinyin: str) -> list[Entry] | None:
     db = get_db()
     c = db.cursor()
 
-    # Exact match is specified by enclosing the query in double-quotes
-    search_exact_match = (
-        len(pinyin) >= 3 and pinyin[0] == "\"" and pinyin[-1] == "\"")
-    # Wildcard character should only be appended if the last character is not "$"
-    append_wildcard = not (pinyin[-1] == "$")
-
-    if search_exact_match:
-        # Remove the double-quotes
-        pinyin_syllables = pinyin[1:-1].split()
-    else:
-        pinyin_syllables = chinese_utils.segment_pinyin(pinyin)
-
-    if search_exact_match:
-        query_param = " ".join(pinyin_syllables)
-    else:
-        query_param = query_utils.construct_romanization_query(
-            pinyin_syllables, "?")
-
-    if append_wildcard and not search_exact_match:
-        query_param += "*"
+    query_param = query_utils.prepare_pinyin_bind_values(pinyin)
 
     c.execute(
         """
@@ -431,6 +417,30 @@ SELECT traditional, simplified, jyutping, pinyin, definitions FROM
         return None
 
     return query_utils.parse_returned_records(records)
+
+def query_pinyin_exists(pinyin: str) -> bool:
+    db = get_db()
+    c = db.cursor()
+
+    globTerm = query_utils.prepare_pinyin_bind_values(pinyin)
+
+    c.execute(
+        """
+SELECT EXISTS ( 
+  SELECT 
+    rowid 
+  FROM entries 
+  WHERE pinyin GLOB ? 
+) AS existence 
+"""
+    , (globTerm,)
+    )
+
+    records = c.fetchall()
+    if not records:
+        return None
+
+    return query_utils.parse_existence(records)
 
 
 def query_full_text(param: str) -> list[Entry] | None:

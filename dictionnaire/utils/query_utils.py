@@ -1,5 +1,6 @@
 import json
 
+from . import chinese_utils
 from ..models import (Definition, DefinitionsSet, Entry,
                       SourceSentence)
 
@@ -45,6 +46,57 @@ def construct_romanization_query(syllables: list[str], delimiter: str) -> str:
     return processed_syllables
 
 
+def prepare_jyutping_bind_values(jyutping: str) -> str:
+    # Exact match is specified by enclosing the query in double-quotes
+    search_exact_match = (
+        len(jyutping) >= 3 and jyutping[0] == "\"" and jyutping[-1] == "\"")
+    # Wildcard character should only be appended if the last character is not "$"
+    append_wildcard = not (jyutping[-1] == "$")
+
+    if search_exact_match:
+        # Remove the double-quotes
+        jyutping_syllables = jyutping[1:-1].split()
+    else:
+        _, jyutping_syllables = chinese_utils.segment_jyutping(jyutping,
+                                                               remove_glob_characters=False)
+
+    if search_exact_match:
+        query_param = " ".join(jyutping_syllables)
+    else:
+        query_param = construct_romanization_query(
+            jyutping_syllables, "?")
+
+    if append_wildcard and not search_exact_match:
+        query_param += "*"
+
+    return query_param
+
+
+def prepare_pinyin_bind_values(pinyin: str) -> str:
+    # Exact match is specified by enclosing the query in double-quotes
+    search_exact_match = (
+        len(pinyin) >= 3 and pinyin[0] == "\"" and pinyin[-1] == "\"")
+    # Wildcard character should only be appended if the last character is not "$"
+    append_wildcard = not (pinyin[-1] == "$")
+
+    if search_exact_match:
+        # Remove the double-quotes
+        pinyin_syllables = pinyin[1:-1].split()
+    else:
+        _, pinyin_syllables = chinese_utils.segment_pinyin(pinyin)
+
+    if search_exact_match:
+        query_param = " ".join(pinyin_syllables)
+    else:
+        query_param = construct_romanization_query(
+            pinyin_syllables, "?")
+
+    if append_wildcard and not search_exact_match:
+        query_param += "*"
+
+    return query_param
+
+
 def parse_returned_records(records: list[str]) -> list[Entry]:
     res = []
     for record in records:
@@ -87,3 +139,12 @@ def parse_returned_records(records: list[str]) -> list[Entry]:
                          definitions_sets=sets))
 
     return res
+
+
+def parse_existence(records: list[str]) -> bool:
+    if len(records) > 1 or not len(records):
+        return False
+
+    record = records[0]
+    existence_col = record[0]
+    return existence_col

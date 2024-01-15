@@ -10,14 +10,18 @@
 {% block toolbar %}
 <form class="sticky-top" method="post">
   <div class="container-fluid py-0 py-md-3 bg-body-tertiary bg-dark">
-    <div class="container mx-auto p-0" style="max-width: 50rem">
-      {{ search_bar.desktop_input(search_term, search_type) }}
+    <div class="container">
+      <div class="row mx-auto w-100 w-xl-75" style="max-width: 50rem">
+        {{ search_bar.desktop_input(search_term, search_type) }}
+      </div>
     </div>
   </div>
 </form>
 <form class="sticky-top" method="post">
-  <div class="container-fluid py-3 py-md-0 bg-body-tertiary bg-dark">
-    {{ search_bar.mobile_input(search_term, search_type) }}
+  <div class="container-fluid p-0 py-3 py-md-0 bg-body-tertiary bg-dark">
+    <div class="container">
+      {{ search_bar.mobile_input(search_term, search_type) }}
+    </div>
   </div>
 </form>
 {% endblock %}

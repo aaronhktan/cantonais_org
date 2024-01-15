@@ -1,9 +1,10 @@
 {% macro desktop_input(search_term, search_type='') -%}
-<div class="input-group d-none d-md-flex flex-nowrap">
-  <input name="search_term" class="form-control rounded-start w-25" type="search"
+<div class="input-group p-0 d-none d-md-flex flex-nowrap">
+  <input name="search_term" class="form-control rounded-start" type="search"
     placeholder="Rechercher dans le dictionnaire..." value="{{ search_term }}" autofocus="autofocus" autocomplete="off"
     autocorrect="off" autocapitalize="false" spellcheck="false">
-  <select name="search_type" class="form-select flex-shrink-0" aria-label="Sélection de langue">
+  <select name="search_type" class="form-select" aria-label="Sélection de langue">
+    <option value="search_auto" {% if search_type=="search_auto" %}selected{% endif %}>Détection de langue automatique</option>
     <option value="search_traditional" {% if search_type=="search_traditional" %}selected{% endif %}>Caractères
       traditionnels
     </option>
@@ -27,6 +28,8 @@
         class="bi-search"></i></button>
   </div>
   <select name="search_type_mobile" class="form-select" aria-label="Sélection de langue">
+    <option value="search_auto" {% if search_type=="search_traditional" %}selected{% endif %}>
+      Détection de langue automatique</option>
     <option value="search_traditional" {% if search_type=="search_traditional" %}selected{% endif %}>Caractères
       traditionnels</option>
     <option value="search_simplified" {% if search_type=="search_simplified" %}selected{% endif %}>Caractères

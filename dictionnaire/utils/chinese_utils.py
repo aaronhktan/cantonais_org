@@ -437,7 +437,7 @@ def jyutping_to_yale(jyutping: str,
             new_jyutping += f" {c} " if c in SPECIAL_CHARACTERS else c
         syllables = new_jyutping.split()
     else:
-        syllables = segment_jyutping(
+        _, syllables = segment_jyutping(
             jyutping, remove_special_characters=False,
             remove_glob_characters=False)
 
@@ -526,7 +526,7 @@ def jyutping_to_IPA(jyutping: str, use_spaces_to_segment: bool = False) -> str:
             new_jyutping += f" {c} " if c in SPECIAL_CHARACTERS else c
         syllables = new_jyutping.split()
     else:
-        syllables = segment_jyutping(
+        _, syllables = segment_jyutping(
             jyutping, remove_special_characters=False,
             remove_glob_characters=False)
 
@@ -700,7 +700,7 @@ def pinyin_to_zhuyin(pinyin: str, use_spaces_to_segment: bool = False) -> str:
     if use_spaces_to_segment:
         syllables = pinyin.split()
     else:
-        syllables = segment_pinyin(pinyin)
+        _, syllables = segment_pinyin(pinyin)
 
     for syllable in syllables:
         if (len(syllable) == 1) or (syllable in SPECIAL_CHARACTERS):
@@ -829,7 +829,7 @@ def pinyin_to_IPA(pinyin: str, use_spaces_to_segment: bool = False) -> str:
     if use_spaces_to_segment:
         syllables = pinyin.split()
     else:
-        syllables = segment_pinyin(pinyin)
+        _, syllables = segment_pinyin(pinyin)
 
     # Precompute list of tones corresponding to each syllable
     # This list is later used for tone sandhi reasons
@@ -922,7 +922,7 @@ def pinyin_to_IPA(pinyin: str, use_spaces_to_segment: bool = False) -> str:
 
 
 def segment_jyutping(jyutping: str, remove_special_characters: bool = True,
-                     remove_glob_characters: bool = True) -> list[str]:
+                     remove_glob_characters: bool = True) -> tuple[bool, list[str]]:
     """Segments Jyutping by looking at valid Jyutping initials and finals.
     Can be configured to remove special characters and/or
     wildcard delimiter (glob) characters.
@@ -936,10 +936,12 @@ def segment_jyutping(jyutping: str, remove_special_characters: bool = True,
             in output list. Defaults to True.
 
     Returns:
-        list[str]: List where each string is a valid Jyutping syllable,
+        tuple[bool, list[str]]: Bool indicating whether Jyutping was valid,
+            and list where each string is a valid Jyutping syllable,
             special character, or glob character
     """
     jyutping = jyutping.lower()
+    valid_jyutping = True
     start_idx, end_idx, initial_found = 0, 0, False
     res = []
 
@@ -958,6 +960,8 @@ def segment_jyutping(jyutping: str, remove_special_characters: bool = True,
                 # characters mean that we *must* split a syllable
                 syllable = jyutping[start_idx:end_idx]
                 res.append(syllable)
+                if syllable not in JYUTPING_FINALS:
+                    valid_jyutping = True
                 start_idx = end_idx
                 initial_found = False
 
@@ -1028,6 +1032,8 @@ def segment_jyutping(jyutping: str, remove_special_characters: bool = True,
                 if first_initial in JYUTPING_FINALS:
                     res.append(first_initial)
                     start_idx = end_idx
+                else:
+                    valid_jyutping = False
 
             end_idx += initial_len
             initial_found = True
@@ -1056,6 +1062,8 @@ def segment_jyutping(jyutping: str, remove_special_characters: bool = True,
 
         if component_found:
             continue
+        else:
+            valid_jyutping = False
 
         end_idx += 1
 
@@ -1065,12 +1073,14 @@ def segment_jyutping(jyutping: str, remove_special_characters: bool = True,
     last_word = last_word.strip()
     if last_word and last_word != "'":
         res.append(last_word)
+        if last_word not in JYUTPING_FINALS:
+            valid_jyutping = False
 
-    return res
+    return [valid_jyutping, res]
 
 
 def segment_pinyin(pinyin: str, remove_special_characters: bool = True,
-                   remove_glob_characters: bool = True) -> list[str]:
+                   remove_glob_characters: bool = True) -> tuple[bool, list[str]]:
     """Segments Pinyin by looking at valid Pinyin initials and finals.
     Can be configured to remove special characters and/or
     wildcard delimiter (glob) characters.
@@ -1084,10 +1094,12 @@ def segment_pinyin(pinyin: str, remove_special_characters: bool = True,
             in output list. Defaults to True.
 
     Returns:
-        list[str]: List where each string is a valid Pinyin syllable, special
+        tuple[bool, list[str]]: Bool indicating whether Pinyin was valid, and 
+            list where each string is a valid Pinyin syllable, special
             character, or glob character
     """
     pinyin = pinyin.lower()
+    valid_pinyin = True
     start_idx, end_idx, initial_found = 0, 0, False
     res = []
 
@@ -1106,6 +1118,8 @@ def segment_pinyin(pinyin: str, remove_special_characters: bool = True,
                 # characters mean that we *must* split a syllable
                 syllable = pinyin[start_idx:end_idx]
                 res.append(syllable)
+                if syllable not in PINYIN_FINALS:
+                    valid_pinyin = False
                 start_idx = end_idx
                 initial_found = False
 
@@ -1146,6 +1160,8 @@ def segment_pinyin(pinyin: str, remove_special_characters: bool = True,
             # before checking for shorter initials
             curr_string = pinyin[end_idx:end_idx+initial_len]
             if curr_string in PINYIN_INITIALS:
+                if initial_found:
+                    valid_pinyin = False
                 end_idx += initial_len
                 component_found = True
                 initial_found = True
@@ -1187,5 +1203,7 @@ def segment_pinyin(pinyin: str, remove_special_characters: bool = True,
     last_word = last_word.strip()
     if last_word and last_word != "'":
         res.append(last_word)
+        if last_word not in PINYIN_FINALS:
+            valid_pinyin = False
 
-    return res
+    return [valid_pinyin, res]
