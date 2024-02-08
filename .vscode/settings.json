@@ -1,4 +1,11 @@
 {
-    "python.linting.flake8Enabled": true,
-    "python.linting.enabled": true
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.autopep8"
+    },
+    "autopep8.args": [
+        "--max-line-length=120"
+    ],
+    "flake8.args": [
+        "--max-line-length=120"
+    ]
 }

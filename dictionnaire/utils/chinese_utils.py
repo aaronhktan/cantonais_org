@@ -795,7 +795,7 @@ def pinyin_to_IPA(pinyin: str, use_spaces_to_segment: bool = False) -> str:
                     conversion_failure = True
                 else:
                     final = MANDARIN_IPA_FINALS[match.group(2)]
-            
+
             # Exit early if any initial or final could not be converted
             if conversion_failure:
                 return match.group(1), match.group(2)

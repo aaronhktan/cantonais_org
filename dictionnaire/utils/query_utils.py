@@ -47,6 +47,15 @@ def construct_romanization_query(syllables: list[str], delimiter: str) -> str:
 
 
 def prepare_jyutping_bind_values(jyutping: str) -> str:
+    """Formats Jyutping bind value such that we respect exact matches, wildcards,
+    and Jyutping segmentation
+
+    Args:
+        jyutping (str): String containing raw user input
+
+    Returns:
+        str: Formatted, segmented, cleaned up Jyutping string
+    """
     # Exact match is specified by enclosing the query in double-quotes
     search_exact_match = (
         len(jyutping) >= 3 and jyutping[0] == "\"" and jyutping[-1] == "\"")
@@ -73,6 +82,15 @@ def prepare_jyutping_bind_values(jyutping: str) -> str:
 
 
 def prepare_pinyin_bind_values(pinyin: str) -> str:
+    """Formats Pinyin bind value such that we respect exact matches, wildcards,
+    and Pinyin segmentation
+
+    Args:
+        pinyin (str): String containing raw user input
+
+    Returns:
+        str: Formatted, segmented, cleaned up Pinyin string
+    """
     # Exact match is specified by enclosing the query in double-quotes
     search_exact_match = (
         len(pinyin) >= 3 and pinyin[0] == "\"" and pinyin[-1] == "\"")
@@ -98,6 +116,14 @@ def prepare_pinyin_bind_values(pinyin: str) -> str:
 
 
 def parse_returned_records(records: list[str]) -> list[Entry]:
+    """Parses records returned by a sequel query into a list of Entry objects.
+
+    Args:
+        records (list[str]): The result from a cursor.readall()
+
+    Returns:
+        list[Entry]: A list of entries parsed from the records provided by the cursor
+    """
     res = []
     for record in records:
         sets = []
@@ -142,6 +168,14 @@ def parse_returned_records(records: list[str]) -> list[Entry]:
 
 
 def parse_existence(records: list[str]) -> bool:
+    """Given a cursor's readall(), parses whether record contains 0 or 1
+
+    Args:
+        records (list[str]): Result from a cursor.readall()
+
+    Returns:
+        bool: True if the record contains 1, 0 otherwise
+    """
     if len(records) > 1 or not len(records):
         return False
 

@@ -804,18 +804,23 @@ HAN_REGEX = re.compile(r".*([\u4e00-\u9fff]).*")
 SIMPLIFIED_CHINESE_REGEX = re.compile(".*(" + "|".join(SIMPLIFIED_CHINESE_CHARS) + ").*")
 TRADITIONAL_CHINESE_REGEX = re.compile(".*(" + "|".join(TRADITIONAL_CHINESE_CHARS) + ").*")
 
+
 def contains_chinese(query: str) -> bool:
     return HAN_REGEX.match(query) is not None
+
 
 def contains_simplified_chinese(query: str) -> bool:
     return SIMPLIFIED_CHINESE_REGEX.match(query) is not None
 
+
 def contains_traditional_chinese(query: str) -> bool:
     return TRADITIONAL_CHINESE_REGEX.match(query) is not None
+
 
 def is_valid_jyutping(query: str) -> bool:
     valid_jyutping, _ = chinese_utils.segment_jyutping(query)
     return valid_jyutping
+
 
 def is_valid_pinyin(query: str) -> bool:
     valid_pinyin, _ = chinese_utils.segment_pinyin(query)

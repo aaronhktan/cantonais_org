@@ -249,7 +249,7 @@ h4, .h4 {
 }
 
 h5, .h5 {
-  font-size: 1.25rem;
+  font-size: 1.1rem;
 }
 
 p {
@@ -2292,6 +2292,10 @@ button:not(:disabled),
   padding-bottom: 0.25rem !important;
 }
 
+.pb-4 {
+  padding-bottom: 1.5rem !important;
+}
+
 .ps-4 {
   padding-left: 1.5rem !important;
 }
@@ -2312,6 +2316,10 @@ button:not(:disabled),
   font-size: calc(1.275rem + 0.3vw) !important;
 }
 
+.fs-5 {
+  font-size: 1.1rem !important;
+}
+
 .fs-6 {
   font-size: 1rem !important;
 }
@@ -2326,6 +2334,10 @@ button:not(:disabled),
 
 .text-uppercase {
   text-transform: uppercase !important;
+}
+
+.text-wrap {
+  white-space: normal !important;
 }
 
 /* rtl:begin:remove */

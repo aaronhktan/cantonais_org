@@ -1,10 +1,11 @@
 {% macro desktop_input(search_term, search_type='') -%}
 <div class="input-group p-0 d-none d-md-flex flex-nowrap">
-  <input name="search_term" class="form-control rounded-start" type="search"
-    placeholder="Rechercher dans le dictionnaire..." value="{{ search_term }}" autofocus="autofocus" autocomplete="off"
-    autocorrect="off" autocapitalize="false" spellcheck="false">
-  <select name="search_type" class="form-select" aria-label="Sélection de langue">
-    <option value="search_auto" {% if search_type=="search_auto" %}selected{% endif %}>Détection de langue automatique</option>
+  <input name="search_term" class="form-control rounded-start py-2 fs-5" style="text-overflow: ellipsis;" type="search"
+    placeholder="Rechercher dans le dictionnaire..." value="{{ search_term }}" autofocus="autofocus" autocomplete="off" autocorrect="off"
+    autocapitalize="false" spellcheck="false">
+  <select name="search_type" class="form-select fs-5" style="text-overflow: ellipsis;" aria-label="Sélection de langue">
+    <option value="search_auto" {% if search_type=="search_auto" %}selected{% endif %}>Détection de langue automatique
+    </option>
     <option value="search_traditional" {% if search_type=="search_traditional" %}selected{% endif %}>Caractères
       traditionnels
     </option>
@@ -21,13 +22,14 @@
 {% macro mobile_input(search_term, search_type='') -%}
 <div class="d-flex d-md-none flex-column gap-2">
   <div class="input-group flex">
-    <input name="search_term_mobile" class="form-control rounded-start" type="search"
+    <input name="search_term_mobile" class="form-control rounded-start" style="text-overflow: ellipsis;" type="search"
       placeholder="Rechercher dans le dictionnaire..." value="{{ search_term }}" autocomplete="off" autocorrect="off"
       autocapitalize="false" spellcheck="false">
     <button class="input-group-text btn btn-primary flex-shrink-0" type="submit" aria-label="Rechercher"><i
         class="bi-search"></i></button>
   </div>
-  <select name="search_type_mobile" class="form-select" aria-label="Sélection de langue">
+  <select name="search_type_mobile" class="form-select" style="text-overflow: ellipsis;"
+    aria-label="Sélection de langue">
     <option value="search_auto" {% if search_type=="search_traditional" %}selected{% endif %}>
       Détection de langue automatique</option>
     <option value="search_traditional" {% if search_type=="search_traditional" %}selected{% endif %}>Caractères

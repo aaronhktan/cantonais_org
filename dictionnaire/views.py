@@ -5,7 +5,7 @@ from .utils import script_detector
 
 
 def render_index(search_term="",
-                 search_type="search_traditional"):
+                 search_type="search_auto"):
     return render_template("dictionary_index.html", search_term=search_term,
                            search_type=search_type)
 

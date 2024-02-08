@@ -343,14 +343,13 @@ def query_jyutping_exists(pinyin: str) -> bool:
 
     c.execute(
         """
-SELECT EXISTS ( 
-  SELECT 
-    rowid 
-  FROM entries 
-  WHERE jyutping GLOB ? 
-) AS existence 
-"""
-    , (globTerm,)
+SELECT EXISTS (
+  SELECT
+    rowid
+  FROM entries
+  WHERE jyutping GLOB ?
+) AS existence
+""", (globTerm,)
     )
 
     records = c.fetchall()
@@ -418,6 +417,7 @@ SELECT traditional, simplified, jyutping, pinyin, definitions FROM
 
     return query_utils.parse_returned_records(records)
 
+
 def query_pinyin_exists(pinyin: str) -> bool:
     db = get_db()
     c = db.cursor()
@@ -426,14 +426,13 @@ def query_pinyin_exists(pinyin: str) -> bool:
 
     c.execute(
         """
-SELECT EXISTS ( 
-  SELECT 
-    rowid 
-  FROM entries 
-  WHERE pinyin GLOB ? 
-) AS existence 
-"""
-    , (globTerm,)
+SELECT EXISTS (
+  SELECT
+    rowid
+  FROM entries
+  WHERE pinyin GLOB ?
+) AS existence
+""", (globTerm,)
     )
 
     records = c.fetchall()
