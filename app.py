@@ -21,6 +21,7 @@ def teardown_db(exception):
     if db is not None:
         db.close()
 
+
 def redirect_post():
     if "search_term" in request.form:
         search_term = request.form["search_term"]
@@ -37,6 +38,42 @@ def redirect_post():
 
 @app.route("/", methods=("GET", "POST"))
 def index():
+    if request.method == "POST":
+        return redirect_post()
+
+    search_term = request.cookies.get("search_term") or ""
+    search_type = request.cookies.get("search_type") or ""
+
+    return render_template("index.html", search_term=search_term,
+                           search_type=search_type)
+
+
+@app.route("/ressources", methods=("GET", "POST"))
+def resources():
+    if request.method == "POST":
+        return redirect_post()
+
+    search_term = request.cookies.get("search_term") or ""
+    search_type = request.cookies.get("search_type") or ""
+
+    return render_template("index.html", search_term=search_term,
+                           search_type=search_type)
+
+
+@app.route("/telecharger", methods=("GET", "POST"))
+def download():
+    if request.method == "POST":
+        return redirect_post()
+
+    search_term = request.cookies.get("search_term") or ""
+    search_type = request.cookies.get("search_type") or ""
+
+    return render_template("index.html", search_term=search_term,
+                           search_type=search_type)
+
+
+@app.route("/a-propos", methods=("GET", "POST"))
+def about():
     if request.method == "POST":
         return redirect_post()
 
