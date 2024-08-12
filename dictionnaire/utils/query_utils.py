@@ -1,8 +1,9 @@
+import copy
 import json
 
 from . import chinese_utils
 from ..models import (Definition, DefinitionsSet, Entry,
-                      SourceSentence)
+                      SourceSentence, Translation, TranslationSet)
 
 
 def construct_romanization_query(syllables: list[str], delimiter: str) -> str:
@@ -143,14 +144,20 @@ def parse_returned_records(records: list[str]) -> list[Entry]:
                         translations = []
                         if sentence["translations"]:
                             for translation in sentence["translations"]:
-                                translations.append(translation)
+                                target = Translation(translation["sentence"],
+                                                     translation["language"])
+                                translations.append(target)
+                        translation_set = TranslationSet(
+                            source=definitions_group["source"],
+                            translations=translations
+                        )
                         sentences.append(
                             SourceSentence(sentence["language"],
                                            sentence["simplified"],
                                            sentence["traditional"],
                                            sentence["jyutping"],
                                            sentence["pinyin"],
-                                           translations=translations))
+                                           translations=translation_set))
 
                 definition_content = definition["definition"].replace(
                     r"\n", "\n")

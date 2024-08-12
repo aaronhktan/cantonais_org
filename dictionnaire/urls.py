@@ -45,6 +45,45 @@ def download():
     return views.render_index(search_term, search_type)
 
 
+@dictionary_app.route("/a-propos", methods=("GET", "POST"))
+def about():
+    if request.method == "POST":
+        return redirect_post()
+
+    search_term = request.cookies.get("search_term") or ""
+    search_type = request.cookies.get("search_type") or ""
+
+    return views.render_index(search_term, search_type)
+
+
+@dictionary_app.route("/recherche/auto/<search_term>",
+                      methods=("GET", "POST"))
+def search_auto(search_term):
+    if request.method == "POST":
+        return redirect_post()
+
+    resp = make_response(views.render_search_auto(search_term))
+
+    resp.set_cookie("search_term", search_term)
+    resp.set_cookie("search_type", search_auto.__name__)
+
+    return resp
+
+
+@dictionary_app.route("/recherche/traditionnel/<search_term>",
+                      methods=("GET", "POST"))
+def search_traditional(search_term):
+    if request.method == "POST":
+        return redirect_post()
+
+    resp = make_response(views.render_search_traditional(search_term))
+
+    resp.set_cookie("search_term", search_term)
+    resp.set_cookie("search_type", search_traditional.__name__)
+
+    return resp
+
+
 @dictionary_app.route("/recherche/simplifie/<search_term>",
                       methods=("GET", "POST"))
 def search_simplified(search_term):

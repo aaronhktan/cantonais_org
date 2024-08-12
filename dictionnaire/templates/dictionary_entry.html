@@ -28,6 +28,25 @@
                         <br>
                         {% endif %}
                         {{ definition.definition_content.replace("\n", "<br>")|safe }}
+                        <ul class="ps-4 mb-0">
+                        {% for sentence in definition.sentences %}
+                            <li>
+                                {{ sentence.traditional.replace("\n", "<br>")|safe }}
+                                <br>
+                                {{ sentence.simplified.replace("\n", "<br>")|safe }}
+                                <br>
+                                {% if sentence.sourceLanguage == "yue" and sentence.jyutping %}
+                                <span class="text-secondary">{{ sentence.jyutping }}</span>
+                                {% elif sentence.sourceLanguage == "cmn" and sentence.pinyin %}
+                                <span class="text-secondary">{{ sentence._pretty_pinyin }}</span>
+                                {% endif %}
+                                <br>
+                                {% if sentence.translations and sentence.translations.translations %}
+                                <span class="text-secondary fst-italic">{{ sentence.translations.translations[0].translation.replace("\n", "<br>")|safe }}</span>
+                                {% endif %}
+                            </li>
+                        {% endfor %}
+                        </ul>
                     </li>
                     {% endfor %}
                 </ol>

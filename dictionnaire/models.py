@@ -16,8 +16,8 @@ class Translation:
 @dataclass
 class TranslationSet:
     source: str
-    _sourceShortString: str
-    _sentenceSnippet: str
+    # _sourceShortString: str
+    # _sentenceSnippet: str
 
     translations: list[Translation] | None = None
 
@@ -39,7 +39,7 @@ class SourceSentence:
     _zhuyin: str | None = None
     _mandarin_IPA: str | None = None
 
-    translations: list[TranslationSet] | None = None
+    translations: TranslationSet | None = None
 
     def __post_init__(self):
         self._yale = chinese_utils.jyutping_to_yale(

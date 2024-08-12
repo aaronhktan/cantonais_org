@@ -2267,11 +2267,6 @@ button:not(:disabled),
   padding-bottom: 1.5rem !important;
 }
 
-.py-5 {
-  padding-top: 3rem !important;
-  padding-bottom: 3rem !important;
-}
-
 .pt-1 {
   padding-top: 0.25rem !important;
 }
@@ -2284,16 +2279,16 @@ button:not(:disabled),
   padding-top: 1rem !important;
 }
 
+.pt-4 {
+  padding-top: 1.5rem !important;
+}
+
 .pt-5 {
   padding-top: 3rem !important;
 }
 
 .pb-1 {
   padding-bottom: 0.25rem !important;
-}
-
-.pb-4 {
-  padding-bottom: 1.5rem !important;
 }
 
 .ps-4 {
@@ -2322,6 +2317,10 @@ button:not(:disabled),
 
 .fs-6 {
   font-size: 1rem !important;
+}
+
+.fst-italic {
+  font-style: italic !important;
 }
 
 .lh-sm {
