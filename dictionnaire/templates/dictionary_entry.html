@@ -34,10 +34,11 @@
                                 {{ sentence.traditional.replace("\n", "<br>")|safe }}
                                 <br>
                                 {{ sentence.simplified.replace("\n", "<br>")|safe }}
-                                <br>
                                 {% if sentence.sourceLanguage == "yue" and sentence.jyutping %}
+                                <br>
                                 <span class="text-secondary">{{ sentence.jyutping }}</span>
                                 {% elif sentence.sourceLanguage == "cmn" and sentence.pinyin %}
+                                <br>
                                 <span class="text-secondary">{{ sentence._pretty_pinyin }}</span>
                                 {% endif %}
                                 <br>
