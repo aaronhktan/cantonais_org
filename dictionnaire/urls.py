@@ -1,6 +1,8 @@
 from flask import Blueprint, make_response, request, redirect, url_for
 from . import views
 
+import urllib.parse
+
 dictionary_app = Blueprint("dictionary_app", __name__, static_folder="static",
                            static_url_path="dictionnaire/static",
                            template_folder="templates")
@@ -18,6 +20,7 @@ def redirect_post():
 
     # Remove whitespace surrounding the search term
     search_term = search_term.strip()
+    search_term = urllib.parse.quote(search_term, safe="")
 
     return redirect(url_for(f"dictionary_app.{search_type}",
                             search_term=search_term))
@@ -62,6 +65,8 @@ def search_auto(search_term):
     if request.method == "POST":
         return redirect_post()
 
+    search_term = urllib.parse.unquote(search_term)
+
     resp = make_response(views.render_search_auto(search_term))
 
     resp.set_cookie("search_term", search_term)
@@ -75,6 +80,8 @@ def search_auto(search_term):
 def search_traditional(search_term):
     if request.method == "POST":
         return redirect_post()
+
+    search_term = urllib.parse.unquote(search_term)
 
     resp = make_response(views.render_search_traditional(search_term))
 
@@ -90,6 +97,8 @@ def search_simplified(search_term):
     if request.method == "POST":
         return redirect_post()
 
+    search_term = urllib.parse.unquote(search_term)
+
     resp = make_response(views.render_search_simplified(search_term))
 
     resp.set_cookie("search_term", search_term)
@@ -103,6 +112,8 @@ def search_simplified(search_term):
 def search_jyutping(search_term):
     if request.method == "POST":
         return redirect_post()
+
+    search_term = urllib.parse.unquote(search_term)
 
     resp = make_response(views.render_search_jyutping(search_term))
 
@@ -118,6 +129,8 @@ def search_pinyin(search_term):
     if request.method == "POST":
         return redirect_post()
 
+    search_term = urllib.parse.unquote(search_term)
+
     resp = make_response(views.render_search_pinyin(search_term))
 
     resp.set_cookie("search_term", search_term)
@@ -132,6 +145,8 @@ def search_french(search_term):
     if request.method == "POST":
         return redirect_post()
 
+    search_term = urllib.parse.unquote(search_term)
+
     resp = make_response(views.render_search_french(search_term))
 
     resp.set_cookie("search_term", search_term)
@@ -145,6 +160,8 @@ def search_french(search_term):
 def entry_view(entry):
     if request.method == "POST":
         return redirect_post()
+
+    entry = urllib.parse.unquote(entry)
 
     search_term = request.cookies.get("search_term") or ""
     search_type = request.cookies.get("search_type") or ""

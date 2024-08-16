@@ -18,7 +18,7 @@
         <div class="list-group pt-1">
             {% if entries %}
             {% for entry in entries %}
-            <a href="{{ url_for('dictionary_app.entry_view', entry=entry.traditional) }}"
+            <a href="{{ url_for('dictionary_app.entry_view', entry=entry.traditional|quote) }}"
                 class="list-group-item list-group-item-action m-0 p-0">
                 <div class="m-3">
                     <div class="fs-3 lh-sm">{{ entry._coloured_traditional|safe }} [{{

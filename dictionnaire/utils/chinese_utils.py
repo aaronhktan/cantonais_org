@@ -359,8 +359,10 @@ def compare_strings(original: str, comparison: str) -> str:
     original, comparison = normalize(
         "NFC", original), normalize("NFC", comparison)
     for idx, codepoint in enumerate(original):
-        res += (SAME_CHARACTER_STRING if original[idx]
-                == comparison[idx] else comparison[idx])
+        if idx < len(original) and idx < len(comparison):
+            res += (SAME_CHARACTER_STRING if (original[idx] == comparison[idx]) else comparison[idx])
+        else:
+            res += original[idx]
     return res
 
 
@@ -1094,7 +1096,7 @@ def segment_pinyin(pinyin: str, remove_special_characters: bool = True,
             in output list. Defaults to True.
 
     Returns:
-        tuple[bool, list[str]]: Bool indicating whether Pinyin was valid, and 
+        tuple[bool, list[str]]: Bool indicating whether Pinyin was valid, and
             list where each string is a valid Pinyin syllable, special
             character, or glob character
     """

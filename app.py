@@ -1,4 +1,5 @@
 import os
+import urllib.parse
 
 from flask import Flask, g, render_template, redirect, request, url_for
 try:
@@ -12,6 +13,8 @@ app = Flask(__name__)
 app.config["SECRET_KEY"] = os.environ["CANTONAIS_ORG_SECRET_KEY"]
 
 app.register_blueprint(dictionary_app, url_prefix="/dictionnaire")
+
+app.jinja_env.filters["quote"] = lambda x: urllib.parse.quote(x, safe="")
 
 
 @app.teardown_appcontext
@@ -31,6 +34,10 @@ def redirect_post():
         search_type = request.form["search_type"]
     else:
         search_type = request.form["search_type_mobile"]
+
+    # Remove whitespace surrounding the search term
+    search_term = search_term.strip()
+    search_term = urllib.parse.quote(search_term, safe="")
 
     return redirect(url_for(f"dictionary_app.{search_type}",
                             search_term=search_term))
