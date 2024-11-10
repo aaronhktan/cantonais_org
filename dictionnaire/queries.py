@@ -1,9 +1,11 @@
 import os
 import sqlite3
 
+from collections import defaultdict
+
 from flask import g
 
-from .models import Entry
+from .models import Entry, SourceSentence
 from .utils import chinese_utils, query_utils
 
 DB_PATH = os.environ["CANTONAIS_ORG_DB_PATH"]
@@ -122,7 +124,7 @@ matching_entries AS (
  SELECT traditional, simplified, jyutping, pinyin, definitions FROM
   matching_entries
 """,
-        (traditional,)
+        (traditional,),
     )
 
     records = c.fetchall()
@@ -132,13 +134,43 @@ matching_entries AS (
     return query_utils.parse_returned_records(records)
 
 
+def get_example_sample(param: str) -> dict[str, SourceSentence] | None:
+    examples = query_examples(param)
+
+    # Display only a subset of the examples on the entry page
+    example_sample = defaultdict(list)
+
+    if not examples:
+        return None
+
+    for example in examples:
+        for translations_set in example.translations:
+            source = translations_set.source
+
+            if len(example_sample[source]) >= 5:
+                continue
+
+            sample = SourceSentence(
+                example.source_language,
+                example.simplified,
+                example.traditional,
+                example.jyutping,
+                example.pinyin,
+                translations=translations_set,
+            )
+            example_sample[source].append(sample)
+
+    return dict(example_sample)
+
+
 def query_traditional(traditional: str) -> list[Entry] | None:
     db = get_db()
     c = db.cursor()
 
     # Exact match is specified by enclosing the query in double-quotes
     search_exact_match = (
-        len(traditional) >= 3 and traditional[0] == "\"" and traditional[-1] == "\"")
+        len(traditional) >= 3 and traditional[0] == '"' and traditional[-1] == '"'
+    )
     # Wildcard character should only be appended if the last character is not "$"
     append_wildcard = not (traditional[-1] == "$")
 
@@ -194,7 +226,7 @@ matching_entries AS (
 SELECT traditional, simplified, jyutping, pinyin, definitions FROM
   matching_entries
 """,
-        (query_param,)
+        (query_param,),
     )
 
     records = c.fetchall()
@@ -210,7 +242,8 @@ def query_simplified(simplified: str) -> list[Entry] | None:
 
     # Exact match is specified by enclosing the query in double-quotes
     search_exact_match = (
-        len(simplified) >= 3 and simplified[0] == "\"" and simplified[-1] == "\"")
+        len(simplified) >= 3 and simplified[0] == '"' and simplified[-1] == '"'
+    )
     # Wildcard character should only be appended if the last character is not "$"
     append_wildcard = not (simplified[-1] == "$")
 
@@ -266,7 +299,7 @@ matching_entries AS (
 SELECT traditional, simplified, jyutping, pinyin, definitions FROM
   matching_entries
 """,
-        (query_param,)
+        (query_param,),
     )
 
     records = c.fetchall()
@@ -325,7 +358,7 @@ matching_entries AS (
 SELECT traditional, simplified, jyutping, pinyin, definitions FROM
   matching_entries
 """,
-        (query_param,)
+        (query_param,),
     )
 
     records = c.fetchall()
@@ -349,7 +382,8 @@ SELECT EXISTS (
   FROM entries
   WHERE jyutping GLOB ?
 ) AS existence
-""", (globTerm,)
+""",
+        (globTerm,),
     )
 
     records = c.fetchall()
@@ -408,7 +442,7 @@ matching_entries AS (
 SELECT traditional, simplified, jyutping, pinyin, definitions FROM
   matching_entries
 """,
-        (query_param,)
+        (query_param,),
     )
 
     records = c.fetchall()
@@ -432,7 +466,8 @@ SELECT EXISTS (
   FROM entries
   WHERE pinyin GLOB ?
 ) AS existence
-""", (globTerm,)
+""",
+        (globTerm,),
     )
 
     records = c.fetchall()
@@ -447,8 +482,7 @@ def query_full_text(param: str) -> list[Entry] | None:
     c = db.cursor()
 
     # Exact match is specified by enclosing the query in double-quotes
-    search_exact_match = (
-        len(param) >= 3 and param[0] == "\"" and param[-1] == "\"")
+    search_exact_match = len(param) >= 3 and param[0] == '"' and param[-1] == '"'
 
     if search_exact_match:
         # Remove the double-quotes and extra spaces
@@ -457,7 +491,7 @@ def query_full_text(param: str) -> list[Entry] | None:
     else:
         like_param = f"%{param}%"
 
-    fts_param = f"\"{param}\""
+    fts_param = f'"{param}"'
 
     c.execute(
         """
@@ -503,7 +537,10 @@ matching_entries AS (
 SELECT traditional, simplified, jyutping, pinyin, definitions FROM
   matching_entries
 """,
-        (fts_param, like_param,)
+        (
+            fts_param,
+            like_param,
+        ),
     )
 
     records = c.fetchall()
@@ -511,3 +548,117 @@ SELECT traditional, simplified, jyutping, pinyin, definitions FROM
         return None
 
     return query_utils.parse_returned_records(records)
+
+
+def query_examples(param: str) -> list[SourceSentence] | None:
+    db = get_db()
+    c = db.cursor()
+
+    like_param = f"%{param}%"
+
+    c.execute(
+        """
+WITH
+  matching_chinese_sentence_ids AS (
+    SELECT chinese_sentence_id
+    FROM chinese_sentences
+    WHERE traditional LIKE ? ESCAPE '\\'
+  ),
+  translations_with_source AS (
+    SELECT
+      s.sourcename AS source,
+      mcsi.chinese_sentence_id AS chinese_sentence_id,
+      json_group_array(
+        DISTINCT json_object(
+          'sentence',
+          sentence,
+          'language',
+          language,
+          'direct',
+          direct
+        )
+      ) AS translation
+    FROM
+      matching_chinese_sentence_ids AS mcsi
+      LEFT JOIN sentence_links AS sl
+        ON mcsi.chinese_sentence_id = sl.fk_chinese_sentence_id
+      LEFT JOIN nonchinese_sentences AS ncs
+        ON ncs.non_chinese_sentence_id = sl.fk_non_chinese_sentence_id
+      LEFT JOIN sources AS s
+        ON s.source_id = sl.fk_source_id
+    GROUP BY s.sourcename, mcsi.chinese_sentence_id
+  ),
+  matching_translations AS (
+    SELECT
+      chinese_sentence_id,
+      json_group_array(
+        json_object(
+          'source',
+          source,
+          'translations',
+          json(translation)
+        )
+      ) AS translations
+    FROM translations_with_source AS tws
+    GROUP BY chinese_sentence_id
+  ),
+  matching_sentences AS (
+    SELECT
+      chinese_sentence_id,
+      traditional,
+      simplified,
+      pinyin,
+      jyutping,
+      language
+    FROM chinese_sentences AS cs
+    WHERE
+      chinese_sentence_id IN (
+        SELECT chinese_sentence_id
+        FROM matching_chinese_sentence_ids
+      )
+  ),
+  matching_sentences_with_translations AS (
+    SELECT
+      max(sourcename) AS sourcename,
+      traditional,
+      simplified,
+      pinyin,
+      jyutping,
+      language,
+      translations
+    FROM
+      matching_sentences AS ms
+      LEFT JOIN matching_translations AS mt
+        ON ms.chinese_sentence_id = mt.chinese_sentence_id
+      LEFT JOIN definitions_chinese_sentences_links AS dcsl
+        ON ms.chinese_sentence_id = dcsl.fk_chinese_sentence_id
+      LEFT JOIN definitions AS d
+        ON dcsl.fk_definition_id = d.definition_id
+      LEFT JOIN sources AS s ON d.fk_source_id = s.source_id
+    GROUP BY
+      traditional,
+      simplified,
+      pinyin,
+      jyutping,
+      language,
+      translations
+    ORDER BY ms.chinese_sentence_id
+  )
+SELECT
+  sourcename,
+  traditional,
+  simplified,
+  pinyin,
+  jyutping,
+  language,
+  translations
+FROM matching_sentences_with_translations
+""",
+        (like_param,),
+    )
+
+    records = c.fetchall()
+    if not records:
+        return None
+
+    return query_utils.parse_returned_sentences(records)

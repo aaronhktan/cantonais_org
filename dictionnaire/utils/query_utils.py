@@ -2,8 +2,14 @@ import copy
 import json
 
 from . import chinese_utils
-from ..models import (Definition, DefinitionsSet, Entry,
-                      SourceSentence, Translation, TranslationSet)
+from ..models import (
+    Definition,
+    DefinitionsSet,
+    Entry,
+    SourceSentence,
+    Translation,
+    TranslationSet,
+)
 
 
 def construct_romanization_query(syllables: list[str], delimiter: str) -> str:
@@ -30,12 +36,15 @@ def construct_romanization_query(syllables: list[str], delimiter: str) -> str:
             space_before_syllable = " "
             prev_syllable_added_delimiter = False
         elif syllable == "*" or syllable == "?":
-            if ((syllables[idx] == "*" or syllables[idx] == "?"
-                    or syllables[idx] == "* " or syllables[idx] == "? ")
-                    and prev_syllable_added_delimiter):
+            if (
+                syllables[idx] == "*"
+                or syllables[idx] == "?"
+                or syllables[idx] == "* "
+                or syllables[idx] == "? "
+            ) and prev_syllable_added_delimiter:
                 # Replace delimiter in previous character with GLOB wildcard
                 # if delimiter was attached to end of previous word
-                processed_syllables = processed_syllables[:-len(delimiter)]
+                processed_syllables = processed_syllables[: -len(delimiter)]
             processed_syllables += syllable
             space_before_syllable = ""
             prev_syllable_added_delimiter = False
@@ -59,7 +68,8 @@ def prepare_jyutping_bind_values(jyutping: str) -> str:
     """
     # Exact match is specified by enclosing the query in double-quotes
     search_exact_match = (
-        len(jyutping) >= 3 and jyutping[0] == "\"" and jyutping[-1] == "\"")
+        len(jyutping) >= 3 and jyutping[0] == '"' and jyutping[-1] == '"'
+    )
     # Wildcard character should only be appended if the last character is not "$"
     append_wildcard = not (jyutping[-1] == "$")
 
@@ -67,14 +77,14 @@ def prepare_jyutping_bind_values(jyutping: str) -> str:
         # Remove the double-quotes
         jyutping_syllables = jyutping[1:-1].split()
     else:
-        _, jyutping_syllables = chinese_utils.segment_jyutping(jyutping,
-                                                               remove_glob_characters=False)
+        _, jyutping_syllables = chinese_utils.segment_jyutping(
+            jyutping, remove_glob_characters=False
+        )
 
     if search_exact_match:
         query_param = " ".join(jyutping_syllables)
     else:
-        query_param = construct_romanization_query(
-            jyutping_syllables, "?")
+        query_param = construct_romanization_query(jyutping_syllables, "?")
 
     if append_wildcard and not search_exact_match:
         query_param += "*"
@@ -93,8 +103,7 @@ def prepare_pinyin_bind_values(pinyin: str) -> str:
         str: Formatted, segmented, cleaned up Pinyin string
     """
     # Exact match is specified by enclosing the query in double-quotes
-    search_exact_match = (
-        len(pinyin) >= 3 and pinyin[0] == "\"" and pinyin[-1] == "\"")
+    search_exact_match = len(pinyin) >= 3 and pinyin[0] == '"' and pinyin[-1] == '"'
     # Wildcard character should only be appended if the last character is not "$"
     append_wildcard = not (pinyin[-1] == "$")
 
@@ -107,8 +116,7 @@ def prepare_pinyin_bind_values(pinyin: str) -> str:
     if search_exact_match:
         query_param = " ".join(pinyin_syllables)
     else:
-        query_param = construct_romanization_query(
-            pinyin_syllables, "?")
+        query_param = construct_romanization_query(pinyin_syllables, "?")
 
     if append_wildcard and not search_exact_match:
         query_param += "*"
@@ -144,32 +152,39 @@ def parse_returned_records(records: list[str]) -> list[Entry]:
                         translations = []
                         if sentence["translations"]:
                             for translation in sentence["translations"]:
-                                target = Translation(translation["sentence"],
-                                                     translation["language"])
+                                target = Translation(
+                                    translation["sentence"], translation["language"]
+                                )
                                 translations.append(target)
                         translation_set = TranslationSet(
                             source=definitions_group["source"],
-                            translations=translations
+                            translations=translations,
                         )
                         sentences.append(
-                            SourceSentence(sentence["language"],
-                                           sentence["simplified"],
-                                           sentence["traditional"],
-                                           sentence["jyutping"],
-                                           sentence["pinyin"],
-                                           translations=translation_set))
+                            SourceSentence(
+                                sentence["language"],
+                                sentence["simplified"],
+                                sentence["traditional"],
+                                sentence["jyutping"],
+                                sentence["pinyin"],
+                                translations=translation_set,
+                            )
+                        )
 
-                definition_content = definition["definition"].replace(
-                    r"\n", "\n")
+                definition_content = definition["definition"].replace(r"\n", "\n")
                 label = definition["label"] if "label" in definition else ""
-                definitions.append(Definition(definition_content,
-                                              label, sentences))
-            sets.append(DefinitionsSet(definitions_group["source"],
-                                       definitions))
+                definitions.append(Definition(definition_content, label, sentences))
+            sets.append(DefinitionsSet(definitions_group["source"], definitions))
 
-        res.append(Entry(traditional=record[0], simplified=record[1],
-                         jyutping=record[2], pinyin=record[3],
-                         definitions_sets=sets))
+        res.append(
+            Entry(
+                traditional=record[0],
+                simplified=record[1],
+                jyutping=record[2],
+                pinyin=record[3],
+                definitions_sets=sets,
+            )
+        )
 
     return res
 
@@ -189,3 +204,41 @@ def parse_existence(records: list[str]) -> bool:
     record = records[0]
     existence_col = record[0]
     return existence_col
+
+
+def parse_returned_sentences(records: list[str]) -> list[SourceSentence]:
+    """Parses records returned by a sequel query into a list of SourceSentence objects.
+
+    Args:
+        records (list[str]): Result from a cursor.readall()
+
+    Returns:
+        bool: True if the record contains 1, 0 otherwise
+    """
+
+    res = []
+    for record in records:
+        translation_sets = []
+        translations_json = json.loads(record[6])
+        for source_set in translations_json:
+            translations = []
+            for translation in source_set["translations"]:
+                target = Translation(translation["sentence"], translation["language"])
+                translations.append(target)
+            translation_set = TranslationSet(
+                source=source_set["source"],
+                translations=translations,
+            )
+            translation_sets.append(translation_set)
+        res.append(
+            SourceSentence(
+                record[5],
+                record[1],
+                record[2],
+                record[4],
+                record[3],
+                translations=translation_sets,
+            )
+        )
+
+    return res

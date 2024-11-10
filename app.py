@@ -2,6 +2,7 @@ import os
 import urllib.parse
 
 from flask import Flask, g, render_template, redirect, request, url_for
+
 try:
     # For Gunicorn
     from dictionnaire.urls import dictionary_app
@@ -39,8 +40,7 @@ def redirect_post():
     search_term = search_term.strip()
     search_term = urllib.parse.quote(search_term, safe="")
 
-    return redirect(url_for(f"dictionary_app.{search_type}",
-                            search_term=search_term))
+    return redirect(url_for(f"dictionary_app.{search_type}", search_term=search_term))
 
 
 @app.route("/", methods=("GET", "POST"))
@@ -51,8 +51,9 @@ def index():
     search_term = request.cookies.get("search_term") or ""
     search_type = request.cookies.get("search_type") or ""
 
-    return render_template("index.html", search_term=search_term,
-                           search_type=search_type)
+    return render_template(
+        "index.html", search_term=search_term, search_type=search_type
+    )
 
 
 @app.route("/ressources", methods=("GET", "POST"))
@@ -63,8 +64,9 @@ def resources():
     search_term = request.cookies.get("search_term") or ""
     search_type = request.cookies.get("search_type") or ""
 
-    return render_template("index.html", search_term=search_term,
-                           search_type=search_type)
+    return render_template(
+        "index.html", search_term=search_term, search_type=search_type
+    )
 
 
 @app.route("/telecharger", methods=("GET", "POST"))
@@ -75,8 +77,9 @@ def download():
     search_term = request.cookies.get("search_term") or ""
     search_type = request.cookies.get("search_type") or ""
 
-    return render_template("index.html", search_term=search_term,
-                           search_type=search_type)
+    return render_template(
+        "index.html", search_term=search_term, search_type=search_type
+    )
 
 
 @app.route("/a-propos", methods=("GET", "POST"))
@@ -87,9 +90,10 @@ def about():
     search_term = request.cookies.get("search_term") or ""
     search_type = request.cookies.get("search_type") or ""
 
-    return render_template("index.html", search_term=search_term,
-                           search_type=search_type)
+    return render_template(
+        "index.html", search_term=search_term, search_type=search_type
+    )
 
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0')
+    app.run(host="0.0.0.0")

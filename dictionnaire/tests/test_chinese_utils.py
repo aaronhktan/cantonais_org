@@ -42,23 +42,33 @@ class TestApplyColours(TestCase):
         string = "唔係"
         tones = [4, 6]
         res = chinese_utils.apply_colours(
-            string, tones, default_settings.DEFAULT_JYUTPING_TONES)
+            string, tones, default_settings.DEFAULT_JYUTPING_TONES
+        )
         self.assertEqual(
-            res, (f"<span style=\"color: "
-                  f"{default_settings.DEFAULT_JYUTPING_TONES[4]}\">唔</span>"
-                  f"<span style=\"color: "
-                  f"{default_settings.DEFAULT_JYUTPING_TONES[6]}\">係</span>"))
+            res,
+            (
+                f'<span style="color: '
+                f'{default_settings.DEFAULT_JYUTPING_TONES[4]}">唔</span>'
+                f'<span style="color: '
+                f'{default_settings.DEFAULT_JYUTPING_TONES[6]}">係</span>'
+            ),
+        )
 
     def test_pinyin(self):
         string = "不是"
         tones = [2, 4]
         res = chinese_utils.apply_colours(
-            string, tones, default_settings.DEFAULT_PINYIN_TONES)
+            string, tones, default_settings.DEFAULT_PINYIN_TONES
+        )
         self.assertEqual(
-            res, (f"<span style=\"color: "
-                  f"{default_settings.DEFAULT_PINYIN_TONES[2]}\">不</span>"
-                  f"<span style=\"color: "
-                  f"{default_settings.DEFAULT_PINYIN_TONES[4]}\">是</span>"))
+            res,
+            (
+                f'<span style="color: '
+                f'{default_settings.DEFAULT_PINYIN_TONES[2]}">不</span>'
+                f'<span style="color: '
+                f'{default_settings.DEFAULT_PINYIN_TONES[4]}">是</span>'
+            ),
+        )
 
 
 class TestCompareStrings(TestCase):
@@ -106,7 +116,8 @@ class TestJyutpingToYale(TestCase):
 
     def test_spaces_to_segment(self):
         res = chinese_utils.jyutping_to_yale(
-            "si1 zi2 saan1", use_spaces_to_segment=True)
+            "si1 zi2 saan1", use_spaces_to_segment=True
+        )
         self.assertEqual(res, "sī jí sāan")
 
     def test_special_final(self):
@@ -123,7 +134,8 @@ class TestJyutpingToYale(TestCase):
 
     def test_tones(self):
         res = chinese_utils.jyutping_to_yale(
-            "saam1 gau2 sei3 ling4 ng5 ji6 cat1 baat3 luk6")
+            "saam1 gau2 sei3 ling4 ng5 ji6 cat1 baat3 luk6"
+        )
         self.assertEqual(res, "sāam gáu sei lìhng ńgh yih chāt baat luhk")
 
     def test_no_tone(self):
@@ -153,8 +165,7 @@ class TestJyutpingToIPA(TestCase):
         self.assertEqual(res, "fäː˥ sɪŋ˨˩")
 
     def test_spaces_to_segment(self):
-        res = chinese_utils.jyutping_to_IPA("joeng4 sing4",
-                                            use_spaces_to_segment=True)
+        res = chinese_utils.jyutping_to_IPA("joeng4 sing4", use_spaces_to_segment=True)
         self.assertEqual(res, "jœ̽ːŋ˨˩ sɪŋ˨˩")
 
     def test_preprocess_initial(self):
@@ -175,9 +186,9 @@ class TestJyutpingToIPA(TestCase):
 
     def test_tones(self):
         res = chinese_utils.jyutping_to_IPA(
-            "saam1 gau2 sei3 ling4 ng5 ji6 cat1 baat3 luk6")
-        self.assertEqual(
-            res, "säːm˥ kɐu̯˧˥ sei̯˧ lɪŋ˨˩ ŋ̍˩˧ jiː˨ t͡sʰɐt̚˥ päːt̚˧ lʊk̚˨")
+            "saam1 gau2 sei3 ling4 ng5 ji6 cat1 baat3 luk6"
+        )
+        self.assertEqual(res, "säːm˥ kɐu̯˧˥ sei̯˧ lɪŋ˨˩ ŋ̍˩˧ jiː˨ t͡sʰɐt̚˥ päːt̚˧ lʊk̚˨")
 
     def test_no_tone(self):
         res = chinese_utils.jyutping_to_yale("mok")
@@ -211,8 +222,7 @@ class TestPrettyPinyin(TestCase):
 
     def test_tones(self):
         res = chinese_utils.pretty_pinyin("ma1 ma2 ma3 ma4")
-        self.assertEqual(
-            res, "mā má mǎ mà")
+        self.assertEqual(res, "mā má mǎ mà")
 
     def test_no_tone(self):
         res = chinese_utils.pretty_pinyin("nu")
@@ -253,8 +263,9 @@ class TestPinyinToZhuyin(TestCase):
         self.assertEqual(res, "ㄅㄚ ㄉㄚˊ ㄊㄨㄥ")
 
     def test_use_spaces_to_segment(self):
-        res = chinese_utils.pinyin_to_zhuyin("ba1 da2 tong1",
-                                             use_spaces_to_segment=True)
+        res = chinese_utils.pinyin_to_zhuyin(
+            "ba1 da2 tong1", use_spaces_to_segment=True
+        )
         self.assertEqual(res, "ㄅㄚ ㄉㄚˊ ㄊㄨㄥ")
 
     def test_special_initials(self):
@@ -285,6 +296,7 @@ class TestPinyinToZhuyin(TestCase):
         res = chinese_utils.pinyin_to_zhuyin("chzng2 quanr1")
         self.assertEqual(res, "ㄔzng2 ㄑㄩㄢㄦ")
 
+
 class TestPinyinToIPA(TestCase):
     def test_simple(self):
         res = chinese_utils.pinyin_to_IPA("ba1 da2 tong1")
@@ -307,8 +319,7 @@ class TestPinyinToIPA(TestCase):
         self.assertEqual(res, "pä˥˥ tä˧˥ tʰʊŋ˥˥")
 
     def test_use_spaces_to_segment(self):
-        res = chinese_utils.pinyin_to_IPA("ba1 da2 tong1",
-                                             use_spaces_to_segment=True)
+        res = chinese_utils.pinyin_to_IPA("ba1 da2 tong1", use_spaces_to_segment=True)
         self.assertEqual(res, "pä˥˥ tä˧˥ tʰʊŋ˥˥")
 
     def test_special_case_ng(self):
@@ -332,7 +343,7 @@ class TestPinyinToIPA(TestCase):
 
         res = chinese_utils.pinyin_to_IPA("yi1 ge5")
         self.assertEqual(res, "i˥˥ g̊ə˨")
-    
+
     def test_tone_three(self):
         res = chinese_utils.pinyin_to_IPA("ke3")
         self.assertEqual(res, "kʰɤ˨˩˦")
@@ -346,7 +357,7 @@ class TestPinyinToIPA(TestCase):
 
         res = chinese_utils.pinyin_to_IPA("xia4")
         self.assertEqual(res, "ɕjä˥˩")
-    
+
     def test_other_tone(self):
         res = chinese_utils.pinyin_to_IPA("ma1")
         self.assertEqual(res, "mä˥˥")
@@ -395,53 +406,53 @@ class TestJyutpingSegmentation(TestCase):
         self.assertEqual(res, ["m", "goi"])
 
     def test_keep_glob_characters(self):
-        _, res = chinese_utils.segment_jyutping(
-            "m* goi", remove_glob_characters=False)
+        _, res = chinese_utils.segment_jyutping("m* goi", remove_glob_characters=False)
         self.assertEqual(res, ["m", "* ", "goi"])
 
     def test_keep_glob_characters_no_whitespace(self):
-        _, res = chinese_utils.segment_jyutping(
-            "m*goi", remove_glob_characters=False)
+        _, res = chinese_utils.segment_jyutping("m*goi", remove_glob_characters=False)
         self.assertEqual(res, ["m", "*", "goi"])
 
     def test_keep_multiple_glob_characters(self):
-        _, res = chinese_utils.segment_jyutping(
-            "m?* goi", remove_glob_characters=False)
+        _, res = chinese_utils.segment_jyutping("m?* goi", remove_glob_characters=False)
         self.assertEqual(res, ["m", "?", "* ", "goi"])
 
     def test_keep_multiple_glob_characters_whitespace(self):
         _, res = chinese_utils.segment_jyutping(
-            "m? * goi", remove_glob_characters=False)
+            "m? * goi", remove_glob_characters=False
+        )
         self.assertEqual(res, ["m", "? ", "* ", "goi"])
 
     def test_keep_multiple_glob_characters_whitespace_surround(self):
         _, res = chinese_utils.segment_jyutping(
-            "m ? * goi", remove_glob_characters=False)
+            "m ? * goi", remove_glob_characters=False
+        )
         self.assertEqual(res, ["m", " ? ", "* ", "goi"])
 
     def test_glob_characters_trim_whitespace(self):
         _, res = chinese_utils.segment_jyutping(
-            "m  ?            *      goi", remove_glob_characters=False)
+            "m  ?            *      goi", remove_glob_characters=False
+        )
         self.assertEqual(res, ["m", " ? ", "* ", "goi"])
 
     def test_keep_special_characters(self):
         _, res = chinese_utils.segment_jyutping(
-            "m？ goi", remove_special_characters=False)
+            "m？ goi", remove_special_characters=False
+        )
         self.assertEqual(res, ["m", "？", "goi"])
 
     def test_remove_whitespace(self):
         _, res = chinese_utils.segment_jyutping(
-            "  m                           goi      ")
+            "  m                           goi      "
+        )
         self.assertEqual(res, ["m", "goi"])
 
     def test_lower(self):
-        _, res = chinese_utils.segment_jyutping(
-            "mGoI")
+        _, res = chinese_utils.segment_jyutping("mGoI")
         self.assertEqual(res, ["m", "goi"])
 
     def test_lower_with_digits(self):
-        _, res = chinese_utils.segment_jyutping(
-            "m4GoI1")
+        _, res = chinese_utils.segment_jyutping("m4GoI1")
         self.assertEqual(res, ["m4", "goi1"])
 
     def test_multiple_finals_vowels_only(self):
@@ -457,8 +468,7 @@ class TestJyutpingSegmentation(TestCase):
         self.assertEqual(res, ["am", "am"])
 
     def test_garbage(self):
-        validity, res = chinese_utils.segment_jyutping(
-            "kljnxclkjvnl")
+        validity, res = chinese_utils.segment_jyutping("kljnxclkjvnl")
         self.assertEqual(validity, False)
         self.assertEqual(res, ["kljnxclkjvnl"])
 
@@ -494,52 +504,58 @@ class TestPinyinSegmentation(TestCase):
 
     def test_keep_glob_characters(self):
         _, res = chinese_utils.segment_pinyin(
-            "guang* dong?", remove_glob_characters=False)
+            "guang* dong?", remove_glob_characters=False
+        )
         self.assertEqual(res, ["guang", "* ", "dong", "?"])
 
     def test_keep_glob_characters_no_whitespace(self):
         _, res = chinese_utils.segment_pinyin(
-            "guang*dong?", remove_glob_characters=False)
+            "guang*dong?", remove_glob_characters=False
+        )
         self.assertEqual(res, ["guang", "*", "dong", "?"])
 
     def test_keep_multiple_glob_characters(self):
         _, res = chinese_utils.segment_pinyin(
-            "guang?* dong", remove_glob_characters=False)
+            "guang?* dong", remove_glob_characters=False
+        )
         self.assertEqual(res, ["guang", "?", "* ", "dong"])
 
     def test_keep_multiple_glob_characters_whitespace(self):
         _, res = chinese_utils.segment_pinyin(
-            "guang? * dong", remove_glob_characters=False)
+            "guang? * dong", remove_glob_characters=False
+        )
         self.assertEqual(res, ["guang", "? ", "* ", "dong"])
 
     def test_keep_multiple_glob_characters_whitespace_surround(self):
         _, res = chinese_utils.segment_pinyin(
-            "guang ? * dong", remove_glob_characters=False)
+            "guang ? * dong", remove_glob_characters=False
+        )
         self.assertEqual(res, ["guang", " ? ", "* ", "dong"])
 
     def test_glob_characters_trim_whitespace(self):
         _, res = chinese_utils.segment_pinyin(
-            "guang  ?            *      dong", remove_glob_characters=False)
+            "guang  ?            *      dong", remove_glob_characters=False
+        )
         self.assertEqual(res, ["guang", " ? ", "* ", "dong"])
 
     def test_keep_special_characters(self):
         _, res = chinese_utils.segment_pinyin(
-            "guang？ dong1", remove_special_characters=False)
+            "guang？ dong1", remove_special_characters=False
+        )
         self.assertEqual(res, ["guang", "？", "dong1"])
 
     def test_remove_whitespace(self):
         _, res = chinese_utils.segment_pinyin(
-            "  guang                           dong      ")
+            "  guang                           dong      "
+        )
         self.assertEqual(res, ["guang", "dong"])
 
     def test_lower(self):
-        _, res = chinese_utils.segment_pinyin(
-            "gUanGdOnG")
+        _, res = chinese_utils.segment_pinyin("gUanGdOnG")
         self.assertEqual(res, ["guang", "dong"])
 
     def test_lower_with_digits(self):
-        _, res = chinese_utils.segment_pinyin(
-            "guAng3dONg1")
+        _, res = chinese_utils.segment_pinyin("guAng3dONg1")
         self.assertEqual(res, ["guang3", "dong1"])
 
     def test_multiple_finals_vowels_only(self):
@@ -551,6 +567,5 @@ class TestPinyinSegmentation(TestCase):
         self.assertEqual(res, ["ang", "ang"])
 
     def test_garbage(self):
-        _, res = chinese_utils.segment_pinyin(
-            "kljnxclkjvnl")
+        _, res = chinese_utils.segment_pinyin("kljnxclkjvnl")
         self.assertEqual(res, ["kljnxclkjvnl"])

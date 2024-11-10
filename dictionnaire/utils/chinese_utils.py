@@ -1,28 +1,120 @@
 import re
 from unicodedata import normalize
 
-SPECIAL_CHARACTERS = (".", "。", ",", "，", "!",  "！", "?", "？", "%",  "－",
-                      "…", "⋯",  ".", "·",  "\"", "“",  "”", "$",  "｜",)
+SPECIAL_CHARACTERS = (
+    ".",
+    "。",
+    ",",
+    "，",
+    "!",
+    "！",
+    "?",
+    "？",
+    "%",
+    "－",
+    "…",
+    "⋯",
+    ".",
+    "·",
+    '"',
+    "“",
+    "”",
+    "$",
+    "｜",
+)
 
-JYUTPING_INITIALS = ("b",  "p", "m",  "f",  "d",
-                     "t",  "n", "l",  "g",  "k",
-                     "ng", "h", "gw", "kw", "w",
-                     "z",  "c", "s",  "j",  "m")
+JYUTPING_INITIALS = (
+    "b",
+    "p",
+    "m",
+    "f",
+    "d",
+    "t",
+    "n",
+    "l",
+    "g",
+    "k",
+    "ng",
+    "h",
+    "gw",
+    "kw",
+    "w",
+    "z",
+    "c",
+    "s",
+    "j",
+    "m",
+)
 
-JYUTPING_FINALS = ("a",   "aa",  "aai", "aau",  "aam", "aan", "aang", "aap",
-                   "aat", "aak", "ai",  "au",   "am",  "an",  "ang",  "ap",
-                   "at",  "ak",  "e",   "ei",   "eu",  "em",  "en",   "eng",
-                   "ep",  "ek",  "i",   "iu",   "im",  "in",  "ing",  "ip",
-                   "it",  "ik",  "o",   "oi",   "ou",  "on",  "ong",  "ot",
-                   "ok",  "u",   "ui",  "un",   "ung", "ut",  "uk",   "oe",
-                   "oet", "eoi", "eon", "oeng", "eot", "oek", "yu",   "yun",
-                   "yut", "m",   "ng")
+JYUTPING_FINALS = (
+    "a",
+    "aa",
+    "aai",
+    "aau",
+    "aam",
+    "aan",
+    "aang",
+    "aap",
+    "aat",
+    "aak",
+    "ai",
+    "au",
+    "am",
+    "an",
+    "ang",
+    "ap",
+    "at",
+    "ak",
+    "e",
+    "ei",
+    "eu",
+    "em",
+    "en",
+    "eng",
+    "ep",
+    "ek",
+    "i",
+    "iu",
+    "im",
+    "in",
+    "ing",
+    "ip",
+    "it",
+    "ik",
+    "o",
+    "oi",
+    "ou",
+    "on",
+    "ong",
+    "ot",
+    "ok",
+    "u",
+    "ui",
+    "un",
+    "ung",
+    "ut",
+    "uk",
+    "oe",
+    "oet",
+    "eoi",
+    "eon",
+    "oeng",
+    "eot",
+    "oek",
+    "yu",
+    "yun",
+    "yut",
+    "m",
+    "ng",
+)
 
 JYUTPING_TONES = (1, 2, 3, 4, 5, 6)
 
-YALE_INITIAL_REGEX = ((re.compile(r"^jy?"), "y"),
-                      (re.compile(r"^z"), "j"),
-                      (re.compile(r"^c"), "ch"),)
+YALE_INITIAL_REGEX = (
+    (re.compile(r"^jy?"), "y"),
+    (re.compile(r"^z"), "j"),
+    (re.compile(r"^c"), "ch"),
+)
 
 YALE_FINAL_REGEX = re.compile(r"([aeiou][aeiou]?[iumngptk]?[g]?)([1-6])")
 YALE_LIGHT_TONE_REGEX = re.compile(r"([ptkmn]?g?)[123456]$")
@@ -50,10 +142,12 @@ YALE_VOWEL_REPLACEMENTS = {
     "u": ("ū", "ú", "u", "ù", "ú", "u"),
 }
 
-CANTONESE_IPA_REGEX = re.compile(r"([bcdfghjklmnpqrstvwxyz]?"
-                                 r"[bcdfghjklmnpqrstvwxyz]"
-                                 r"?)([a@e>i|o~u^y][eo]?)"
-                                 r"([iuymngptk]?g?)([1-9])")
+CANTONESE_IPA_REGEX = re.compile(
+    r"([bcdfghjklmnpqrstvwxyz]?"
+    r"[bcdfghjklmnpqrstvwxyz]"
+    r"?)([a@e>i|o~u^y][eo]?)"
+    r"([iuymngptk]?g?)([1-9])"
+)
 CANTONESE_IPA_PREPROCESS_INITIAL_REGEX = {
     re.compile(r"([zcs])yu"): r"\1hyu",
     re.compile(r"([zc])oe"): r"\1hoe",
@@ -121,16 +215,68 @@ CANTONESE_IPA_CODAS = {
 
 CANTONESE_IPA_TONES = ("˥", "˧˥", "˧", "˨˩", "˩˧", "˨", "˥", "˧", "˨")
 
-PINYIN_INITIALS = ("b", "p", "m",  "f",  "d",  "t",
-                   "n", "l", "g",  "k",  "h",  "j",
-                   "q", "x", "zh", "ch", "sh", "r",
-                   "z", "c", "s")
+PINYIN_INITIALS = (
+    "b",
+    "p",
+    "m",
+    "f",
+    "d",
+    "t",
+    "n",
+    "l",
+    "g",
+    "k",
+    "h",
+    "j",
+    "q",
+    "x",
+    "zh",
+    "ch",
+    "sh",
+    "r",
+    "z",
+    "c",
+    "s",
+)
 
-PINYIN_FINALS = ("a",   "e",   "ai",  "ei",  "ao",   "ou",  "an",   "ang",
-                 "en",  "ang", "eng", "ong", "er",   "i",   "ia",   "ie",
-                 "iao", "iu",  "ian", "in",  "iang", "ing", "iong", "u",
-                 "ua",  "uo",  "uai", "ui",  "uan",  "un",  "uang", "u",
-                 "u:",  "ue",  "u:e", "o")
+PINYIN_FINALS = (
+    "a",
+    "e",
+    "ai",
+    "ei",
+    "ao",
+    "ou",
+    "an",
+    "ang",
+    "en",
+    "ang",
+    "eng",
+    "ong",
+    "er",
+    "i",
+    "ia",
+    "ie",
+    "iao",
+    "iu",
+    "ian",
+    "in",
+    "iang",
+    "ing",
+    "iong",
+    "u",
+    "ua",
+    "uo",
+    "uai",
+    "ui",
+    "uan",
+    "un",
+    "uang",
+    "u",
+    "u:",
+    "ue",
+    "u:e",
+    "o",
+)
 
 PINYIN_TONES = (1, 2, 3, 4, 5)
 
@@ -159,48 +305,141 @@ ZHUYIN_PREPROCESS_FINAL_REGEX = {
 }
 ZHUYIN_INITIAL_REGEX = re.compile(r"^([bpmfdtnlgkhjqxzcsr]?h?)")
 ZHUYIN_FINAL_REGEX = re.compile(
-    r"([aeiouêvyw]?[aeioun]?[aeioung]?[ng]?)(r?)([012345])$")
+    r"([aeiouêvyw]?[aeioun]?[aeioung]?[ng]?)(r?)([012345])$"
+)
 
 ZHUYIN_INITIALS = {
-    "b": "ㄅ",  "p": "ㄆ", "m": "ㄇ", "f": "ㄈ",  "d": "ㄉ",
-    "t": "ㄊ",  "n": "ㄋ", "l": "ㄌ", "g": "ㄍ",  "k": "ㄎ",
-    "h": "ㄏ",  "j": "ㄐ", "q": "ㄑ", "x": "ㄒ",  "z": "ㄗ",
-    "c": "ㄘ",  "s": "ㄙ", "r": "ㄖ", "zh": "ㄓ", "ch": "ㄔ",
+    "b": "ㄅ",
+    "p": "ㄆ",
+    "m": "ㄇ",
+    "f": "ㄈ",
+    "d": "ㄉ",
+    "t": "ㄊ",
+    "n": "ㄋ",
+    "l": "ㄌ",
+    "g": "ㄍ",
+    "k": "ㄎ",
+    "h": "ㄏ",
+    "j": "ㄐ",
+    "q": "ㄑ",
+    "x": "ㄒ",
+    "z": "ㄗ",
+    "c": "ㄘ",
+    "s": "ㄙ",
+    "r": "ㄖ",
+    "zh": "ㄓ",
+    "ch": "ㄔ",
     "sh": "ㄕ",
 }
 
 ZHUYIN_FINALS = {
-    "yuan": "ㄩㄢ", "iang": "ㄧㄤ", "yang": "ㄧㄤ", "uang": "ㄨㄤ",
-    "wang": "ㄨㄤ", "ying": "ㄧㄥ", "weng": "ㄨㄥ", "iong": "ㄩㄥ",
-    "yong": "ㄩㄥ", "uai": "ㄨㄞ",  "wai": "ㄨㄞ",  "yai": "ㄧㄞ",
-    "iao": "ㄧㄠ",  "yao": "ㄧㄠ",  "ian": "ㄧㄢ",  "yan": "ㄧㄢ",
-    "uan": "ㄨㄢ",  "wan": "ㄨㄢ",  "van": "ㄩㄢ",  "ang": "ㄤ",
-    "yue": "ㄩㄝ",  "wei": "ㄨㄟ",  "you": "ㄧㄡ",  "yin": "ㄧㄣ",
-    "wen": "ㄨㄣ",  "yun": "ㄩㄣ",  "eng": "ㄥ",   "ing": "ㄧㄥ",
-    "ong": "ㄨㄥ",  "io": "ㄧㄛ",   "yo": "ㄧㄛ",   "ia": "ㄧㄚ",
-    "ya": "ㄧㄚ",   "ua": "ㄨㄚ",   "wa": "ㄨㄚ",   "ai": "ㄞ",
-    "ao": "ㄠ",    "an": "ㄢ",    "ie": "ㄧㄝ",   "ye": "ㄧㄝ",
-    "uo": "ㄨㄛ",   "wo": "ㄨㄛ",   "ue": "ㄩㄝ",   "ve": "ㄩㄝ",
-    "ei": "ㄟ",    "ui": "ㄨㄟ",   "ou": "ㄡ",     "iu": "ㄧㄡ",
-    "en": "ㄣ",    "in": "ㄧㄣ",   "un": "ㄨㄣ",   "vn": "ㄩㄣ",
-    "yi": "ㄧ",    "wu": "ㄨ",    "yu": "ㄩ",    "a": "ㄚ",
-    "e": "ㄜ",     "o": "ㄛ",     "i": "ㄧ",     "u": "ㄨ",
-    "v": "ㄩ",     "ê": "ㄝ",
+    "yuan": "ㄩㄢ",
+    "iang": "ㄧㄤ",
+    "yang": "ㄧㄤ",
+    "uang": "ㄨㄤ",
+    "wang": "ㄨㄤ",
+    "ying": "ㄧㄥ",
+    "weng": "ㄨㄥ",
+    "iong": "ㄩㄥ",
+    "yong": "ㄩㄥ",
+    "uai": "ㄨㄞ",
+    "wai": "ㄨㄞ",
+    "yai": "ㄧㄞ",
+    "iao": "ㄧㄠ",
+    "yao": "ㄧㄠ",
+    "ian": "ㄧㄢ",
+    "yan": "ㄧㄢ",
+    "uan": "ㄨㄢ",
+    "wan": "ㄨㄢ",
+    "van": "ㄩㄢ",
+    "ang": "ㄤ",
+    "yue": "ㄩㄝ",
+    "wei": "ㄨㄟ",
+    "you": "ㄧㄡ",
+    "yin": "ㄧㄣ",
+    "wen": "ㄨㄣ",
+    "yun": "ㄩㄣ",
+    "eng": "ㄥ",
+    "ing": "ㄧㄥ",
+    "ong": "ㄨㄥ",
+    "io": "ㄧㄛ",
+    "yo": "ㄧㄛ",
+    "ia": "ㄧㄚ",
+    "ya": "ㄧㄚ",
+    "ua": "ㄨㄚ",
+    "wa": "ㄨㄚ",
+    "ai": "ㄞ",
+    "ao": "ㄠ",
+    "an": "ㄢ",
+    "ie": "ㄧㄝ",
+    "ye": "ㄧㄝ",
+    "uo": "ㄨㄛ",
+    "wo": "ㄨㄛ",
+    "ue": "ㄩㄝ",
+    "ve": "ㄩㄝ",
+    "ei": "ㄟ",
+    "ui": "ㄨㄟ",
+    "ou": "ㄡ",
+    "iu": "ㄧㄡ",
+    "en": "ㄣ",
+    "in": "ㄧㄣ",
+    "un": "ㄨㄣ",
+    "vn": "ㄩㄣ",
+    "yi": "ㄧ",
+    "wu": "ㄨ",
+    "yu": "ㄩ",
+    "a": "ㄚ",
+    "e": "ㄜ",
+    "o": "ㄛ",
+    "i": "ㄧ",
+    "u": "ㄨ",
+    "v": "ㄩ",
+    "ê": "ㄝ",
 }
 ZHUYIN_TONES = ("", "", "ˊ", "ˇ", "ˋ", "˙")
 
 MANDARIN_IPA_SYLLABLE_REGEX = re.compile(r"^([bcdfghjklmnpqrstxz]?h?)(.+)$")
 MANDARIN_CLOSE_FRONT_ROUNDED_VOWEL_REGEX = re.compile(r"([jqx])u")
 
-MANDARIN_IPA_GLOTTAL = ("a", "o", "e", "ai", "ei", "ao",
-                        "ou", "an", "en", "er", "ang", "ong", "eng")
+MANDARIN_IPA_GLOTTAL = (
+    "a",
+    "o",
+    "e",
+    "ai",
+    "ei",
+    "ao",
+    "ou",
+    "an",
+    "en",
+    "er",
+    "ang",
+    "ong",
+    "eng",
+)
 
 MANDARIN_IPA_INITIALS = {
-    "b": "p",   "c": "t͡sʰ", "ch": "ʈ͡ʂʰ", "d": "t",  "f": "f",
-    "g": "k",   "h": "x",    "j": "t͡ɕ",   "k": "kʰ", "l": "l",
-    "m": "m",   "n": "n",    "ng": "ŋ",    "p": "pʰ", "q": "t͡ɕʰ",
-    "r": "ʐ",   "s": "s",    "sh": "ʂ",    "t": "tʰ", "x": "ɕ",
-    "z": "t͡s", "zh": "ʈ͡ʂ",
+    "b": "p",
+    "c": "t͡sʰ",
+    "ch": "ʈ͡ʂʰ",
+    "d": "t",
+    "f": "f",
+    "g": "k",
+    "h": "x",
+    "j": "t͡ɕ",
+    "k": "kʰ",
+    "l": "l",
+    "m": "m",
+    "n": "n",
+    "ng": "ŋ",
+    "p": "pʰ",
+    "q": "t͡ɕʰ",
+    "r": "ʐ",
+    "s": "s",
+    "sh": "ʂ",
+    "t": "tʰ",
+    "x": "ɕ",
+    "z": "t͡s",
+    "zh": "ʈ͡ʂ",
 }
 
 MANDARIN_IPA_VOICELESS_INITIALS = {
@@ -213,37 +452,128 @@ MANDARIN_IPA_VOICELESS_INITIALS = {
 }
 
 MANDARIN_IPA_FINALS = {
-    "a": "ä",       "ai": "aɪ̯",      "air": "ɑɻ",     "an": "än",
-    "ang": "ɑŋ",    "angr": "ɑ̃ɻ",    "anr": "ɑɻ",     "ao": "ɑʊ̯",
-    "aor": "aʊ̯ɻʷ",  "ar": "ɑɻ",      "e": "ɤ",        "ei": "eɪ̯",
-    "eir": "əɻ",    "en": "ən",      "eng": "ɤŋ",     "engr": "ɤ̃ɻ",
-    "enr": "ʊ̃ɻ",    "er": "ɤɻ",      "i": "i",        "ia": "jä",
-    "ian": "jɛn",   "iang": "jɑŋ",   "iangr": "jɑ̃ɻ",  "ianr": "jɑɻ",
-    "iao": "jɑʊ̯",   "iaor": "jaʊ̯ɻʷ", "iar": "jɑɻ",    "ie": "jɛ",
-    "ier": "jɛɻ",   "in": "in",      "ing": "iŋ",     "ingr": "iɤ̯̃ɻ",
-    "inr": "iə̯ɻ",   "io": "jɔ",      "iong": "jʊŋ",   "iongr": "jʊ̃ɻ",
-    "ir": "iə̯ɻ",    "iu": "joʊ̯",     "iur": "jɤʊ̯ɻʷ",  "m": "m̩",
-    "n": "n̩",       "ng": "ŋ̍",       "o": "wɔ",       "ong": "ʊŋ",
-    "ongr": "ʊ̃ɻ",   "or": "wɔɻ",     "ou": "oʊ̯",      "our": "ɤʊ̯ɻʷ",
-    "u": "u",       "ua": "u̯ä",      "uai": "waɪ̯",    "uair": "wɑɻ",
-    "uan": "wän",   "uang": "wɑŋ",   "uangr": "wɑ̃ɻ",  "uanr": "wɑɻ",
-    "uar": "u̯ɑɻ",   "ue": "ɥɛ",      "ui": "weɪ̯",     "uir": "wəɻ",
-    "un": "wən",    "unr": "wəɻ",    "uo": "wɔ",      "uor": "wɔɻ",
-    "ur": "uɻʷ",    "v": "y",        "van": "ɥɛn",    "vanr": "ɥɑɻ",
-    "ve": "ɥɛ",     "ver": "ɥɛɻ",    "vn": "yn",      "vnr": "yə̯ɻ",
-    "vr": "yə̯ɻ",    "wa": "wä",      "wai": "waɪ̯",    "wair": "wɑɻ",
-    "wan": "wän",   "wang": "wɑŋ",   "wangr": "wɑ̃ɻ",  "wanr": "wɑɻ",
-    "war": "wɑɻ",   "wei": "weɪ̯",    "weir": "wəɻ",   "wen": "wən",
-    "weng": "wəŋ",  "wengr": "ʊ̃ɻ",   "wenr": "wəɻ",   "wo": "wɔ",
-    "wor": "wɔɻ",   "wu": "u",       "wur": "uɻʷ",    "ya": "jä",
-    "yai": "jaɪ̯",   "yan": "jɛn",    "yang": "jɑŋ",   "yangr": "jɑ̃ɻ",
-    "yanr": "jɑɻ",  "yao": "jɑʊ̯",    "yaor": "jaʊ̯ɻʷ", "yar": "jɑɻ",
-    "ye": "jɛ",     "yer": "jɛɻ",    "yi": "i",       "yin": "in",
-    "ying": "iŋ",   "yingr": "iɤ̯̃ɻ",  "yinr": "iə̯ɻ",   "yir": "iə̯ɻ",
-    "yo": "jɔ",     "yong": "jʊŋ",   "yongr": "jʊ̃ɻ",  "yor": "jɔɻ",
-    "you": "joʊ̯",   "your": "jɤʊ̯ɻʷ", "yu": "y",       "yuan": "ɥɛn",
-    "yuanr": "ɥɑɻ", "yue": "ɥɛ",     "yuer": "ɥɛɻ",   "yun": "yn",
-    "yunr": "yə̯ɻ",  "yur": "yə̯ɻ",
+    "a": "ä",
+    "ai": "aɪ̯",
+    "air": "ɑɻ",
+    "an": "än",
+    "ang": "ɑŋ",
+    "angr": "ɑ̃ɻ",
+    "anr": "ɑɻ",
+    "ao": "ɑʊ̯",
+    "aor": "aʊ̯ɻʷ",
+    "ar": "ɑɻ",
+    "e": "ɤ",
+    "ei": "eɪ̯",
+    "eir": "əɻ",
+    "en": "ən",
+    "eng": "ɤŋ",
+    "engr": "ɤ̃ɻ",
+    "enr": "ʊ̃ɻ",
+    "er": "ɤɻ",
+    "i": "i",
+    "ia": "jä",
+    "ian": "jɛn",
+    "iang": "jɑŋ",
+    "iangr": "jɑ̃ɻ",
+    "ianr": "jɑɻ",
+    "iao": "jɑʊ̯",
+    "iaor": "jaʊ̯ɻʷ",
+    "iar": "jɑɻ",
+    "ie": "jɛ",
+    "ier": "jɛɻ",
+    "in": "in",
+    "ing": "iŋ",
+    "ingr": "iɤ̯̃ɻ",
+    "inr": "iə̯ɻ",
+    "io": "jɔ",
+    "iong": "jʊŋ",
+    "iongr": "jʊ̃ɻ",
+    "ir": "iə̯ɻ",
+    "iu": "joʊ̯",
+    "iur": "jɤʊ̯ɻʷ",
+    "m": "m̩",
+    "n": "n̩",
+    "ng": "ŋ̍",
+    "o": "wɔ",
+    "ong": "ʊŋ",
+    "ongr": "ʊ̃ɻ",
+    "or": "wɔɻ",
+    "ou": "oʊ̯",
+    "our": "ɤʊ̯ɻʷ",
+    "u": "u",
+    "ua": "u̯ä",
+    "uai": "waɪ̯",
+    "uair": "wɑɻ",
+    "uan": "wän",
+    "uang": "wɑŋ",
+    "uangr": "wɑ̃ɻ",
+    "uanr": "wɑɻ",
+    "uar": "u̯ɑɻ",
+    "ue": "ɥɛ",
+    "ui": "weɪ̯",
+    "uir": "wəɻ",
+    "un": "wən",
+    "unr": "wəɻ",
+    "uo": "wɔ",
+    "uor": "wɔɻ",
+    "ur": "uɻʷ",
+    "v": "y",
+    "van": "ɥɛn",
+    "vanr": "ɥɑɻ",
+    "ve": "ɥɛ",
+    "ver": "ɥɛɻ",
+    "vn": "yn",
+    "vnr": "yə̯ɻ",
+    "vr": "yə̯ɻ",
+    "wa": "wä",
+    "wai": "waɪ̯",
+    "wair": "wɑɻ",
+    "wan": "wän",
+    "wang": "wɑŋ",
+    "wangr": "wɑ̃ɻ",
+    "wanr": "wɑɻ",
+    "war": "wɑɻ",
+    "wei": "weɪ̯",
+    "weir": "wəɻ",
+    "wen": "wən",
+    "weng": "wəŋ",
+    "wengr": "ʊ̃ɻ",
+    "wenr": "wəɻ",
+    "wo": "wɔ",
+    "wor": "wɔɻ",
+    "wu": "u",
+    "wur": "uɻʷ",
+    "ya": "jä",
+    "yai": "jaɪ̯",
+    "yan": "jɛn",
+    "yang": "jɑŋ",
+    "yangr": "jɑ̃ɻ",
+    "yanr": "jɑɻ",
+    "yao": "jɑʊ̯",
+    "yaor": "jaʊ̯ɻʷ",
+    "yar": "jɑɻ",
+    "ye": "jɛ",
+    "yer": "jɛɻ",
+    "yi": "i",
+    "yin": "in",
+    "ying": "iŋ",
+    "yingr": "iɤ̯̃ɻ",
+    "yinr": "iə̯ɻ",
+    "yir": "iə̯ɻ",
+    "yo": "jɔ",
+    "yong": "jʊŋ",
+    "yongr": "jʊ̃ɻ",
+    "yor": "jɔɻ",
+    "you": "joʊ̯",
+    "your": "jɤʊ̯ɻʷ",
+    "yu": "y",
+    "yuan": "ɥɛn",
+    "yuanr": "ɥɑɻ",
+    "yue": "ɥɛ",
+    "yuer": "ɥɛɻ",
+    "yun": "yn",
+    "yunr": "yə̯ɻ",
+    "yur": "yə̯ɻ",
 }
 
 MANDARIN_IPA_NEUTRAL_TONE = ("˨", "˧", "˦", "˩", "˩")
@@ -293,8 +623,7 @@ def extract_pinyin_tones(pinyin: str) -> list[int]:
     return res
 
 
-def apply_colours(original: str, tones: list[int],
-                  tone_colours: list[str]) -> str:
+def apply_colours(original: str, tones: list[int], tone_colours: list[str]) -> str:
     """Adds HTML tags to each Chinese character with colours
     corresponding to the character's tone.
 
@@ -331,7 +660,7 @@ def apply_colours(original: str, tones: list[int],
             continue
 
         tone = tones[tone_idx]
-        res += f"<span style=\"color: {tone_colours[tone]}\">{codepoint}</span>"
+        res += f'<span style="color: {tone_colours[tone]}">{codepoint}</span>'
         tone_idx += 1
 
     return res
@@ -356,18 +685,20 @@ def compare_strings(original: str, comparison: str) -> str:
     """
     res = ""
 
-    original, comparison = normalize(
-        "NFC", original), normalize("NFC", comparison)
+    original, comparison = normalize("NFC", original), normalize("NFC", comparison)
     for idx, codepoint in enumerate(original):
         if idx < len(original) and idx < len(comparison):
-            res += (SAME_CHARACTER_STRING if (original[idx] == comparison[idx]) else comparison[idx])
+            res += (
+                SAME_CHARACTER_STRING
+                if (original[idx] == comparison[idx])
+                else comparison[idx]
+            )
         else:
             res += original[idx]
     return res
 
 
-def jyutping_to_yale(jyutping: str,
-                     use_spaces_to_segment: bool = False) -> str:
+def jyutping_to_yale(jyutping: str, use_spaces_to_segment: bool = False) -> str:
     """Converts Jyutping romanization to Yale romanization.
     Note that the majority of this function and the convertToIPA function
     is derivative of Wiktionary's conversion code, contained in the module
@@ -384,6 +715,7 @@ def jyutping_to_yale(jyutping: str,
     Returns:
         str: String of Yale syllables
     """
+
     def convert_yale_initial(syllable: str) -> str:
         for expr, repl in YALE_INITIAL_REGEX:
             # Special initials need to be replaced
@@ -421,9 +753,11 @@ def jyutping_to_yale(jyutping: str,
         for vowel in ("a", "e", "i", "o", "u"):
             vowel_idx = final.find(vowel)
             if vowel_idx != -1:
-                final = (f"{final[:vowel_idx]}"
-                         f"{YALE_VOWEL_REPLACEMENTS[vowel][tone - 1]}"
-                         f"{final[vowel_idx + 1:]}")
+                final = (
+                    f"{final[:vowel_idx]}"
+                    f"{YALE_VOWEL_REPLACEMENTS[vowel][tone - 1]}"
+                    f"{final[vowel_idx + 1:]}"
+                )
                 break
 
         return final
@@ -440,8 +774,8 @@ def jyutping_to_yale(jyutping: str,
         syllables = new_jyutping.split()
     else:
         _, syllables = segment_jyutping(
-            jyutping, remove_special_characters=False,
-            remove_glob_characters=False)
+            jyutping, remove_special_characters=False, remove_glob_characters=False
+        )
 
     for syllable in syllables:
         if (len(syllable) == 1) or (syllable in SPECIAL_CHARACTERS):
@@ -487,6 +821,7 @@ def jyutping_to_IPA(jyutping: str, use_spaces_to_segment: bool = False) -> str:
     Returns:
         str: String of Cantonese Sinological IPA syllables
     """
+
     def convert_ipa_syllable(syllable):
         initial = ""
         nucleus = ""
@@ -529,8 +864,8 @@ def jyutping_to_IPA(jyutping: str, use_spaces_to_segment: bool = False) -> str:
         syllables = new_jyutping.split()
     else:
         _, syllables = segment_jyutping(
-            jyutping, remove_special_characters=False,
-            remove_glob_characters=False)
+            jyutping, remove_special_characters=False, remove_glob_characters=False
+        )
 
     for syllable in syllables:
         if (len(syllable) == 1) or (syllable in SPECIAL_CHARACTERS):
@@ -558,7 +893,8 @@ def jyutping_to_IPA(jyutping: str, use_spaces_to_segment: bool = False) -> str:
             syllable = syllable.replace("m", "m̩")
             syllable = syllable.replace("ng", "ŋ̍")
             syllable = CANTONESE_IPA_TONE_REGEX.sub(
-                CANTONESE_IPA_TONES[tone - 1], syllable)
+                CANTONESE_IPA_TONES[tone - 1], syllable
+            )
 
         # Replace checked tones
         match = CANTONESE_IPA_CHECKED_TONES_REGEX.search(syllable)
@@ -637,9 +973,8 @@ def pretty_pinyin(pinyin: str) -> str:
 
         # Add the diacritic
         syllable = syllable.replace(
-            diacritic_vowel,
-            PINYIN_TONE_REPLACEMENTS[diacritic_vowel][tone - 1],
-            1)
+            diacritic_vowel, PINYIN_TONE_REPLACEMENTS[diacritic_vowel][tone - 1], 1
+        )
 
         # Remove the tone
         syllable = syllable[:-1]
@@ -733,7 +1068,8 @@ def pinyin_to_zhuyin(pinyin: str, use_spaces_to_segment: bool = False) -> str:
         if match:
             if match.group(1):
                 syllable = ZHUYIN_INITIAL_REGEX.sub(
-                    ZHUYIN_INITIALS[match.group(1)], syllable)
+                    ZHUYIN_INITIALS[match.group(1)], syllable
+                )
 
         match = ZHUYIN_FINAL_REGEX.search(syllable)
         if match:
@@ -752,8 +1088,7 @@ def pinyin_to_zhuyin(pinyin: str, use_spaces_to_segment: bool = False) -> str:
         if tone == 5:
             syllable = ZHUYIN_TONES[tone] + syllable
         elif er_idx != -1 and syllable != "ㄦ":
-            syllable = syllable[:er_idx] + \
-                ZHUYIN_TONES[tone] + syllable[er_idx:]
+            syllable = syllable[:er_idx] + ZHUYIN_TONES[tone] + syllable[er_idx:]
         else:
             syllable = syllable + ZHUYIN_TONES[tone]
 
@@ -865,15 +1200,17 @@ def pinyin_to_IPA(pinyin: str, use_spaces_to_segment: bool = False) -> str:
             continue
 
         # Figure out whether this syllable needs a glottal stop
-        syllable_without_tone = syllable[:syllable_tone_idx] + \
-            syllable[syllable_tone_idx+1:]
+        syllable_without_tone = (
+            syllable[:syllable_tone_idx] + syllable[syllable_tone_idx + 1 :]
+        )
         if syllable_without_tone in MANDARIN_IPA_GLOTTAL:
             glottal = "ˀ"
 
         # Mark close front rounded vowel with v instead of "u"
         syllable_without_tone = syllable_without_tone.replace("u:", "v")
         syllable_without_tone = MANDARIN_CLOSE_FRONT_ROUNDED_VOWEL_REGEX.sub(
-            r"\1v", syllable_without_tone)
+            r"\1v", syllable_without_tone
+        )
 
         # Convert main part of the Mandarin syllable
         initial, final = convert_ipa_syllable(syllable_without_tone)
@@ -897,7 +1234,11 @@ def pinyin_to_IPA(pinyin: str, use_spaces_to_segment: bool = False) -> str:
                     initial = MANDARIN_IPA_VOICELESS_INITIALS[initial]
                 if final == "ɤ":
                     final = "ə"
-                tone = "" if prev_tone == "-1" else MANDARIN_IPA_NEUTRAL_TONE[prev_tone - 1]
+                tone = (
+                    ""
+                    if prev_tone == "-1"
+                    else MANDARIN_IPA_NEUTRAL_TONE[prev_tone - 1]
+                )
             case 3:
                 if syllable_idx == len(syllables) - 1:
                     # Last syllable with tone 3 can drop the rising part
@@ -907,8 +1248,11 @@ def pinyin_to_IPA(pinyin: str, use_spaces_to_segment: bool = False) -> str:
                     # If the next syllable doesn't have a tone, default to
                     # no tone sandhi (which is also what happens when the
                     # next tone is tone 5)
-                    tone = MANDARIN_IPA_THIRD_TONE[4] if next_tone == - \
-                        1 else MANDARIN_IPA_THIRD_TONE[next_tone - 1]
+                    tone = (
+                        MANDARIN_IPA_THIRD_TONE[4]
+                        if next_tone == -1
+                        else MANDARIN_IPA_THIRD_TONE[next_tone - 1]
+                    )
             case 4:
                 if next_tone == 4:
                     tone = "˥˩꜒꜔"
@@ -917,14 +1261,16 @@ def pinyin_to_IPA(pinyin: str, use_spaces_to_segment: bool = False) -> str:
             case _:
                 tone = MANDARIN_IPA_TONES[syllable_tone - 1]
 
-        res.append(normalize(
-            "NFC", glottal + initial + final + tone))
+        res.append(normalize("NFC", glottal + initial + final + tone))
 
     return " ".join(res)
 
 
-def segment_jyutping(jyutping: str, remove_special_characters: bool = True,
-                     remove_glob_characters: bool = True) -> tuple[bool, list[str]]:
+def segment_jyutping(
+    jyutping: str,
+    remove_special_characters: bool = True,
+    remove_glob_characters: bool = True,
+) -> tuple[bool, list[str]]:
     """Segments Jyutping by looking at valid Jyutping initials and finals.
     Can be configured to remove special characters and/or
     wildcard delimiter (glob) characters.
@@ -952,11 +1298,14 @@ def segment_jyutping(jyutping: str, remove_special_characters: bool = True,
 
         curr_string = jyutping[end_idx]
         is_special_character = curr_string in SPECIAL_CHARACTERS
-        is_glob_character = (curr_string.strip() == "*"
-                             or curr_string.strip() == "?")
+        is_glob_character = curr_string.strip() == "*" or curr_string.strip() == "?"
 
-        if (curr_string == " " or curr_string == "'"
-                or is_special_character or is_glob_character):
+        if (
+            curr_string == " "
+            or curr_string == "'"
+            or is_special_character
+            or is_glob_character
+        ):
             if initial_found:
                 # Whitespace, apostrophes, special characters, and glob
                 # characters mean that we *must* split a syllable
@@ -974,13 +1323,15 @@ def segment_jyutping(jyutping: str, remove_special_characters: bool = True,
                 glob_start_idx = end_idx
                 glob_end_idx = glob_start_idx + 1
 
-                if ((end_idx >= 1) and (jyutping[end_idx - 1] == " ")
-                        and (res and res[-1][-1] != " ")):
+                if (
+                    (end_idx >= 1)
+                    and (jyutping[end_idx - 1] == " ")
+                    and (res and res[-1][-1] != " ")
+                ):
                     # Keep whitespace preceding the glob character ONLY IF
                     # whitespace was not already added to the previous syllable
                     glob_start_idx -= 1
-                if ((len(jyutping) > (end_idx + 1))
-                        and (jyutping[end_idx + 1] == " ")):
+                if (len(jyutping) > (end_idx + 1)) and (jyutping[end_idx + 1] == " "):
                     # If there is whitespace succeeding the glob character,
                     # add it to this syllable, and mark the whitespace as
                     # being consumed by incrementing end_idx
@@ -1016,7 +1367,7 @@ def segment_jyutping(jyutping: str, remove_special_characters: bool = True,
         for initial_len in range(2, 0, -1):
             # Initials can be length 2 or less; check for longer initials
             # before checking for shorter initials
-            curr_string = jyutping[end_idx:end_idx+initial_len]
+            curr_string = jyutping[end_idx : end_idx + initial_len]
 
             if curr_string not in JYUTPING_INITIALS:
                 continue
@@ -1047,7 +1398,7 @@ def segment_jyutping(jyutping: str, remove_special_characters: bool = True,
         for final_len in range(4, 0, -1):
             # Finals (nucleus + coda) can be length 4 or less; check for longer
             # finals before checking for shorter finals
-            curr_string = jyutping[end_idx:end_idx+final_len]
+            curr_string = jyutping[end_idx : end_idx + final_len]
             if curr_string in JYUTPING_FINALS:
                 end_idx += final_len
                 if end_idx < len(jyutping):
@@ -1071,7 +1422,7 @@ def segment_jyutping(jyutping: str, remove_special_characters: bool = True,
 
     # Add whatever's left in the search term, minus whitespace
     last_word = jyutping[start_idx:]
-    last_word = ' '.join(last_word.split())
+    last_word = " ".join(last_word.split())
     last_word = last_word.strip()
     if last_word and last_word != "'":
         res.append(last_word)
@@ -1081,8 +1432,11 @@ def segment_jyutping(jyutping: str, remove_special_characters: bool = True,
     return [valid_jyutping, res]
 
 
-def segment_pinyin(pinyin: str, remove_special_characters: bool = True,
-                   remove_glob_characters: bool = True) -> tuple[bool, list[str]]:
+def segment_pinyin(
+    pinyin: str,
+    remove_special_characters: bool = True,
+    remove_glob_characters: bool = True,
+) -> tuple[bool, list[str]]:
     """Segments Pinyin by looking at valid Pinyin initials and finals.
     Can be configured to remove special characters and/or
     wildcard delimiter (glob) characters.
@@ -1110,11 +1464,14 @@ def segment_pinyin(pinyin: str, remove_special_characters: bool = True,
 
         curr_string = pinyin[end_idx]
         is_special_character = curr_string in SPECIAL_CHARACTERS
-        is_glob_character = (curr_string.strip() == "*"
-                             or curr_string.strip() == "?")
+        is_glob_character = curr_string.strip() == "*" or curr_string.strip() == "?"
 
-        if (curr_string == " " or curr_string == "'"
-                or is_special_character or is_glob_character):
+        if (
+            curr_string == " "
+            or curr_string == "'"
+            or is_special_character
+            or is_glob_character
+        ):
             if initial_found:
                 # Whitespace, apostrophes, special characters, and glob
                 # characters mean that we *must* split a syllable
@@ -1132,13 +1489,15 @@ def segment_pinyin(pinyin: str, remove_special_characters: bool = True,
                 glob_start_idx = end_idx
                 glob_end_idx = glob_start_idx + 1
 
-                if ((end_idx >= 1) and (pinyin[end_idx - 1] == " ")
-                        and (res and res[-1][-1] != " ")):
+                if (
+                    (end_idx >= 1)
+                    and (pinyin[end_idx - 1] == " ")
+                    and (res and res[-1][-1] != " ")
+                ):
                     # Keep whitespace preceding the glob character ONLY IF
                     # whitespace was not already added to the previous syllable
                     glob_start_idx -= 1
-                if ((len(pinyin) > (end_idx + 1))
-                        and (pinyin[end_idx + 1] == " ")):
+                if (len(pinyin) > (end_idx + 1)) and (pinyin[end_idx + 1] == " "):
                     # If there is whitespace succeeding the glob character,
                     # add it to this syllable, and mark the whitespace as
                     # being consumed by incrementing end_idx
@@ -1160,7 +1519,7 @@ def segment_pinyin(pinyin: str, remove_special_characters: bool = True,
         for initial_len in range(2, 0, -1):
             # Initials can be length 2 or less; check for longer initials
             # before checking for shorter initials
-            curr_string = pinyin[end_idx:end_idx+initial_len]
+            curr_string = pinyin[end_idx : end_idx + initial_len]
             if curr_string in PINYIN_INITIALS:
                 if initial_found:
                     valid_pinyin = False
@@ -1175,7 +1534,7 @@ def segment_pinyin(pinyin: str, remove_special_characters: bool = True,
         for final_len in range(4, 0, -1):
             # Finals (nucleus + coda) can be length 4 or less; check for longer
             # finals before checking for shorter finals
-            curr_string = pinyin[end_idx:end_idx+final_len]
+            curr_string = pinyin[end_idx : end_idx + final_len]
             if curr_string in PINYIN_FINALS:
                 end_idx += final_len
                 if end_idx < len(pinyin) and pinyin[end_idx] == "r":
@@ -1201,7 +1560,7 @@ def segment_pinyin(pinyin: str, remove_special_characters: bool = True,
 
     # Add whatever's left in the search term, minus whitespace
     last_word = pinyin[start_idx:]
-    last_word = ' '.join(last_word.split())
+    last_word = " ".join(last_word.split())
     last_word = last_word.strip()
     if last_word and last_word != "'":
         res.append(last_word)

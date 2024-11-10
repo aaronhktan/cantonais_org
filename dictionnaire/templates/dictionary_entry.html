@@ -17,7 +17,7 @@
         {% for definition_set in entry.definitions_sets %}
         <div class="card my-2 my-md-3">
             <div class="card-header">
-                <span class="text-secondary">{{ definition_set.source }}</span>
+                <span class="text-secondary">Définitions ({{ definition_set.source }})</span>
             </div>
             <div class="card-body">
                 <ol class="ps-4 mb-0">
@@ -34,10 +34,10 @@
                                 {{ sentence.traditional.replace("\n", "<br>")|safe }}
                                 <br>
                                 {{ sentence.simplified.replace("\n", "<br>")|safe }}
-                                {% if sentence.sourceLanguage == "yue" and sentence.jyutping %}
+                                {% if sentence.source_language == "yue" and sentence.jyutping %}
                                 <br>
                                 <span class="text-secondary">{{ sentence.jyutping }}</span>
-                                {% elif sentence.sourceLanguage == "cmn" and sentence.pinyin %}
+                                {% elif sentence.source_language == "cmn" and sentence.pinyin %}
                                 <br>
                                 <span class="text-secondary">{{ sentence._pretty_pinyin }}</span>
                                 {% endif %}
@@ -54,6 +54,47 @@
             </div>
         </div>
         {% endfor %}
+        {% if examples %}
+        {% for source in examples %}
+        <div class="card my-2 my-md-3">
+            <div class="card-header">
+                <span class="text-secondary" style="text: ">Exemples ({{ source }})</span>
+            </div>
+            <div class="card-body">
+                <ol class="ps-4 mb-0">
+                    {% for source_example in examples[source] %}
+                    <li>
+                        <div style="padding-block: 0.25rem; ">
+                            {% if source_example.source_language == "yue"%}
+                            <span style="background-color: #AD1F5A; border-radius: 2rem; padding-block: 0.25rem; padding-inline: 0.5rem;">cantonais</span>
+                            {% elif source_example.source_language == "cmn"%}
+                            <span style="background-color: #0E8B53; border-radius: 2rem; padding-block: 0.25rem; padding-inline: 0.5rem;">mandarin</span>
+                            {% endif %}
+                        </div>
+                        {{ source_example.traditional.replace("\n", "")|safe }}
+                        <br>
+                        {{ source_example.simplified.replace("\n", "")|safe }}
+                        {% if source_example.source_language == "yue" and source_example.jyutping %}
+                        <br>
+                        <span class="text-secondary">{{ source_example.jyutping.replace("\n", "<br>")|safe }}</span>
+                        {% elif source_example.source_language == "cmn" and source_example.pinyin %}
+                        <br>
+                        <span class="text-secondary">{{ source_example._pretty_pinyin.replace("\n", "<br>")|safe }}</span>
+                        {% endif %}
+                        <ul class="ps-4 mb-0">
+                        {% for translation in source_example.translations.translations %}
+                            <li>
+                                <span class="text-secondary fst-italic">{{ translation.translation.replace("\n", "<br>")|safe }}</span>
+                            </li>
+                        {% endfor %}
+                        </ul>
+                    </li>
+                    {% endfor %}
+                </ol>
+            </div>
+        </div>
+        {% endfor %}
+        {% endif %}
         <p class="pb-1"></p>
         {% endfor %}
         {% else %}

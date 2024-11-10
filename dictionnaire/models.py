@@ -24,7 +24,7 @@ class TranslationSet:
 
 @dataclass
 class SourceSentence:
-    sourceLanguage: str
+    source_language: str
     simplified: str
     traditional: str
 
@@ -43,16 +43,20 @@ class SourceSentence:
 
     def __post_init__(self):
         self._yale = chinese_utils.jyutping_to_yale(
-            self.jyutping, use_spaces_to_segment=True)
+            self.jyutping, use_spaces_to_segment=True
+        )
         self._cantonese_IPA = chinese_utils.jyutping_to_IPA(
-            self.jyutping, use_spaces_to_segment=True)
+            self.jyutping, use_spaces_to_segment=True
+        )
 
         self._pretty_pinyin = chinese_utils.pretty_pinyin(self.pinyin)
         self._numbered_pinyin = chinese_utils.numbered_pinyin(self.pinyin)
         self._zhuyin = chinese_utils.pinyin_to_zhuyin(
-            self.pinyin, use_spaces_to_segment=True)
+            self.pinyin, use_spaces_to_segment=True
+        )
         self._mandarin_IPA = chinese_utils.pinyin_to_IPA(
-            self.pinyin, use_spaces_to_segment=True)
+            self.pinyin, use_spaces_to_segment=True
+        )
 
 
 @dataclass
@@ -74,8 +78,7 @@ class DefinitionsSet:
         for definition in self.definitions:
             newline_idx = definition.definition_content.find("\n")
             if newline_idx != -1:
-                definition_contents.append(
-                    definition.definition_content[:newline_idx])
+                definition_contents.append(definition.definition_content[:newline_idx])
             else:
                 definition_contents.append(definition.definition_content)
         self._definitions_snippet = "; ".join(definition_contents)
@@ -110,29 +113,31 @@ class Entry:
     def __post_init__(self):
         # Generate all the read-only fields
         self._coloured_traditional = chinese_utils.apply_colours(
-            self.traditional, chinese_utils.extract_jyutping_tones(
-                self.jyutping),
-            default_settings.DEFAULT_JYUTPING_TONES
+            self.traditional,
+            chinese_utils.extract_jyutping_tones(self.jyutping),
+            default_settings.DEFAULT_JYUTPING_TONES,
         )
         self._coloured_simplified = chinese_utils.apply_colours(
-            self.traditional, chinese_utils.extract_jyutping_tones(
-                self.jyutping),
-            default_settings.DEFAULT_JYUTPING_TONES
+            self.traditional,
+            chinese_utils.extract_jyutping_tones(self.jyutping),
+            default_settings.DEFAULT_JYUTPING_TONES,
         )
 
         self._traditional_difference = chinese_utils.compare_strings(
-            self.simplified, self.traditional)
+            self.simplified, self.traditional
+        )
         self._coloured_traditional_difference = chinese_utils.apply_colours(
-            self._traditional_difference, chinese_utils.extract_jyutping_tones(
-                self.jyutping),
-            default_settings.DEFAULT_JYUTPING_TONES
+            self._traditional_difference,
+            chinese_utils.extract_jyutping_tones(self.jyutping),
+            default_settings.DEFAULT_JYUTPING_TONES,
         )
         self._simplified_difference = chinese_utils.compare_strings(
-            self.traditional, self.simplified)
+            self.traditional, self.simplified
+        )
         self._coloured_simplified_difference = chinese_utils.apply_colours(
-            self._simplified_difference, chinese_utils.extract_jyutping_tones(
-                self.jyutping),
-            default_settings.DEFAULT_JYUTPING_TONES
+            self._simplified_difference,
+            chinese_utils.extract_jyutping_tones(self.jyutping),
+            default_settings.DEFAULT_JYUTPING_TONES,
         )
 
         self._yale = chinese_utils.jyutping_to_yale(self.jyutping)
