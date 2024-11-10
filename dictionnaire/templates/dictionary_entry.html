@@ -17,7 +17,7 @@
         {% for definition_set in entry.definitions_sets %}
         <div class="card my-2 my-md-3">
             <div class="card-header">
-                <span class="text-secondary">Définitions ({{ definition_set.source }})</span>
+                <span class="text-secondary" style="font-variant: all-small-caps;">Définitions ({{ definition_set.source }})</span>
             </div>
             <div class="card-body">
                 <ol class="ps-4 mb-0">
@@ -58,7 +58,7 @@
         {% for source in examples %}
         <div class="card my-2 my-md-3">
             <div class="card-header">
-                <span class="text-secondary" style="text: ">Exemples ({{ source }})</span>
+                <span class="text-secondary" style="font-variant: all-small-caps;">Exemples ({{ source }})</span>
             </div>
             <div class="card-body">
                 <ol class="ps-4 mb-0">
@@ -66,9 +66,9 @@
                     <li>
                         <div style="padding-block: 0.25rem; ">
                             {% if source_example.source_language == "yue"%}
-                            <span style="background-color: #AD1F5A; border-radius: 2rem; padding-block: 0.25rem; padding-inline: 0.5rem;">cantonais</span>
+                            <span style="background-color: #AD1F5A; border-radius: 2rem; padding-block: 0.25rem; padding-inline: 0.5rem;">Cantonais</span>
                             {% elif source_example.source_language == "cmn"%}
-                            <span style="background-color: #0E8B53; border-radius: 2rem; padding-block: 0.25rem; padding-inline: 0.5rem;">mandarin</span>
+                            <span style="background-color: #0E8B53; border-radius: 2rem; padding-block: 0.25rem; padding-inline: 0.5rem;">Mandarin</span>
                             {% endif %}
                         </div>
                         {{ source_example.traditional.replace("\n", "")|safe }}
