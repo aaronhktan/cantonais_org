@@ -1,4 +1,4 @@
-{% macro navbar(sticky=true) -%}
+{% macro navbar(active_page, sticky=true) -%}
 <nav class="navbar sticky-top navbar-expand-lg bg-primary w-100" {% if sticky==false %}style="position:fixed;" {% endif
   %} data-bs-theme="dark">
   <div class="container">
@@ -15,17 +15,36 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link active text-uppercase" aria-current="page"
+          {% if active_page=="dictionary" %}
+          <a class="nav-link text-uppercase active" aria-current="page"
+          {% else %}
+          <a class="nav-link text-uppercase"
+          {% endif %}
             href="{{ request.root_url }}">Dictionnaire</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-uppercase" href="{{ url_for('resources') }}">Ressources</a>
+          {% if active_page=="resources" %}
+          <a class="nav-link text-uppercase active" aria-current="page"
+          {% else %}
+          <a class="nav-link text-uppercase"
+          {% endif %}
+          href="{{ url_for('resources') }}">Ressources</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-uppercase" href="{{ url_for('download') }}">Télécharger</a>
+          {% if active_page=="download" %}
+          <a class="nav-link text-uppercase active" aria-current="page"
+          {% else %}
+          <a class="nav-link text-uppercase"
+          {% endif %}
+          href="{{ url_for('download') }}">Télécharger</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-uppercase" href="{{ url_for('about') }}">À propos</a>
+          {% if active_page=="about" %}
+          <a class="nav-link text-uppercase active" aria-current="page"
+          {% else %}
+          <a class="nav-link text-uppercase"
+          {% endif %}
+          href="{{ url_for('about') }}">À propos</a>
         </li>
       </ul>
     </div>

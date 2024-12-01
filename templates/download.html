@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% import "nav_bar.html" as nav_bar %}
+{% block description %}
+<meta name="description"
+    content="cantonais.org est le site de référence de la langue cantonaise. Cherchez dans le dictionnaire, apprenez avec les ressources et plus encore!">
+{% endblock %}
+{% block title %}À propos | {% endblock %}
+{% block navbar %}
+{{ nav_bar.navbar("download", true) }}
+{% endblock %}
+{% block content %}
+<div class="container d-flex flex-column justify-content-center align-items-center">
+    <div class="row mx-0 pt-4">
+        Hello
+    </div>
+</div>
+{% endblock %}

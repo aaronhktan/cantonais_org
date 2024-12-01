@@ -56,42 +56,24 @@ def index():
     )
 
 
-@app.route("/ressources", methods=("GET", "POST"))
+@app.route("/ressources", methods=["GET"])
 def resources():
-    if request.method == "POST":
-        return redirect_post()
-
-    search_term = request.cookies.get("search_term") or ""
-    search_type = request.cookies.get("search_type") or ""
-
     return render_template(
-        "index.html", search_term=search_term, search_type=search_type
+        "resources.html"
     )
 
 
-@app.route("/telecharger", methods=("GET", "POST"))
+@app.route("/telecharger", methods=["GET"])
 def download():
-    if request.method == "POST":
-        return redirect_post()
-
-    search_term = request.cookies.get("search_term") or ""
-    search_type = request.cookies.get("search_type") or ""
-
     return render_template(
-        "index.html", search_term=search_term, search_type=search_type
+        "download.html"
     )
 
 
-@app.route("/a-propos", methods=("GET", "POST"))
+@app.route("/a-propos", methods=["GET"])
 def about():
-    if request.method == "POST":
-        return redirect_post()
-
-    search_term = request.cookies.get("search_term") or ""
-    search_type = request.cookies.get("search_type") or ""
-
     return render_template(
-        "index.html", search_term=search_term, search_type=search_type
+        "about.html"
     )
 
 

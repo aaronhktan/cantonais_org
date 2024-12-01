@@ -2267,6 +2267,11 @@ button:not(:disabled),
   padding-bottom: 1.5rem !important;
 }
 
+.py-5 {
+  padding-top: 3rem !important;
+  padding-bottom: 3rem !important;
+}
+
 .pt-1 {
   padding-top: 0.25rem !important;
 }
@@ -2289,6 +2294,10 @@ button:not(:disabled),
 
 .pb-1 {
   padding-bottom: 0.25rem !important;
+}
+
+.pb-3 {
+  padding-bottom: 1rem !important;
 }
 
 .ps-4 {
@@ -2427,9 +2436,6 @@ button:not(:disabled),
   .py-md-3 {
     padding-top: 1rem !important;
     padding-bottom: 1rem !important;
-  }
-  .pt-md-4 {
-    padding-top: 1.5rem !important;
   }
 }
 @media (min-width: 992px) {
