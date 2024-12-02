@@ -1,5 +1,9 @@
 # cantonais.org
 
+Le site de référence de la langue cantonaise qui héberge YFDICT, un dictionnaire cantonais-français libre de droits avec plus de 26&nbsp;000 mots et expressions traduits en français.
+
+[https://cantonais.org](cantonais.org)
+
 ## Installation
 1. Téléchargez pyenv et créez un environnement virtuel :
 ```
