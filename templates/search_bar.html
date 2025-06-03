@@ -1,21 +1,30 @@
 {% macro desktop_input(search_term, search_type='') -%}
 <div class="input-group p-0 d-none d-md-flex flex-nowrap">
   <input name="search_term" class="form-control rounded-start py-2 fs-5" style="text-overflow: ellipsis;" type="search"
-    placeholder="Rechercher dans le dictionnaire..." value="{{ search_term }}" autofocus="autofocus" autocomplete="off" autocorrect="off"
-    autocapitalize="false" spellcheck="false">
-  <select name="search_type" class="form-select fs-5" style="text-overflow: ellipsis;" aria-label="Sélection de langue">
-    <option value="search_auto" {% if search_type=="search_auto" %}selected{% endif %}>Détection de langue automatique
+    placeholder="{{ _('Rechercher dans le dictionnaire...') }}" value="{{ search_term }}" autofocus="autofocus"
+    autocomplete="off" autocorrect="off" autocapitalize="false" spellcheck="false">
+  <select name="search_type" class="form-select fs-5" style="text-overflow: ellipsis;"
+    aria-label="{{ _('Sélection de langue') }}">
+    <option value="search_auto" {% if search_type=="search_auto" %}selected{% endif %}>
+      {{ _("Détection de langue automatique") }}
     </option>
-    <option value="search_traditional" {% if search_type=="search_traditional" %}selected{% endif %}>Caractères
-      traditionnels
+    <option value="search_traditional" {% if search_type=="search_traditional" %}selected{% endif %}>
+      {{ _("Caractères traditionnels") }}
     </option>
-    <option value="search_simplified" {% if search_type=="search_simplified" %}selected{% endif %}>Caractères simplifiés
+    <option value="search_simplified" {% if search_type=="search_simplified" %}selected{% endif %}>
+      {{ _("Caractères simplifiés") }}
     </option>
-    <option value="search_jyutping" {% if search_type=="search_jyutping" %}selected{% endif %}>Jyutping</option>
-    <option value="search_pinyin" {% if search_type=="search_pinyin" %}selected{% endif %}>Pinyin</option>
-    <option value="search_french" {% if search_type=="search_french" %}selected{% endif %}>Français</option>
+    <option value="search_jyutping" {% if search_type=="search_jyutping" %}selected{% endif %}>
+      {{ _("Jyutping") }}
+    </option>
+    <option value="search_pinyin" {% if search_type=="search_pinyin" %}selected{% endif %}>
+      {{ _("Pinyin") }}
+    </option>
+    <option value="search_french" {% if search_type=="search_french" %}selected{% endif %}>
+      {{ _("Français") }}
+    </option>
   </select>
-  <button class="input-group-text btn btn-primary" type="submit">Rechercher</button>
+  <button class="input-group-text btn btn-primary" type="submit">{{ _("Rechercher") }}</button>
 </div>
 {%- endmacro %}
 
@@ -23,22 +32,31 @@
 <div class="d-flex d-md-none flex-column gap-2">
   <div class="input-group flex">
     <input name="search_term_mobile" class="form-control rounded-start" style="text-overflow: ellipsis;" type="search"
-      placeholder="Rechercher dans le dictionnaire..." value="{{ search_term }}" autocomplete="off" autocorrect="off"
-      autocapitalize="false" spellcheck="false">
-    <button class="input-group-text btn btn-primary flex-shrink-0" type="submit" aria-label="Rechercher"><i
+      placeholder="{{ _('Rechercher dans le dictionnaire...') }}" value="{{ search_term }}" autocomplete="off"
+      autocorrect="off" autocapitalize="false" spellcheck="false">
+    <button class="input-group-text btn btn-primary flex-shrink-0" type="submit" aria-label="{{ _('Rechercher') }}"><i
         class="bi-search"></i></button>
   </div>
   <select name="search_type_mobile" class="form-select" style="text-overflow: ellipsis;"
-    aria-label="Sélection de langue">
+    aria-label="{{ _('Sélection de langue') }}">
     <option value="search_auto" {% if search_type=="search_traditional" %}selected{% endif %}>
-      Détection de langue automatique</option>
-    <option value="search_traditional" {% if search_type=="search_traditional" %}selected{% endif %}>Caractères
-      traditionnels</option>
-    <option value="search_simplified" {% if search_type=="search_simplified" %}selected{% endif %}>Caractères
-      simplifiés</option>
-    <option value="search_jyutping" {% if search_type=="search_jyutping" %}selected{% endif %}>Jyutping</option>
-    <option value="search_pinyin" {% if search_type=="search_pinyin" %}selected{% endif %}>Pinyin</option>
-    <option value="search_french" {% if search_type=="search_french" %}selected{% endif %}>Français</option>
+      {{ _("Détection de langue automatique") }}
+    </option>
+    <option value="search_traditional" {% if search_type=="search_traditional" %}selected{% endif %}>
+      {{ _("Caractères traditionnels") }}
+    </option>
+    <option value="search_simplified" {% if search_type=="search_simplified" %}selected{% endif %}>
+      {{ _("Caractères simplifiés") }}
+    </option>
+    <option value="search_jyutping" {% if search_type=="search_jyutping" %}selected{% endif %}>
+      {{ _("Jyutping") }}
+    </option>
+    <option value="search_pinyin" {% if search_type=="search_pinyin" %}selected{% endif %}>
+      {{ _("Pinyin") }}
+    </option>
+    <option value="search_french" {% if search_type=="search_french" %}selected{% endif %}>
+      {{ _("Français") }}
+    </option>
   </select>
 </div>
 {%- endmacro %}

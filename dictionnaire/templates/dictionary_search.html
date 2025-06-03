@@ -8,17 +8,20 @@
     <div class="mx-auto py-2" style="max-width: 50rem">
         <div class="pb-1 fs-6 text-secondary">
             {% if not entries %}
-            Il n'y a aucun résultat correspondant à la requête.
+            {{ _("Il n'y a aucun résultat correspondant à la requête.") }}
             {% elif entries|length > 1 %}
-            Il y a {{ entries|length }} résultats correspondant à la requête.
+            {{ _("Il y a %(num_results)s résultats correspondant à la requête.", num_results=entries|length) }}
             {% else %}
-            Il y a {{ entries|length }} résultat correspondant à la requête.
+            {{ _("Il y a %(num_results)s résultat correspondant à la requête.", num_results=entries|length) }}
             {% endif %}
         </div>
         <div class="list-group pt-1">
+            {% set url %}
+            {{ _("dictionnaire.entry_view") }}
+            {% endset %}
             {% if entries %}
             {% for entry in entries %}
-            <a href="{{ url_for('dictionary_app.entry_view', entry=entry.traditional|quote) }}"
+            <a href="{{ url_for(url|trim|safe, entry=entry.traditional|quote) }}"
                 class="list-group-item list-group-item-action m-0 p-0">
                 <div class="m-3">
                     <div class="fs-3 lh-sm">{{ entry._coloured_traditional|safe }} [{{

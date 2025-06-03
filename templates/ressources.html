@@ -1,0 +1,170 @@
+{% extends "base.html" %}
+{% import "nav_bar.html" as nav_bar %}
+{% block description %}
+{% set description %}
+{% trans %}
+cantonais.org est le site de référence de la langue cantonaise. Cherchez dans
+le dictionnaire, apprenez avec les ressources et plus encore!
+{% endtrans %}
+{% endset %}
+<meta name="description" content="{{ description | replace('\n', ' ') | trim }}">
+{% endblock %}
+{% block title %}Ressources | {% endblock %}
+{% block navbar %}
+{{ nav_bar.navbar("resources", true) }}
+{% endblock %}
+{% block content %}
+<div class="container d-flex flex-column justify-content-center align-items-center">
+    <div class="d-flex py-1 flex-column flex-md-row justify-content-center align-items-center">
+        <div class="py-5 ms-md-3 w-md-75 flex-grow-0">
+            <h1 class="text-center pb-3 " style="text-wrap:balance">
+                Ressources
+            </h1>
+            <h2 class="text-center py-3" style="text-wrap:balance">
+                Apprendre le Jyutping
+            </h2>
+            <p>
+                Le Jyutping est le système de romanisation pour le cantonais qu'utilise ce site, comme le Pinyin pour le
+                chinois mandarin. Il a été créé en 1993 par la La Société de linguistique de Hong Kong (LSHK). Pour ceux
+                qui parlent français, c'est un système qui vous aidera à améliorer votre prononciation et lire les
+                nouveaux
+                sinogrammes.
+            </p>
+            <p>
+                <a href="https://jyutping.org/en/docs/english/">Le guide officiel</a> propose une introduction au
+                Jyutping.
+                Cette ressource est en anglais.
+            </p>
+            <p>
+                <a href="https://jyutping.org/en/jyutping/">Le site officiel</a> propose également un tableau des sons
+                du
+                cantonais (les initiales et finales), ainsi que les tons. Cette ressource est en anglais.
+            </p>
+            <h2 class="text-center py-3" style="text-wrap:balance">
+                Utiliser le Jyutping comme méthode de saisie
+            </h2>
+            <p>
+                Après avoir appris le Jyutping, vous pourrez l'utiliser comme méthode de saisie au lieu de devoir
+                rappeler et
+                écrire les sinogrammes.
+            </p>
+            <p>
+                <a href="https://blog.cantoblog.com/2023/01/how-to-add-jyutpingyale-cantonese-input.html">
+                    Suivez ce guide pour iPhone.
+                </a>
+                <br>
+                <a href="https://www.cantonese.tools/android.html">
+                    Suivez ce guide pour Android.
+                </a>
+                <br>
+                <a href="https://www.cantonese.tools/mac.html">
+                    Suivez ce guide pour Mac.
+                </a>
+                <br>
+                <a href="https://www.cantonese.tools/windows.html">
+                    Suivez ce guide pour Windows.
+                </a>
+            </p>
+            <h2 class="text-center py-3" style="text-wrap:balance">
+                Référence, dictionnaires
+            </h2>
+            <p>
+                <a href="https://jyutdictionary.com">Jyut Dictionary</a> est un logiciel pour Mac et Windows qui réunit
+                plusieurs dictionnaires dans une interface. Il vous permet de faire des recherches sur de centaines de
+                milliers
+                de mots et expressions hors-ligne, et en plus, il est complètement gratuit!
+            </p>
+            <p>
+                <a href="https://words.hk">words.hk粵典</a> ou son équivalent en anglais,
+                <a href="https://cantowords.com/">CantoWords</a> est l'un des meilleurs dictionnaires cantonais en
+                ligne. C'est un
+                projet qui vise à créer le premier dictionnaire cantonais dont les définitions sont en cantonais, pas en
+                chinois écrit standard ni une autre langue (mais il propose également des traductions en anglais).
+            </p>
+            <p>
+                <a href="https://www.indigo.ca/en-ca/abc-cantonese-english-comprehensive-dictionary/9780824877323.html">ABC
+                    Cantonese-English Dictionary</a>
+                est une dictionnaire publié en 2020 qui définit et traduit de nombreuses expressions utilisées à Hong
+                Kong.
+            </p>
+            <p>
+                <a href="https://www.pleco.com/">Pleco</a>
+                est une appli pour iPhone et Android qui vous permet de consulter quelques dictionnaires sur votre
+                téléphone mobile.
+                Attention, il faut activer le « mode cantonais » pour voir le Jyutping.
+            </p>
+            <h2 class="text-center py-3" style="text-wrap:balance">
+                Textes
+            </h2>
+            <p>
+                <a href="https://hambaanglaang.hk/all-levels/">Hambaanglaang</a>, mot en cantonais qui signifie
+                « toute la patente, tout », est un site Web qui héberge des centaines de textes écrits en cantonais
+                avec Jyutping. La plupart des textes ont aussi des vidéos où des bénévoles les ont lus à voix haute.
+            </p>
+            <p>
+                <a href="https://kozzi.ca">Kozzi.ca</a> est une librairie canadienne qui vend des livres chinois et
+                hongkongais. Si vous préférez les livres en papier plutôt qu'en format PDF, c'est le site pour vous!
+                Je vous recommande les
+                <a
+                    href="https://kozzi.ca/products/hambaanglaang-full-collection-8-sets-40-books-%E5%86%9A%E5%94%AA%E5%94%A5%E5%85%A8%E5%A5%97-1-8-40-%E6%9C%AC">
+                    livres de Hambaanglaang
+                </a> ainsi que
+                <a
+                    href="https://kozzi.ca/products/the-little-prince-in-cantonese-with-jyutping-%E5%B0%8F%E7%8E%8B%E5%AD%90-%E9%A6%99%E6%B8%AF%E7%B2%B5%E6%8B%BC%E7%89%88">
+                    Le petit prince en cantonais
+                </a>.
+            </p>
+            <p>
+                Pour les lecteurs plus avancés, il existe un magazine littéraire écrit en cantonais moderne,
+                <a href="https://www.resonatehk.com/">迴響 Resonate</a>. J'aime bien leurs articles.
+            </p>
+            <p>
+                Si c'est l'argot qui vous intéresse, ou vous voulez lire ce qu'écrivent les internautes, vous pouvez
+                vous joindre aux réseaux sociaux : <a href="https://m.hkgolden.com/">HKGolden</a> et
+                <a href="https://www.discuss.com.hk/">Discuss</a>.
+            </p>
+            <h2 class="text-center py-3" style="text-wrap:balance">
+                Vidéos
+            </h2>
+            <p>
+                <a href="https://www.youtube.com/@ViuTVWorld">ViuTV</a> met beaucoup de ses séries télévisées (pour un
+                public
+                de jeunes adultes) en ligne sur YouTube.
+            </p>
+            <p>
+                <a href="https://tvbanywherena.com/cantonese">TVB</a> est une station de télévision hongkongaise qui
+                propose
+                des émissions de nouvelles, des romans-savons, etc.
+            </p>
+            <p>
+                Disney double la plupart de ses films animés en cantonais. Vous pouvez
+                <a href="https://help.disneyplus.com/fr-CA/article/disneyplus-video-language?redirect=false">
+                    sélectionner la langue de doublage
+                </a>
+                sur l'appli Disney Plus.
+            </p>
+            <h2 class="text-center py-3" style="text-wrap:balance">
+                Audio, balados, podcasts
+            </h2>
+            <p>
+                <a href="https://www.rthk.hk/radio">RTHK</a>, société d'État de radiodiffusion, vous permet d'écouter
+                leurs émissions de radio en ligne. Elle a aussi quelques balados : je recommande
+                <a href="https://podcasts.apple.com/us/podcast/rthk-naked-cantonese/id217743398">Naked Cantonese</a>
+                pour
+                ceux qui apprennent le cantonais et
+                <a
+                    href="https://podcasts.apple.com/us/podcast/%E8%AC%9B%E6%9D%B1%E8%AC%9B%E8%A5%BF/id718099226">講東講西</a>
+                pour ceux qui le parlent assez couramment.
+            </p>
+            <p>
+                Pour ceux qui sont amateurs de linguistique,
+                <a
+                    href="https://podcasts.apple.com/us/podcast/%E7%B5%AE%E8%A8%80-%E7%8B%82%E6%83%B3-seoijin/id1534765195">
+                    絮言．狂想 seoijin
+                </a>
+                est une balado qui discute les langues, la linguistique, etc. entièrement en cantonais!
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}

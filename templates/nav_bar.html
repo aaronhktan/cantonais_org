@@ -6,45 +6,40 @@
       <img src="{{ url_for('static', filename='img/icon.svg') }}" alt="Jyut Dictionary" width="24" height="24"
         class="d-inline-block align-text-top" style="color: transparent;" onload="this.style.color='unset'"
         onerror="this.style.color='unset'">
-      cantonais.org
+      {{ _("cantonais.org") }}
     </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Basculer la navigation">
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ _('Basculer la navigation') }}">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
           {% if active_page=="dictionary" %}
-          <a class="nav-link text-uppercase active" aria-current="page"
-          {% else %}
-          <a class="nav-link text-uppercase"
-          {% endif %}
-            href="{{ request.root_url }}">Dictionnaire</a>
+          <a class="nav-link text-uppercase active" aria-current="page" {% else %} <a class="nav-link text-uppercase" {%
+            endif %} href="{{ request.root_url }}">{{ _("Dictionnaire") }}</a>
         </li>
         <li class="nav-item">
-          {% if active_page=="resources" %}
-          <a class="nav-link text-uppercase active" aria-current="page"
-          {% else %}
-          <a class="nav-link text-uppercase"
-          {% endif %}
-          href="{{ url_for('resources') }}">Ressources</a>
+          {% set resources_url = _("resources") %}
+          {% if active_page == "resources" %}
+          <a class="nav-link text-uppercase active" aria-current="page" href="{{ url_for(resources_url|trim|safe) }}">
+            {% else %}
+            <a class="nav-link text-uppercase" href="{{ url_for(resources_url|trim|safe) }}">
+              {% endif %}
+              {{ _("Ressources") }}
+            </a>
         </li>
         <li class="nav-item">
+          {% set download_url = _("download") %}
           {% if active_page=="download" %}
-          <a class="nav-link text-uppercase active" aria-current="page"
-          {% else %}
-          <a class="nav-link text-uppercase"
-          {% endif %}
-          href="{{ url_for('download') }}">Télécharger</a>
+          <a class="nav-link text-uppercase active" aria-current="page" {% else %} <a class="nav-link text-uppercase" {%
+            endif %} href="{{ url_for(download_url|trim|safe) }}">{{ _("Télécharger") }}</a>
         </li>
         <li class="nav-item">
+          {% set about_url = _("about") %}
           {% if active_page=="about" %}
-          <a class="nav-link text-uppercase active" aria-current="page"
-          {% else %}
-          <a class="nav-link text-uppercase"
-          {% endif %}
-          href="{{ url_for('about') }}">À propos</a>
+          <a class="nav-link text-uppercase active" aria-current="page" {% else %} <a class="nav-link text-uppercase" {%
+            endif %} href="{{ url_for(about_url|trim|safe) }}">{{ _("À propos") }}</a>
         </li>
       </ul>
     </div>

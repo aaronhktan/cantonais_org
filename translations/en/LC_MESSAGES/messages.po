@@ -1,0 +1,149 @@
+# English translations for cantonais_org.
+# Copyright (C) 2025 Aaron Tan
+# This file is distributed under the same license as the cantonais_org
+# project.
+# Aaron Tan <hi@aaronhktan.com>, 2025.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: cantonais_org 2.0.0\n"
+"Report-Msgid-Bugs-To: hi@aaronhktan.com\n"
+"POT-Creation-Date: 2025-06-03 02:43-0400\n"
+"PO-Revision-Date: 2025-06-03 01:14-0400\n"
+"Last-Translator: Aaron Tan <hi@aaronhktan.com>\n"
+"Language: en\n"
+"Language-Team: en <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: app.py:48 dictionnaire/urls.py:30
+msgid "dictionnaire"
+msgstr "dictionary"
+
+#: dictionnaire/templates/dictionary_entry.html:21
+msgid "Définitions"
+msgstr "Definitions"
+
+#: dictionnaire/templates/dictionary_entry.html:66
+msgid "Exemples"
+msgstr "Examples"
+
+#: dictionnaire/templates/dictionary_search.html:11
+msgid "Il n'y a aucun résultat correspondant à la requête."
+msgstr "No results were found for this search."
+
+#: dictionnaire/templates/dictionary_search.html:13
+#, python-format
+msgid "Il y a %(num_results)s résultats correspondant à la requête."
+msgstr "%(num_results)s results were found."
+
+#: dictionnaire/templates/dictionary_search.html:15
+#, python-format
+msgid "Il y a %(num_results)s résultat correspondant à la requête."
+msgstr "%(num_results)s result was found."
+
+#: dictionnaire/templates/dictionary_search.html:20
+msgid "dictionnaire.entry_view"
+msgstr "dictionary.entry_view"
+
+#: templates/base.html:19 templates/nav_bar.html:9
+msgid "cantonais.org"
+msgstr "Jyut Dictionary"
+
+#: templates/index.html:6 templates/resources.html:5
+#: templates/ressources.html:5
+msgid ""
+"\n"
+"cantonais.org est le site de référence de la langue cantonaise. Cherchez "
+"dans\n"
+"le dictionnaire, apprenez avec les ressources et plus encore!\n"
+msgstr ""
+"\n"
+"Jyut Dictionary is the most comprehensive online Cantonese dictionary. "
+"Search using Jyutping, Pinyin, English, traditional or simplified "
+"Chinese! \n"
+
+#: templates/index.html:13
+msgid "Accueil"
+msgstr "Jyut Dictionary"
+
+#: templates/index.html:28
+msgid "Bienvenue sur cantonais.org, le site de référence de la langue cantonaise!"
+msgstr ""
+"Welcome to Jyut Dictionary, the most comprehensive online Cantonese "
+"dictionary!"
+
+#: templates/index.html:31
+msgid "Un projet créé par Aaron Tan 🇨🇦"
+msgstr "A project by Aaron Tan 🇨🇦"
+
+#: templates/nav_bar.html:12
+msgid "Basculer la navigation"
+msgstr "Toggle navigation"
+
+#: templates/nav_bar.html:20
+msgid "Dictionnaire"
+msgstr "Dictionary"
+
+#: templates/nav_bar.html:23
+msgid "resources"
+msgstr "resources"
+
+#: templates/nav_bar.html:29
+msgid "Ressources"
+msgstr "Resources"
+
+#: templates/nav_bar.html:33
+msgid "download"
+msgstr "download"
+
+#: templates/nav_bar.html:36
+msgid "Télécharger"
+msgstr "Download"
+
+#: templates/nav_bar.html:39
+msgid "about"
+msgstr "about"
+
+#: templates/nav_bar.html:42
+msgid "À propos"
+msgstr "About"
+
+#: templates/search_bar.html:4 templates/search_bar.html:35
+msgid "Rechercher dans le dictionnaire..."
+msgstr "Search Jyut Dictionary..."
+
+#: templates/search_bar.html:7 templates/search_bar.html:41
+msgid "Sélection de langue"
+msgstr "Language selection"
+
+#: templates/search_bar.html:9 templates/search_bar.html:43
+msgid "Détection de langue automatique"
+msgstr "Auto-detect search language"
+
+#: templates/search_bar.html:12 templates/search_bar.html:46
+msgid "Caractères traditionnels"
+msgstr "Traditional Chinese"
+
+#: templates/search_bar.html:15 templates/search_bar.html:49
+msgid "Caractères simplifiés"
+msgstr "Simplified Chinese"
+
+#: templates/search_bar.html:18 templates/search_bar.html:52
+msgid "Jyutping"
+msgstr "Jyutping"
+
+#: templates/search_bar.html:21 templates/search_bar.html:55
+msgid "Pinyin"
+msgstr "Pinyin"
+
+#: templates/search_bar.html:24 templates/search_bar.html:58
+msgid "Français"
+msgstr "English"
+
+#: templates/search_bar.html:27 templates/search_bar.html:37
+msgid "Rechercher"
+msgstr "Search"

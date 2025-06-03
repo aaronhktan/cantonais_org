@@ -2,9 +2,15 @@
 {% import "nav_bar.html" as nav_bar %}
 {% import "search_bar.html" as search_bar with context %}
 {% block description %}
-<meta name="description" content="cantonais.org est le site de référence de la langue cantonaise. Cherchez dans le dictionnaire, apprenez avec les ressources et plus encore!">
+{% set description %}
+{% trans %}
+cantonais.org est le site de référence de la langue cantonaise. Cherchez dans
+le dictionnaire, apprenez avec les ressources et plus encore!
+{% endtrans %}
+{% endset %}
+<meta name="description" content="{{ description | replace('\n', ' ') | trim }}">
 {% endblock %}
-{% block title %}Accueil | {% endblock %}
+{% block title %}{{ _("Accueil") }} | {% endblock %}
 {% block navbar %}
 {{ nav_bar.navbar("dictionary", false) }}
 {% endblock %}
@@ -19,10 +25,10 @@
     <div class="d-flex py-1 flex-column flex-md-row justify-content-center align-items-center">
       <div class="ms-md-3 w-md-75 flex-grow-0">
         <h1 class="text-center" style="text-wrap:balance">
-          Bienvenue sur cantonais.org, le site de référence de la langue cantonaise!
+          {{ _("Bienvenue sur cantonais.org, le site de référence de la langue cantonaise!") }}
         </h1>
         <p class="text-body-secondary text-center fs-5">
-          Un projet créé par Aaron Tan 🇨🇦
+          {{ _("Un projet créé par Aaron Tan 🇨🇦") }}
         </p>
       </div>
     </div>

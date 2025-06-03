@@ -17,7 +17,9 @@
         {% for definition_set in entry.definitions_sets %}
         <div class="card my-2 my-md-3">
             <div class="card-header">
-                <span class="text-secondary" style="font-variant: all-small-caps;">Définitions ({{ definition_set.source }})</span>
+                <span class="text-secondary" style="font-variant: all-small-caps;">
+                    {{ _("Définitions") }} ({{definition_set.source }})
+                </span>
             </div>
             <div class="card-body">
                 <ol class="ps-4 mb-0">
@@ -29,7 +31,7 @@
                         {% endif %}
                         {{ definition.definition_content.replace("\n", "<br>")|safe }}
                         <ul class="ps-4 mb-0">
-                        {% for sentence in definition.sentences %}
+                            {% for sentence in definition.sentences %}
                             <li>
                                 {{ sentence.traditional.replace("\n", "<br>")|safe }}
                                 <br>
@@ -43,10 +45,12 @@
                                 {% endif %}
                                 <br>
                                 {% if sentence.translations and sentence.translations.translations %}
-                                <span class="text-secondary fst-italic">{{ sentence.translations.translations[0].translation.replace("\n", "<br>")|safe }}</span>
+                                <span class="text-secondary fst-italic">{{
+                                    sentence.translations.translations[0].translation.replace("\n", "<br>")|safe
+                                    }}</span>
                                 {% endif %}
                             </li>
-                        {% endfor %}
+                            {% endfor %}
                         </ul>
                     </li>
                     {% endfor %}
@@ -58,7 +62,9 @@
         {% for source in examples %}
         <div class="card my-2 my-md-3">
             <div class="card-header">
-                <span class="text-secondary" style="font-variant: all-small-caps;">Exemples ({{ source }})</span>
+                <span class="text-secondary" style="font-variant: all-small-caps;">
+                    {{ _("Exemples") }} ({{ source }})
+                </span>
             </div>
             <div class="card-body">
                 <ol class="ps-4 mb-0">
@@ -66,9 +72,11 @@
                     <li>
                         <div style="padding-block: 0.25rem; ">
                             {% if source_example.source_language == "yue"%}
-                            <span style="background-color: #AD1F5A; border-radius: 2rem; padding-block: 0.25rem; padding-inline: 0.5rem;">Cantonais</span>
+                            <span
+                                style="background-color: #AD1F5A; border-radius: 2rem; padding-block: 0.25rem; padding-inline: 0.5rem;">Cantonais</span>
                             {% elif source_example.source_language == "cmn"%}
-                            <span style="background-color: #0E8B53; border-radius: 2rem; padding-block: 0.25rem; padding-inline: 0.5rem;">Mandarin</span>
+                            <span
+                                style="background-color: #0E8B53; border-radius: 2rem; padding-block: 0.25rem; padding-inline: 0.5rem;">Mandarin</span>
                             {% endif %}
                         </div>
                         {{ source_example.traditional.replace("\n", "")|safe }}
@@ -79,16 +87,18 @@
                         <span class="text-secondary">{{ source_example.jyutping.replace("\n", "<br>")|safe }}</span>
                         {% elif source_example.source_language == "cmn" and source_example.pinyin %}
                         <br>
-                        <span class="text-secondary">{{ source_example._pretty_pinyin.replace("\n", "<br>")|safe }}</span>
+                        <span class="text-secondary">{{ source_example._pretty_pinyin.replace("\n", "<br>")|safe
+                            }}</span>
                         {% endif %}
                         <ul class="ps-4 mb-0">
-                        {% for translation in source_example.translations.translations %}
+                            {% for translation in source_example.translations.translations %}
                             {% if translation.translation %}
                             <li>
-                                <span class="text-secondary fst-italic">{{ translation.translation.replace("\n", "<br>")|safe }}</span>
+                                <span class="text-secondary fst-italic">{{ translation.translation.replace("\n",
+                                    "<br>")|safe }}</span>
                             </li>
                             {% endif %}
-                        {% endfor %}
+                            {% endfor %}
                         </ul>
                     </li>
                     {% endfor %}

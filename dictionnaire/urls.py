@@ -1,4 +1,5 @@
 from flask import Blueprint, make_response, request, redirect, url_for
+from flask_babel import _
 from . import views
 
 import urllib.parse
@@ -26,10 +27,12 @@ def redirect_post():
     search_term = search_term.strip()
     search_term = urllib.parse.quote(search_term, safe="")
 
-    return redirect(url_for(f"dictionary_app.{search_type}", search_term=search_term))
+    endpoint_name = _("dictionnaire") + f".{search_type}"
+    return redirect(url_for(endpoint_name, search_term=search_term))
 
 
 @dictionary_app.route("/recherche/auto/<search_term>", methods=("GET", "POST"))
+@dictionary_app.route("/search/auto/<search_term>", methods=("GET", "POST"))
 def search_auto(search_term):
     if request.method == "POST":
         return redirect_post()
@@ -45,6 +48,7 @@ def search_auto(search_term):
 
 
 @dictionary_app.route("/recherche/traditionnel/<search_term>", methods=("GET", "POST"))
+@dictionary_app.route("/search/traditional/<search_term>", methods=("GET", "POST"))
 def search_traditional(search_term):
     if request.method == "POST":
         return redirect_post()
@@ -60,6 +64,7 @@ def search_traditional(search_term):
 
 
 @dictionary_app.route("/recherche/simplifie/<search_term>", methods=("GET", "POST"))
+@dictionary_app.route("/search/simplified/<search_term>", methods=("GET", "POST"))
 def search_simplified(search_term):
     if request.method == "POST":
         return redirect_post()
@@ -75,6 +80,7 @@ def search_simplified(search_term):
 
 
 @dictionary_app.route("/recherche/jyutping/<search_term>", methods=("GET", "POST"))
+@dictionary_app.route("/search/jyutping/<search_term>", methods=("GET", "POST"))
 def search_jyutping(search_term):
     if request.method == "POST":
         return redirect_post()
@@ -90,6 +96,7 @@ def search_jyutping(search_term):
 
 
 @dictionary_app.route("/recherche/pinyin/<search_term>", methods=("GET", "POST"))
+@dictionary_app.route("/search/pinyin/<search_term>", methods=("GET", "POST"))
 def search_pinyin(search_term):
     if request.method == "POST":
         return redirect_post()
@@ -105,6 +112,7 @@ def search_pinyin(search_term):
 
 
 @dictionary_app.route("/recherche/fr/<search_term>", methods=("GET", "POST"))
+@dictionary_app.route("/search/en/<search_term>", methods=("GET", "POST"))
 def search_french(search_term):
     if request.method == "POST":
         return redirect_post()
@@ -120,6 +128,7 @@ def search_french(search_term):
 
 
 @dictionary_app.route("/entree/<entry>", methods=("GET", "POST"))
+@dictionary_app.route("/entry/<entry>", methods=("GET", "POST"))
 def entry_view(entry):
     if request.method == "POST":
         return redirect_post()
