@@ -36,7 +36,14 @@ export CANTONAIS_ORG_DB_PATH="<chemin_d'accès_de_la_base_de_données>"
 ```
 5. Générez les actifs statiques :
 ```
+# Pour CSS
+sass static/scss/custom.scss static/intermediate/custom.css
 purgecss --config purgecss.config.js
+
+# Pour les traductions
+pybabel -v extract -F babel.cfg -o messages.pot .
+pybabel update -i messages.pot -d translations -l en
+pybabel compile -d translations
 ```
 6. Lancez le serveur: `flask --app app run`
 
