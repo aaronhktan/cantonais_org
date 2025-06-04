@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cantonais_org 2.0.0\n"
 "Report-Msgid-Bugs-To: hi@aaronhktan.com\n"
-"POT-Creation-Date: 2025-06-04 00:52-0400\n"
+"POT-Creation-Date: 2025-06-04 15:49-0400\n"
 "PO-Revision-Date: 2025-06-03 01:14-0400\n"
 "Last-Translator: Aaron Tan <hi@aaronhktan.com>\n"
 "Language: en\n"
@@ -19,11 +19,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.17.0\n"
 
-#: app.py:49
+#: app.py:48
 msgid "dictionnaire"
 msgstr "dictionary"
 
-#: app.py:49
+#: app.py:48
 msgid "recherche"
 msgstr "search"
 
@@ -99,22 +99,22 @@ msgstr ""
 msgid "cantonais.org"
 msgstr "Jyut Dictionary"
 
-#: templates/index_en.html:50 templates/index_en.html:69
+#: templates/index_en.html:48 templates/index_en.html:67
 #: templates/search_bar.html:7 templates/search_bar.html:41
 msgid "Sélection de langue"
 msgstr "Language selection"
 
-#: templates/index_en.html:51 templates/index_en.html:70
+#: templates/index_en.html:49 templates/index_en.html:68
 #: templates/search_bar.html:8 templates/search_bar.html:42
 msgid "auto"
 msgstr "auto"
 
-#: templates/index_en.html:53 templates/index_en.html:72
+#: templates/index_en.html:51 templates/index_en.html:70
 #: templates/search_bar.html:9 templates/search_bar.html:43
 msgid "Détection de langue automatique"
 msgstr "Auto-detect search language"
 
-#: templates/index_en.html:57 templates/index_en.html:76
+#: templates/index_en.html:55 templates/index_en.html:74
 #: templates/search_bar.html:27 templates/search_bar.html:37
 msgid "Rechercher"
 msgstr "Search"
@@ -202,33 +202,4 @@ msgstr "en"
 #: templates/search_bar.html:24 templates/search_bar.html:58
 msgid "Français"
 msgstr "English"
-
-#~ msgid ""
-#~ "\n"
-#~ "cantonais.org est le site de référence"
-#~ " de la langue cantonaise. Cherchez "
-#~ "dans\n"
-#~ "le dictionnaire, apprenez avec les ressources et plus encore!\n"
-#~ msgstr ""
-#~ "\n"
-#~ "Jyut Dictionary is the most "
-#~ "comprehensive Cantonese dictionary. Search "
-#~ "using Jyutping, Pinyin, English, traditional"
-#~ " or simplified Chinese! \n"
-
-#~ msgid ""
-#~ "\n"
-#~ "cantonais, mandarin, chinois, dictionnaire, en"
-#~ " ligne, windows, PC, mac, macos, "
-#~ "linux, yue, jyut, jyutping, yale, "
-#~ "pinyin,\n"
-#~ "cfdict, yfdict, gratuit, exemples, tatoeba,"
-#~ " 粵語, 粤语, 粵語辭典, 粤语词典, gratuit\n"
-#~ msgstr ""
-#~ "Cantonese, Mandarin, Chinese, dictionary, "
-#~ "windows, mac, macos,linux, desktop, yue, "
-#~ "jyut, jyutping, yale, pinyin, cc-cedict,"
-#~ " cedict,cc-canto, cfdict, handedict, "
-#~ "words.hk, wiktionary, hsk, free, app, "
-#~ "tatoeba, examples, 粵語, 粤语, 粵語辭典, 粤语词典"
 
