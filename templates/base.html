@@ -5,7 +5,24 @@
   {% block head %}
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  {% block description %}{% endblock %}
+  {% block keywords %}
+  {% set meta_keywords %}
+  {% trans %}
+  cantonais, mandarin, chinois, dictionnaire, en ligne, windows, PC, mac, macos, linux, yue, jyut, jyutping, yale,
+  pinyin, cfdict, yfdict, gratuit, exemples, tatoeba, 粵語, 粤语, 粵語辭典, 粤语词典, gratuit
+  {% endtrans %}
+  {% endset %}
+  <meta name="keywords" content="{{ meta_keywords | replace('\n', ' ') | trim  }}" />
+  {% endblock %}
+  {% block description %}
+  {% set meta_description %}
+  {% trans %}
+  cantonais.org est le site de référence de la langue cantonaise. Cherchez dans
+  le dictionnaire, apprenez avec les ressources et plus encore!
+  {% endtrans %}
+  {% endset %}
+  <meta name="description" content="{{ meta_description | replace('\n', ' ') | trim }}">
+  {% endblock %}
   <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='img/apple-touch-icon.png') }}">
   <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='img/favicon-32x32.png') }}">
   <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='img/favicon-16x16.png') }}">
@@ -13,7 +30,7 @@
   <link rel="manifest" href="{{ url_for('static', filename='/site.webmanifest') }}">
   <link rel="mask-icon" href="{{ url_for('static', filename='img/safari-pinned-tab.svg') }}" color="#5bbad5">
   <meta name="msapplication-TileColor" content="#a30001">
-  <meta name="theme-color" content="#cc0001">
+  <meta name="theme-color" content="#D03439">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap-icons.min.css') }}">
   <title>{% block title %}{% endblock %}{{ _("cantonais.org") }}</title>

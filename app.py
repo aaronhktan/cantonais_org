@@ -46,7 +46,7 @@ def redirect_post():
     search_term = search_term.strip()
     search_term = urllib.parse.quote(search_term, safe="")
 
-    endpoint_name = _("dictionnaire") + f".{search_type}"
+    endpoint_name = _("dictionnaire") + "./" + _("recherche") + f"/{search_type}"
     return redirect(url_for(endpoint_name, search_term=search_term))
 
 
@@ -58,13 +58,18 @@ def index():
     search_term = request.cookies.get("search_term") or ""
     search_type = request.cookies.get("search_type") or ""
 
-    return render_template(
-        "index.html", search_term=search_term, search_type=search_type
-    )
+    if get_locale() == Locale("en"):
+        return render_template(
+            "index_en.html"
+        )
+    else:
+        return render_template(
+            "index_fr.html", search_term=search_term, search_type=search_type
+        )
 
 
-@app.route("/ressources", methods=["GET"])
-@app.route("/resources", methods=["GET"])
+@app.route("/ressources", endpoint="ressources", methods=["GET"])
+@app.route("/resources", endpoint="resources", methods=["GET"])
 def resources():
     if get_locale() == Locale("en"):
         return render_template(
@@ -76,29 +81,27 @@ def resources():
         )
 
 
-@app.route("/telecharger", methods=["GET"])
-@app.route("/download", methods=["GET"])
+@app.route("/telecharger", endpoint="telecharger", methods=["GET"])
+@app.route("/download", endpoint="download", methods=["GET"])
 def download():
     if get_locale() == Locale("en"):
-        return render_template(
-            "download.html"
-        )
+        return redirect(url_for("index") + "#download-program")
     else:
         return render_template(
             "telecharger.html"
         )
 
 
-@app.route("/a-propos", methods=["GET"])
-@app.route("/about", methods=["GET"])
+@app.route("/a-propos", endpoint="a-propos", methods=["GET"])
+@app.route("/about", endpoint="about", methods=["GET"])
 def about():
     if get_locale() == Locale("en"):
         return render_template(
-            "a-propos.html"
+            "about.html"
         )
     else:
         return render_template(
-            "about.html"
+            "a-propos.html"
         )
 
 

@@ -1,0 +1,397 @@
+{% extends "base.html" %}
+{% import "nav_bar.html" as nav_bar %}
+{% import "search_bar.html" as search_bar with context %}
+
+{% block head %}
+<meta charset="utf-8" />
+<meta http-equiv="x-ua-compatible" content="ie=edge" />
+<title>Jyut Dictionary — The Most Comprehensive Cantonese Dictionary</title>
+{% block description %}
+{{ super() }}
+{% endblock %}
+{% block keywords %}
+{{ super() }}
+{% endblock %}
+<meta name="keywords" content="{{ meta_keywords | replace('\n', ' ') | trim  }}" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta property="og:image" content="static/img/preview/og_image.jpeg">
+<link rel="shortcut icon" type="image/x-icon" href="static/img/favicon.png" />
+<link rel="apple-touch-icon" href="static/img/favicon.png" />
+
+<link rel="stylesheet" href="static/css/custom.css" />
+<link rel="stylesheet" href="static/css/bootstrap-icons.min.css" />
+<link rel="stylesheet" href="static/css/animate.css" />
+<link rel="stylesheet" href="static/css/index.css" />
+{% endblock %}
+
+{% block navbar %}
+{{ nav_bar.navbar(this_page|trim|safe, false) }}
+{% endblock %}
+
+{% block content %}
+<section id="home" class="hero-section">
+    <div class="container">
+        <div class="row align-items-center position-relative">
+            <div class="col-lg-6">
+                <div class="hero-content">
+                    <h1>
+                        Jyut Dictionary
+                    </h1>
+                    <p>
+                        The most comprehensive Cantonese dictionary.
+                    </p>
+                    <form method="post">
+                        <div class="main-input-group input-group p-0 d-none d-md-flex flex-nowrap">
+                            <input name="search_term" class="main-input form-control" style="text-overflow: ellipsis;"
+                                type="search" placeholder="Search online..." value="{{ search_term }}"
+                                autofocus="autofocus" autocomplete="off" autocorrect="off" autocapitalize="false"
+                                spellcheck="false">
+                            <select name="search_type" class="form-select fs-5" style="display: none"
+                                aria-label="{{ _('Sélection de langue') }}">
+                                <option value="{{ _('auto') }}" {% if search_type=="{{ _('auto') }}" %}selected{% endif
+                                    %}>
+                                    {{ _("Détection de langue automatique") }}
+                                </option>
+                            </select>
+                            <button class="main-submit input-group-text main-btn border-btn btn-hover" type="submit">{{
+                                _("Rechercher")
+                                }}</button>
+                        </div>
+                    </form>
+                    <form method="post">
+                        <div class="d-flex d-md-none flex-column gap-2">
+                            <div class="input-group flex">
+                                <input name="search_term_mobile" class="main-input form-control"
+                                    style="text-overflow: ellipsis;" type="search" placeholder="Search..."
+                                    value="{{ search_term }}" autocomplete="off" autocorrect="off"
+                                    autocapitalize="false" spellcheck="false">
+                                <select name="search_type" class="form-select fs-5" style="display: none"
+                                    aria-label="{{ _('Sélection de langue') }}">
+                                    <option value="{{ _('auto') }}" {% if search_type=="{{ _('auto') }}" %}selected{%
+                                        endif %}>
+                                        {{ _("Détection de langue automatique") }}
+                                    </option>
+                                </select>
+                                <button class="main-submit input-group-text main-btn border-btn btn-hoverflex-shrink-0"
+                                    type="submit" aria-label="{{ _('Rechercher') }}"><i class="bi-search"></i></button>
+                            </div>
+                        </div>
+                    </form>
+                    <p>
+                        <br>
+                        <a href="#download-program" class="main-btn border-btn btn-hover">Download for PC, Mac, or
+                            Linux</a>
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="hero-img">
+                    <img src="static/img/hero/hero-img.webp" alt="Search and view translations for Cantonese" />
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="features" class="feature-section pt-120">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-4 col-md-8 col-sm-10">
+                <div class="single-feature">
+                    <div class="icon">
+                        <i class="bi-check-lg"></i>
+                    </div>
+                    <div class="content">
+                        <h3>Simple</h3>
+                        <p>
+                            Search over 300,000 words and expressions just by typing.
+                            Use traditional or simplified Chinese, Jyutping, Pinyin, or English!
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-8 col-sm-10">
+                <div class="single-feature">
+                    <div class="icon">
+                        <i class="bi-lightning-charge"></i>
+                    </div>
+                    <div class="content">
+                        <h3>Powerful</h3>
+                        <p>
+                            View traditional and simplified forms, pronunciations in Jyutping, Yale,
+                            Pinyin, or Bopomofo, parts of speech, and example sentences from ten different sources.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-8 col-sm-10">
+                <div class="single-feature">
+                    <div class="icon">
+                        <i class="bi-headphones"></i>
+                    </div>
+                    <div class="content">
+                        <h3>Listenable</h3>
+                        <p>
+                            Don't know how something is pronounced? Hear your computer say it
+                            in Cantonese or Mandarin by clicking the speaker icon!
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="about" class="about-section pt-150">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-xl-6 col-lg-6">
+                <div class="about-img">
+                    <img src="static/img/about/about-1.webp"
+                        alt="Search CC-CEDICT, CC-CANTO, words.hk, Unihan, and more using Jyutping" class="w-100" />
+                    <img src="static/img/about/about-left-shape.svg" alt="" class="shape shape-1" />
+                    <img src="static/img/about/left-dots.svg" alt="" class="shape shape-2" />
+                </div>
+            </div>
+            <div class="col-xl-6 col-lg-6">
+                <div class="about-content">
+                    <div class="section-title mb-30">
+                        <h2 class="mb-25">
+                            Explore idiomatic Cantonese phrases
+                        </h2>
+                        <p>
+                            Featuring CC-CEDICT, CC-CANTO, words.hk 粵典, Wiktionary, Kaifangcidian,
+                            兩岸三地生活差異詞語彙編, HSK 3.0 tags, and the Unihan database. With these
+                            eight sources, you'll find over 700,000 definitions in English,
+                            Cantonese, and Standard Written Chinese. You can also augment the
+                            application with CFDICT, HanDeDict, and the Ministry of
+                            Education dictionaries for even more languages and definitions!
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="about" class="about-section pt-150">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-xl-6 col-lg-6">
+                <div class="about-content">
+                    <div class="section-title mb-30">
+                        <h2 class="mb-25">
+                            View examples written by native speakers
+                        </h2>
+                        <p>
+                            Equipped with examples from Tatoeba, Wiktionary, and words.hk 粵典,
+                            you'll be able to search over 150,000 examples for words that
+                            you've looked up! On Windows and macOS, you can also listen
+                            to words and phrases to better understand how they are pronounced.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-6 col-lg-6 order-first order-lg-last">
+                <div class="about-img-2">
+                    <img src="static/img/about/about-2.webp"
+                        alt="View sentences in Cantonese and Mandarin with their definitions from Tatoeba and other sources"
+                        class="w-100" />
+                    <img src="static/img/about/about-right-shape.svg" alt="" class="shape shape-1" />
+                    <img src="static/img/about/right-dots.svg" alt="" class="shape shape-2" />
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="download-program" class="download-section pt-100">
+    <div class="download-wrapper">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-xxl-5 col-xl-6 col-lg-8 col-md-9">
+                    <div class="section-title text-center mb-60">
+                        <h2>
+                            Download
+                        </h2>
+                        <p>
+                            Choose your operating system.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-4 col-md-6">
+                    <div class="single-download">
+                        <div class="icon">
+                            <i class="bi-microsoft"></i>
+                        </div>
+                        <div class="content">
+                            <h3>Windows</h3>
+                            <br>
+                            <a class="main-btn border-btn btn-hover"
+                                href="https://github.com/aaronhktan/jyut-dict/releases/download/v3.25.0304-release/Jyut-Dictionary_3.25.0304_Windows_64bit_install.exe">Download
+                                for Windows</a>
+                            <br><br><br><br>
+                            <p>For advanced users, a portable version is also available.</p>
+                            <ul class="links">
+                                <li><a
+                                        href="https://github.com/aaronhktan/jyut-dict/releases/download/v3.25.0304-release/Jyut-Dictionary_3.25.0304_Windows_64bit_portable.zip">64-bit
+                                        portable</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="single-download">
+                        <div class="icon">
+                            <i class="bi-apple"></i>
+                        </div>
+                        <div class="content">
+                            <h3>macOS</h3>
+                            <br>
+                            <a class="main-btn border-btn btn-hover"
+                                href="https://github.com/aaronhktan/jyut-dict/releases/download/v3.25.0304-release/Jyut-Dictionary_3.25.0304_macOS_64bit_install.dmg"><b>Download
+                                    for Mac</b></a>
+                            <br><br><br><br>
+                            <p>For advanced users, a portable version is also available.</p>
+                            <ul class="links">
+                                <li><a
+                                        href="https://github.com/aaronhktan/jyut-dict/releases/download/v3.25.0304-release/Jyut-Dictionary_3.25.0304_macOS_64bit_portable.zip">Portable
+                                        .zip</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="single-download">
+                        <div class="icon">
+                            <i class="bi-laptop"></i>
+                        </div>
+                        <div class="content">
+                            <h3>Linux</h3>
+                            <br>
+                            <a class="main-btn border-btn btn-hover"
+                                href="https://github.com/aaronhktan/jyut-dict/releases/download/v3.25.0304-release/Jyut-Dictionary_3.25.0304_Linux_64bit_appimage.tar.bz2">Download
+                                AppImage</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="download-addon" class="download-section pt-100">
+    <div class="download-wrapper">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-xxl-5 col-xl-6 col-lg-8 col-md-9">
+                    <div class="section-title text-center mb-60">
+                        <h2>
+                            Optional Add-Ons
+                        </h2>
+                        <p>
+                            More dictionaries can be downloaded for Jyut Dictionary if you want them, but are <b>not
+                                required</b>! Files are organized alphabetically under each category.
+                        </p>
+                        <br>
+                        <p>
+                            Dictionaries marked with a * are already included by default with a Jyut Dictionary
+                            install.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-4 col-md-6">
+                    <div class="single-download">
+                        <div class="content">
+                            <h3>Add-ons (English)</h3>
+                            <ul class="links">
+                                <li><a
+                                        href="https://github.com/aaronhktan/jyut-dict/releases/download/v2.23.0408-release/Jyut-Dictionary_Addon-CEDICT_CCCANTO.db">CC-CEDICT
+                                        + CC-CANTO *</a></li>
+                                <li><a
+                                        href="https://github.com/aaronhktan/jyut-dict/releases/download/v2.23.0408-release/Jyut-Dictionary_Addon-words_hk.db">words.hk
+                                        粵典 *</a></li>
+                                <li><a
+                                        href="https://github.com/aaronhktan/jyut-dict/releases/download/v2.23.0408-release/Jyut-Dictionary_Addon-Wiktionary.db ">Wiktionary
+                                        *</a></li>
+                                <li><a
+                                        href="https://github.com/aaronhktan/jyut-dict/releases/download/v2.23.0408-release/Jyut-Dictionary_Addon-Unihan.db">Unihan
+                                        *</a></li>
+                                <li><a
+                                        href="https://github.com/aaronhktan/jyut-dict/releases/download/v2.23.0408-release/Jyut-Dictionary_Addon-Tatoeba-Cantonese-English.db">Tatoeba
+                                        Cantonese-English *</a></li>
+                                <li><a
+                                        href="https://github.com/aaronhktan/jyut-dict/releases/download/v2.23.0408-release/Jyut-Dictionary_Addon-Tatoeba-Mandarin-English.db">Tatoeba
+                                        Mandarin-English *</a></li>
+                                <ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="single-download">
+                        <div class="content">
+                            <h3>Add-ons (Mandarin)</h3>
+                            <ul class="links">
+                                <li><a
+                                        href="https://github.com/aaronhktan/jyut-dict/releases/download/v2.23.0408-release/Jyut-Dictionary_Addon-MoEDict.db">Ministry
+                                        of Education Dictionary (重編國語辭典修訂本)</a></li>
+                                <li><a
+                                        href="https://github.com/aaronhktan/jyut-dict/releases/download/v2.23.0408-release/Jyut-Dictionary_Addon-Cross_Straits.db">Cross-Straits
+                                        Language Database (兩岸詞典)</a></li>
+                                <li><a
+                                        href="https://github.com/aaronhktan/jyut-dict/releases/download/v2.23.0408-release/Jyut-Dictionary_Addon-Two_Shores_Three_Places.db">兩岸三地生活差異詞語彙編
+                                        *</a></li>
+                                <li><a
+                                        href="https://github.com/aaronhktan/jyut-dict/releases/download/v2.23.0408-release/Jyut-Dictionary_Addon-Kaifangcidian.db">Kaifangcidian
+                                        粵語詞典 - 開放詞典 *</a></li>
+                                <li><a
+                                        href="https://github.com/aaronhktan/jyut-dict/releases/download/v2.23.0408-release/Jyut-Dictionary_Addon-HSK3.db">HSK
+                                        3.0 *</a></li>
+                                <li><a
+                                        href="https://github.com/aaronhktan/jyut-dict/releases/download/v2.23.0408-release/Jyut-Dictionary_Addon-Tatoeba-Cantonese-Mandarin.db">Tatoeba
+                                        Cantonese-Mandarin</a></li>
+                                <li><a
+                                        href="https://github.com/aaronhktan/jyut-dict/releases/download/v2.23.0408-release/Jyut-Dictionary_Addon-Tatoeba-Mandarin-Cantonese.db">Tatoeba
+                                        Mandarin-Cantonese</a></li>
+                                <ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="single-download">
+                        <div class="content">
+                            <h3>Add-ons (Other)</h3>
+                            <ul class="links">
+                                <li><a
+                                        href="https://github.com/aaronhktan/jyut-dict/releases/download/v2.23.0408-release/Jyut-Dictionary_Addon-GwongZauZingJam.db">廣州話正音字典</a>
+                                </li>
+                                <li><a
+                                        href="https://github.com/aaronhktan/jyut-dict/releases/download/v2.23.0408-release/Jyut-Dictionary_Addon-CFDICT.db">CFDICT</a>
+                                </li>
+                                <li><a
+                                        href="https://github.com/aaronhktan/jyut-dict/releases/download/v2.23.0408-release/Jyut-Dictionary_Addon-CFDICT-2016.db">CFDICT
+                                        (2016)</a></li>
+                                <li><a
+                                        href="https://github.com/aaronhktan/jyut-dict/releases/download/v2.23.0408-release/Jyut-Dictionary_Addon-HanDeDict.db">HanDeDict</a>
+                                </li>
+                                <li><a
+                                        href="https://github.com/aaronhktan/jyut-dict/releases/download/v2.23.0408-release/Jyut-Dictionary_Addon-Tatoeba-cantonais-francais.db">Tatoeba
+                                        Cantonese-French</a></li>
+                                <li><a
+                                        href="https://github.com/aaronhktan/jyut-dict/releases/download/v2.23.0408-release/Jyut-Dictionary_Addon-Tatoeba-mandarin-francais.db">Tatoeba
+                                        Mandarin-French</a></li>
+                                <ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

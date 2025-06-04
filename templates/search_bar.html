@@ -5,22 +5,22 @@
     autocomplete="off" autocorrect="off" autocapitalize="false" spellcheck="false">
   <select name="search_type" class="form-select fs-5" style="text-overflow: ellipsis;"
     aria-label="{{ _('Sélection de langue') }}">
-    <option value="search_auto" {% if search_type=="search_auto" %}selected{% endif %}>
+    <option value="{{ _('auto') }}" {% if search_type=="{{ _('auto') }}" %}selected{% endif %}>
       {{ _("Détection de langue automatique") }}
     </option>
-    <option value="search_traditional" {% if search_type=="search_traditional" %}selected{% endif %}>
+    <option value="{{ _('traditionnel') }}" {% if search_type=="{{ _('traditionnel') }}" %}selected{% endif %}>
       {{ _("Caractères traditionnels") }}
     </option>
-    <option value="search_simplified" {% if search_type=="search_simplified" %}selected{% endif %}>
+    <option value="{{ _('simplifie') }}" {% if search_type=="{{ _('simplifie') }}" %}selected{% endif %}>
       {{ _("Caractères simplifiés") }}
     </option>
-    <option value="search_jyutping" {% if search_type=="search_jyutping" %}selected{% endif %}>
+    <option value="{{ _('jyutping') }}" {% if search_type=="{{ _('jyutping') }}" %}selected{% endif %}>
       {{ _("Jyutping") }}
     </option>
-    <option value="search_pinyin" {% if search_type=="search_pinyin" %}selected{% endif %}>
+    <option value="{{ _('pinyin') }}" {% if search_type=="{{ _('pinyin') }}" %}selected{% endif %}>
       {{ _("Pinyin") }}
     </option>
-    <option value="search_french" {% if search_type=="search_french" %}selected{% endif %}>
+    <option value="{{ _('fr') }}" {% if search_type=="{{ _('fr') }}" %}selected{% endif %}>
       {{ _("Français") }}
     </option>
   </select>
@@ -39,22 +39,22 @@
   </div>
   <select name="search_type_mobile" class="form-select" style="text-overflow: ellipsis;"
     aria-label="{{ _('Sélection de langue') }}">
-    <option value="search_auto" {% if search_type=="search_traditional" %}selected{% endif %}>
+    <option value="{{ _('auto') }}" {% if search_type=="{{ _('auto') }}" %}selected{% endif %}>
       {{ _("Détection de langue automatique") }}
     </option>
-    <option value="search_traditional" {% if search_type=="search_traditional" %}selected{% endif %}>
+    <option value="{{ _('traditionnel') }}" {% if search_type=="{{ _('traditionnel') }}" %}selected{% endif %}>
       {{ _("Caractères traditionnels") }}
     </option>
-    <option value="search_simplified" {% if search_type=="search_simplified" %}selected{% endif %}>
+    <option value="{{ _('simplifie') }}" {% if search_type=="{{ _('simplifie') }}" %}selected{% endif %}>
       {{ _("Caractères simplifiés") }}
     </option>
-    <option value="search_jyutping" {% if search_type=="search_jyutping" %}selected{% endif %}>
+    <option value="{{ _('jyutping') }}" {% if search_type=="{{ _('jyutping') }}" %}selected{% endif %}>
       {{ _("Jyutping") }}
     </option>
-    <option value="search_pinyin" {% if search_type=="search_pinyin" %}selected{% endif %}>
+    <option value="{{ _('pinyin') }}" {% if search_type=="{{ _('pinyin') }}" %}selected{% endif %}>
       {{ _("Pinyin") }}
     </option>
-    <option value="search_french" {% if search_type=="search_french" %}selected{% endif %}>
+    <option value="{{ _('fr') }}" {% if search_type=="{{ _('fr') }}" %}selected{% endif %}>
       {{ _("Français") }}
     </option>
   </select>

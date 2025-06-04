@@ -1,5 +1,5 @@
 {% macro navbar(active_page, sticky=true) -%}
-<nav class="navbar sticky-top navbar-expand-lg bg-primary w-100" {% if sticky==false %}style="position:fixed;" {% endif
+<nav class="main-navbar navbar sticky-top navbar-expand-lg w-100" {% if sticky==false %} style="position:fixed;" {% endif
   %} data-bs-theme="dark">
   <div class="container">
     <a class="navbar-brand" href="{{ request.root_url }}">
@@ -15,12 +15,17 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
+          {% set dictionary_url = _("dictionnaire.index") %}
           {% if active_page=="dictionary" %}
-          <a class="nav-link text-uppercase active" aria-current="page" {% else %} <a class="nav-link text-uppercase" {%
-            endif %} href="{{ request.root_url }}">{{ _("Dictionnaire") }}</a>
+          <a class="nav-link text-uppercase active" aria-current="page" href="{{ url_for(dictionary_url|trim|safe) }}">
+            {% else %}
+            <a class="nav-link text-uppercase" href="{{ url_for(dictionary_url|trim|safe) }}">
+              {% endif %}
+              {{ _("Dictionnaire") }}
+            </a>
         </li>
         <li class="nav-item">
-          {% set resources_url = _("resources") %}
+          {% set resources_url = _("ressources") %}
           {% if active_page == "resources" %}
           <a class="nav-link text-uppercase active" aria-current="page" href="{{ url_for(resources_url|trim|safe) }}">
             {% else %}
@@ -30,13 +35,13 @@
             </a>
         </li>
         <li class="nav-item">
-          {% set download_url = _("download") %}
+          {% set download_url = _("telecharger") %}
           {% if active_page=="download" %}
           <a class="nav-link text-uppercase active" aria-current="page" {% else %} <a class="nav-link text-uppercase" {%
             endif %} href="{{ url_for(download_url|trim|safe) }}">{{ _("Télécharger") }}</a>
         </li>
         <li class="nav-item">
-          {% set about_url = _("about") %}
+          {% set about_url = _("a-propos") %}
           {% if active_page=="about" %}
           <a class="nav-link text-uppercase active" aria-current="page" {% else %} <a class="nav-link text-uppercase" {%
             endif %} href="{{ url_for(about_url|trim|safe) }}">{{ _("À propos") }}</a>

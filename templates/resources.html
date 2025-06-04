@@ -1,15 +1,6 @@
 {% extends "base.html" %}
 {% import "nav_bar.html" as nav_bar %}
-{% block description %}
-{% set description %}
-{% trans %}
-cantonais.org est le site de référence de la langue cantonaise. Cherchez dans
-le dictionnaire, apprenez avec les ressources et plus encore!
-{% endtrans %}
-{% endset %}
-<meta name="description" content="{{ description | replace('\n', ' ') | trim }}">
-{% endblock %}
-{% block title %}Ressources | {% endblock %}
+{% block title %}Resources | {% endblock %}
 {% block navbar %}
 {{ nav_bar.navbar("resources", true) }}
 {% endblock %}
@@ -29,7 +20,7 @@ le dictionnaire, apprenez avec les ressources et plus encore!
                 It's a useful tool to help improve your pronunciation and learn new characters!
             </p>
             <p>
-                <a href="https://jyutping.org/en/docs/english/">The official guide</a> provides an introduction to
+                <a href="https://jyutping.org/en/">The official guide</a> provides an introduction to
                 Jyutping.
             </p>
             <p>

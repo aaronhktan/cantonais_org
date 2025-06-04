@@ -12367,6 +12367,10 @@ textarea.form-control-lg {
     min-height: 100vh !important;
   }
 }
+.main-navbar {
+  background-color: #D03439 !important;
+}
+
 img:-moz-loading {
   visibility: hidden;
 }

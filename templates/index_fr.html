@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% import "nav_bar.html" as nav_bar %}
+{% import "search_bar.html" as search_bar with context %}
+{% block title %}{{ _("Accueil") }} | {% endblock %}
+{% block navbar %}
+{% set this_page = _("dictionary") %}
+{{ nav_bar.navbar(this_page|trim|safe, false) }}
+{% endblock %}
+{% block content %}
+<div class="container vh-100 d-flex flex-column justify-content-center align-items-center">
+  <div class="row mx-0 pt-4">
+    <div class="flex-shrink-0">
+      <img src="{{ url_for('static', filename='img/icon.svg') }}" class="rounded mx-auto d-block p-3 img-fluid"
+        style="height:10rem; width: 10rem; color: transparent;" onload="this.style.color='unset'"
+        onerror="this.style.color='unset'" alt="logo">
+    </div>
+    <div class="d-flex py-1 flex-column flex-md-row justify-content-center align-items-center">
+      <div class="ms-md-3 w-md-75 flex-grow-0">
+        <h1 class="text-center" style="text-wrap:balance">
+          {{ _("Bienvenue sur cantonais.org, le site de référence de la langue cantonaise!") }}
+        </h1>
+        <p class="text-body-secondary text-center fs-5">
+          {{ _("Un projet créé par Aaron Tan 🇨🇦") }}
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="row pt-3 mx-auto w-100 w-lg-75">
+    <form method="post">
+      {{ search_bar.desktop_input(search_term, search_type) }}
+    </form>
+    <form method="post">
+      {{ search_bar.mobile_input(search_term, search_type) }}
+    </form>
+  </div>
+</div>
+</div>
+{% endblock %}

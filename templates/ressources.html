@@ -1,14 +1,5 @@
 {% extends "base.html" %}
 {% import "nav_bar.html" as nav_bar %}
-{% block description %}
-{% set description %}
-{% trans %}
-cantonais.org est le site de référence de la langue cantonaise. Cherchez dans
-le dictionnaire, apprenez avec les ressources et plus encore!
-{% endtrans %}
-{% endset %}
-<meta name="description" content="{{ description | replace('\n', ' ') | trim }}">
-{% endblock %}
 {% block title %}Ressources | {% endblock %}
 {% block navbar %}
 {{ nav_bar.navbar("resources", true) }}

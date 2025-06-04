@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cantonais_org 2.0.0\n"
 "Report-Msgid-Bugs-To: hi@aaronhktan.com\n"
-"POT-Creation-Date: 2025-06-03 02:43-0400\n"
+"POT-Creation-Date: 2025-06-04 00:28-0400\n"
 "PO-Revision-Date: 2025-06-03 01:14-0400\n"
 "Last-Translator: Aaron Tan <hi@aaronhktan.com>\n"
 "Language: en\n"
@@ -19,9 +19,17 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.17.0\n"
 
-#: app.py:48 dictionnaire/urls.py:30
+#: app.py:49
 msgid "dictionnaire"
 msgstr "dictionary"
+
+#: app.py:49
+msgid "recherche"
+msgstr "search"
+
+#: dictionnaire/urls.py:30
+msgid "dictionnaire./recherche"
+msgstr "dictionary./search"
 
 #: dictionnaire/templates/dictionary_entry.html:21
 msgid "Définitions"
@@ -30,6 +38,30 @@ msgstr "Definitions"
 #: dictionnaire/templates/dictionary_entry.html:66
 msgid "Exemples"
 msgstr "Examples"
+
+#: dictionnaire/templates/dictionary_index.html:6 templates/ressources.html:5
+#: templates/telecharger.html:5
+msgid ""
+"\n"
+"cantonais.org est le site de référence de la langue cantonaise. Cherchez "
+"dans\n"
+"le dictionnaire, apprenez avec les ressources et plus encore!\n"
+msgstr ""
+"\n"
+"Jyut Dictionary is the most comprehensive Cantonese dictionary. Search "
+"using Jyutping, Pinyin, English, traditional or simplified Chinese! \n"
+
+#: dictionnaire/templates/dictionary_index.html:13 templates/index_fr.html:10
+msgid "Accueil"
+msgstr "Main"
+
+#: dictionnaire/templates/dictionary_index.html:28 templates/index_fr.html:26
+msgid "Bienvenue sur cantonais.org, le site de référence de la langue cantonaise!"
+msgstr "Welcome to Jyut Dictionary, the most comprehensive Cantonese dictionary!"
+
+#: dictionnaire/templates/dictionary_index.html:31 templates/index_fr.html:29
+msgid "Un projet créé par Aaron Tan 🇨🇦"
+msgstr "A project by Aaron Tan 🇨🇦"
 
 #: dictionnaire/templates/dictionary_search.html:11
 msgid "Il n'y a aucun résultat correspondant à la requête."
@@ -46,69 +78,109 @@ msgid "Il y a %(num_results)s résultat correspondant à la requête."
 msgstr "%(num_results)s result was found."
 
 #: dictionnaire/templates/dictionary_search.html:20
-msgid "dictionnaire.entry_view"
-msgstr "dictionary.entry_view"
+msgid "dictionnaire./entry"
+msgstr "dictionary./entry"
 
-#: templates/base.html:19 templates/nav_bar.html:9
+#: templates/base.html:10
+msgid ""
+"\n"
+"  cantonais, mandarin, chinois, dictionnaire, en ligne, windows, PC, mac,"
+" macos, linux, yue, jyut, jyutping, yale,\n"
+"  pinyin, cfdict, yfdict, gratuit, exemples, tatoeba, 粵語, 粤语, 粵語辭典, 粤语词典,"
+" gratuit\n"
+"  "
+msgstr ""
+"Cantonese, Mandarin, Chinese, dictionary, windows, mac, macos,linux, "
+"desktop, yue, jyut, jyutping, yale, pinyin, cc-cedict, cedict,cc-canto, "
+"cfdict, handedict, words.hk, wiktionary, hsk, free, app, tatoeba, "
+"examples, 粵語, 粤语, 粵語辭典, 粤语词典"
+
+#: templates/base.html:19
+msgid ""
+"\n"
+"  cantonais.org est le site de référence de la langue cantonaise. "
+"Cherchez dans\n"
+"  le dictionnaire, apprenez avec les ressources et plus encore!\n"
+"  "
+msgstr ""
+"\n"
+"Jyut Dictionary is the most comprehensive Cantonese dictionary. Search "
+"using Jyutping, Pinyin, English, traditional or simplified Chinese! \n"
+
+#: templates/base.html:36 templates/nav_bar.html:9
 msgid "cantonais.org"
 msgstr "Jyut Dictionary"
 
-#: templates/index.html:6 templates/resources.html:5
-#: templates/ressources.html:5
+#: templates/index_en.html:13
+#, fuzzy
 msgid ""
 "\n"
-"cantonais.org est le site de référence de la langue cantonaise. Cherchez "
-"dans\n"
-"le dictionnaire, apprenez avec les ressources et plus encore!\n"
+"cantonais, mandarin, chinois, dictionnaire, en ligne, windows, PC, mac, "
+"macos, linux, yue, jyut, jyutping, yale, pinyin,\n"
+"cfdict, yfdict, gratuit, exemples, tatoeba, 粵語, 粤语, 粵語辭典, 粤语词典, gratuit\n"
 msgstr ""
-"\n"
-"Jyut Dictionary is the most comprehensive online Cantonese dictionary. "
-"Search using Jyutping, Pinyin, English, traditional or simplified "
-"Chinese! \n"
+"Cantonese, Mandarin, Chinese, dictionary, windows, mac, macos,linux, "
+"desktop, yue, jyut, jyutping, yale, pinyin, cc-cedict, cedict,cc-canto, "
+"cfdict, handedict, words.hk, wiktionary, hsk, free, app, tatoeba, "
+"examples, 粵語, 粤语, 粵語辭典, 粤语词典"
 
-#: templates/index.html:13
-msgid "Accueil"
-msgstr "Jyut Dictionary"
+#: templates/index_en.html:53 templates/index_en.html:72
+#: templates/search_bar.html:7 templates/search_bar.html:41
+msgid "Sélection de langue"
+msgstr "Language selection"
 
-#: templates/index.html:28
-msgid "Bienvenue sur cantonais.org, le site de référence de la langue cantonaise!"
-msgstr ""
-"Welcome to Jyut Dictionary, the most comprehensive online Cantonese "
-"dictionary!"
+#: templates/index_en.html:54 templates/index_en.html:73
+#: templates/search_bar.html:8 templates/search_bar.html:42
+msgid "auto"
+msgstr "auto"
 
-#: templates/index.html:31
-msgid "Un projet créé par Aaron Tan 🇨🇦"
-msgstr "A project by Aaron Tan 🇨🇦"
+#: templates/index_en.html:56 templates/index_en.html:75
+#: templates/search_bar.html:9 templates/search_bar.html:43
+msgid "Détection de langue automatique"
+msgstr "Auto-detect search language"
+
+#: templates/index_en.html:60 templates/index_en.html:79
+#: templates/search_bar.html:27 templates/search_bar.html:37
+msgid "Rechercher"
+msgstr "Search"
+
+#: templates/index_fr.html:12
+msgid "dictionary"
+msgstr "Online Dictionary"
 
 #: templates/nav_bar.html:12
 msgid "Basculer la navigation"
 msgstr "Toggle navigation"
 
-#: templates/nav_bar.html:20
-msgid "Dictionnaire"
-msgstr "Dictionary"
+#: templates/nav_bar.html:18
+msgid "dictionnaire.index"
+msgstr "dictionary.index"
 
-#: templates/nav_bar.html:23
-msgid "resources"
+#: templates/nav_bar.html:24
+msgid "Dictionnaire"
+msgstr "Online Dictionary"
+
+#: templates/nav_bar.html:28
+msgid "ressources"
 msgstr "resources"
 
-#: templates/nav_bar.html:29
+#: templates/nav_bar.html:34
 msgid "Ressources"
 msgstr "Resources"
 
-#: templates/nav_bar.html:33
-msgid "download"
+#: templates/nav_bar.html:38
+msgid "telecharger"
 msgstr "download"
 
-#: templates/nav_bar.html:36
+#: templates/nav_bar.html:41
 msgid "Télécharger"
 msgstr "Download"
 
-#: templates/nav_bar.html:39
-msgid "about"
+#: templates/nav_bar.html:44
+msgid "a-propos"
 msgstr "about"
 
-#: templates/nav_bar.html:42
+#: templates/nav_bar.html:47
 msgid "À propos"
 msgstr "About"
 
@@ -116,34 +188,43 @@ msgstr "About"
 msgid "Rechercher dans le dictionnaire..."
 msgstr "Search Jyut Dictionary..."
 
-#: templates/search_bar.html:7 templates/search_bar.html:41
-msgid "Sélection de langue"
-msgstr "Language selection"
-
-#: templates/search_bar.html:9 templates/search_bar.html:43
-msgid "Détection de langue automatique"
-msgstr "Auto-detect search language"
+#: templates/search_bar.html:11 templates/search_bar.html:45
+msgid "traditionnel"
+msgstr "traditional"
 
 #: templates/search_bar.html:12 templates/search_bar.html:46
 msgid "Caractères traditionnels"
 msgstr "Traditional Chinese"
 
+#: templates/search_bar.html:14 templates/search_bar.html:48
+msgid "simplifie"
+msgstr "simplified"
+
 #: templates/search_bar.html:15 templates/search_bar.html:49
 msgid "Caractères simplifiés"
 msgstr "Simplified Chinese"
+
+#: templates/search_bar.html:17 templates/search_bar.html:51
+msgid "jyutping"
+msgstr "jyutping"
 
 #: templates/search_bar.html:18 templates/search_bar.html:52
 msgid "Jyutping"
 msgstr "Jyutping"
 
+#: templates/search_bar.html:20 templates/search_bar.html:54
+msgid "pinyin"
+msgstr "pinyin"
+
 #: templates/search_bar.html:21 templates/search_bar.html:55
 msgid "Pinyin"
 msgstr "Pinyin"
+
+#: templates/search_bar.html:23 templates/search_bar.html:57
+msgid "fr"
+msgstr "en"
 
 #: templates/search_bar.html:24 templates/search_bar.html:58
 msgid "Français"
 msgstr "English"
 
-#: templates/search_bar.html:27 templates/search_bar.html:37
-msgid "Rechercher"
-msgstr "Search"
