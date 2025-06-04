@@ -68,10 +68,6 @@ button:focus,
   box-shadow: none;
 }
 
-a:hover {
-  color: #5864FF;
-}
-
 a {
   -webkit-transition: all 0.3s ease-out 0s;
   transition: all 0.3s ease-out 0s;

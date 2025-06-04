@@ -14,7 +14,6 @@ except:
 
 app = Flask(__name__)
 app.config.from_object('cantonais_org.default_settings')
-# app.config.from_envvar('CANTONAIS_ORG_SETTINGS')
 babel = Babel(app)
 app.config["SECRET_KEY"] = os.environ["CANTONAIS_ORG_SECRET_KEY"]
 
