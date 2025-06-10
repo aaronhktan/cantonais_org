@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cantonais_org 2.0.0\n"
 "Report-Msgid-Bugs-To: hi@aaronhktan.com\n"
-"POT-Creation-Date: 2025-06-04 15:49-0400\n"
+"POT-Creation-Date: 2025-06-10 03:06-0400\n"
 "PO-Revision-Date: 2025-06-03 01:14-0400\n"
 "Last-Translator: Aaron Tan <hi@aaronhktan.com>\n"
 "Language: en\n"
@@ -31,11 +31,21 @@ msgstr "search"
 msgid "dictionnaire./recherche"
 msgstr "dictionary./search"
 
-#: dictionnaire/templates/dictionary_entry.html:18
+#: dictionnaire/templates/dictionary_entry.html:5
+msgid ""
+"\n"
+"Voir les traductions pour « %(headword)s » sur cantonais.org,\n"
+"le site de référence de la langue cantonaise.\n"
+msgstr ""
+"\n"
+"See definitions and examples for %(headword)s on Jyut Dictionary, "
+"the most comprehensive online Cantonese dictionary."
+
+#: dictionnaire/templates/dictionary_entry.html:27
 msgid "Définitions"
 msgstr "Definitions"
 
-#: dictionnaire/templates/dictionary_entry.html:63
+#: dictionnaire/templates/dictionary_entry.html:72
 msgid "Exemples"
 msgstr "Examples"
 

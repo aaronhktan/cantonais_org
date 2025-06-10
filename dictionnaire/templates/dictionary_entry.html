@@ -1,5 +1,14 @@
 {% extends "dictionary.html" %}
 {% block title %}{{ headword }} | {% endblock %}
+{% block description %}
+{% set meta_description %}
+{% trans %}
+Voir les traductions pour « {{ headword }} » sur cantonais.org,
+le site de référence de la langue cantonaise.
+{% endtrans %}
+{% endset %}
+<meta name="description" content="{{ meta_description | replace('\n', ' ') | trim }}">
+{% endblock %}
 {% block content %}
 <div class="container">
     <div class="mx-auto pt-2" style="max-width: 50rem">
