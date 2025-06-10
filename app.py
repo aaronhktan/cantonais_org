@@ -1,9 +1,43 @@
 import os
 import urllib.parse
+import sqlite3
 
-from flask import Flask, g, render_template, redirect, request, url_for
+from flask import Flask, g, render_template, redirect, request, send_from_directory, url_for
 from flask_babel import Babel, _, get_locale
 from babel import Locale
+
+
+def generate_sitemap(app):
+    db = sqlite3.connect(app.config["DB_PATH"])
+    c = db.cursor()
+    c.execute("SELECT traditional FROM entries")
+
+    records = c.fetchall()
+    if not records:
+        return
+
+    sitemap_urls = []
+    for i in range(0, len(records), 50000):
+        # Sitemaps have a maximum of 50000 urls per file
+        urls = []
+        for j in range(i, min(i + 50000, len(records))):
+            headword = urllib.parse.quote(records[j][0], safe="")
+            if app.config["BABEL_DEFAULT_LOCALE"] == "en":
+                urls.append(
+                    f"{app.config["CANONICAL_URL"]}/dictionary/entry/{headword}")
+            else:
+                urls.append(
+                    f"{app.config["CANONICAL_URL"]}/dictionnaire/entree/{headword}")
+
+        with open(f"{os.getcwd()}/static/sitemap/sitemap{i // 50000}.txt", "w") as sitemap:
+            sitemap.write("\n".join(urls))
+
+        sitemap_urls.append(f"{app.config["CANONICAL_URL"]}/static/sitemap/sitemap{i // 50000}.txt")
+
+    with open(f"{os.getcwd()}/static/robots/robots.txt", "w") as robots:
+        for url in sitemap_urls:
+            robots.write(f"Sitemap: {url}\n")
+
 
 try:
     # For Gunicorn
@@ -16,11 +50,14 @@ app = Flask(__name__)
 app.config.from_object('cantonais_org.default_settings')
 babel = Babel(app)
 app.config["SECRET_KEY"] = os.environ["CANTONAIS_ORG_SECRET_KEY"]
+app.config["DB_PATH"] = os.environ["CANTONAIS_ORG_DB_PATH"]
 
 app.register_blueprint(dictionary_app, name="dictionnaire", url_prefix="/dictionnaire")
 app.register_blueprint(dictionary_app, name="dictionary", url_prefix="/dictionary")
 
 app.jinja_env.filters["quote"] = lambda x: urllib.parse.quote(x, safe="")
+
+generate_sitemap(app)
 
 
 @app.teardown_appcontext
@@ -29,6 +66,11 @@ def teardown_db(exception):
 
     if db is not None:
         db.close()
+
+
+@app.route('/robots.txt')
+def static_from_root():
+    return send_from_directory(f"{app.static_folder}/robots/", request.path[1:])
 
 
 def redirect_post():

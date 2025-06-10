@@ -44,6 +44,10 @@ purgecss --config purgecss.config.js
 pybabel -v extract -F babel.cfg -o messages.pot .
 pybabel update -i messages.pot -d translations -l en
 pybabel compile -d translations
+
+# Pour le plan de site et robots.txt
+mkdir static/robots
+mkdir static/sitemap
 ```
 6. Lancez le serveur: `flask --app app run`
 
