@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cantonais_org 2.0.0\n"
 "Report-Msgid-Bugs-To: hi@aaronhktan.com\n"
-"POT-Creation-Date: 2025-06-10 23:59-0400\n"
+"POT-Creation-Date: 2025-06-11 00:15-0400\n"
 "PO-Revision-Date: 2025-06-03 01:14-0400\n"
 "Last-Translator: Aaron Tan <hi@aaronhktan.com>\n"
 "Language: en\n"
@@ -83,6 +83,11 @@ msgstr "%(num_results)s result was found."
 #: dictionnaire/templates/dictionary_search.html:20
 msgid "dictionnaire./entree"
 msgstr "dictionary./entry"
+
+#: templates/base.html:2 templates/search_bar.html:23
+#: templates/search_bar.html:57
+msgid "fr"
+msgstr "en"
 
 #: templates/base.html:10
 msgid ""
@@ -209,10 +214,6 @@ msgstr "pinyin"
 #: templates/search_bar.html:21 templates/search_bar.html:55
 msgid "Pinyin"
 msgstr "Pinyin"
-
-#: templates/search_bar.html:23 templates/search_bar.html:57
-msgid "fr"
-msgstr "en"
 
 #: templates/search_bar.html:24 templates/search_bar.html:58
 msgid "Français"
