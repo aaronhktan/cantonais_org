@@ -1,6 +1,7 @@
 import os
 import urllib.parse
 import sqlite3
+import xml.etree.ElementTree as ET
 
 from flask import Flask, g, render_template, redirect, request, send_from_directory, url_for
 from flask_babel import Babel, _, get_locale
@@ -17,22 +18,33 @@ def generate_sitemap(app):
         return
 
     sitemap_urls = []
-    for i in range(0, len(records), 50000):
+    for i in range(0, len(records), 10000):
         # Sitemaps have a maximum of 50000 urls per file
-        urls = []
-        for j in range(i, min(i + 50000, len(records))):
+        root_elem = ET.Element("urlset")
+        root_elem.set("xmlns", "http://www.sitemaps.org/schemas/sitemap/0.9")
+
+        for j in range(i, min(i + 10000, len(records))):
             headword = urllib.parse.quote(records[j][0], safe="")
+
+            url_elem = ET.SubElement(root_elem, "url")
+            loc_elem = ET.SubElement(url_elem, "loc")
             if app.config["BABEL_DEFAULT_LOCALE"] == "en":
-                urls.append(
-                    f"{app.config["CANONICAL_URL"]}/dictionary/entry/{headword}")
+                loc_elem.text = f"{app.config["CANONICAL_URL"]}/dictionary/entry/{headword}"
             else:
-                urls.append(
-                    f"{app.config["CANONICAL_URL"]}/dictionnaire/entree/{headword}")
+                loc_elem.text = f"{app.config["CANONICAL_URL"]}/dictionnaire/entree/{headword}"
 
-        with open(f"{os.getcwd()}/static/sitemap/sitemap{i // 50000}.txt", "w") as sitemap:
-            sitemap.write("\n".join(urls))
+        tree = ET.ElementTree(root_elem)
+        tree.write(f"{os.getcwd()}/static/sitemap/sitemap{i // 10000}.xml", encoding="utf-8", xml_declaration=True)
+        sitemap_urls.append(f"{app.config["CANONICAL_URL"]}/sitemap{i // 10000}.xml")
 
-        sitemap_urls.append(f"{app.config["CANONICAL_URL"]}/static/sitemap/sitemap{i // 50000}.txt")
+    root_elem = ET.Element("sitemapindex")
+    root_elem.set("xmlns", "http://www.sitemaps.org/schemas/sitemap/0.9")
+    for url in sitemap_urls:
+        sitemap_elem = ET.SubElement(root_elem, "sitemap")
+        loc_elem = ET.SubElement(sitemap_elem, "loc")
+        loc_elem.text = url
+    tree = ET.ElementTree(root_elem)
+    tree.write(f"{os.getcwd()}/static/sitemap/sitemap_index.xml", encoding="utf-8", xml_declaration=True)
 
     with open(f"{os.getcwd()}/static/robots/robots.txt", "w") as robots:
         for url in sitemap_urls:
@@ -69,8 +81,13 @@ def teardown_db(exception):
 
 
 @app.route('/robots.txt')
-def static_from_root():
+def robot_from_root():
     return send_from_directory(f"{app.static_folder}/robots/", request.path[1:])
+
+@app.route('/sitemap_index.xml')
+@app.route('/sitemap<sitemap_num>.xml')
+def sitemap_from_root(sitemap_num=None):
+    return send_from_directory(f"{app.static_folder}/sitemap/", request.path[1:])
 
 
 def redirect_post():
