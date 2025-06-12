@@ -496,26 +496,57 @@ def query_full_text(param: str) -> list[Entry] | None:
     c.execute(
         """
 WITH matching_entry_ids AS (
-  SELECT fk_entry_id FROM definitions_fts WHERE definitions_fts MATCH
-  ? AND definition LIKE ?
+  SELECT
+    fk_entry_id,
+    rowid AS definition_id,
+    bm25(definitions_fts, 0, 1) AS RANK
+  FROM definitions_fts
+  WHERE definitions_fts MATCH ? AND definition LIKE ?
 ),
 
 matching_definition_ids AS (
-  SELECT definition_id, definition FROM definitions WHERE fk_entry_id
-    IN matching_entry_ids
+  SELECT
+    definition_id,
+    definition
+  FROM definitions
+  WHERE fk_entry_id IN (
+    SELECT fk_entry_id
+    FROM matching_entry_ids
+  )
+),
+
+definitions_and_ranks AS (
+  SELECT
+    mdi.definition_id AS definition_id,
+    mdi.definition AS definition,
+    mei.rank AS RANK
+  FROM matching_definition_ids AS mdi
+    LEFT JOIN matching_entry_ids AS mei
+      ON mdi.definition_id = mei.definition_id
 ),
 
 matching_definitions AS (
-  SELECT definition_id, fk_entry_id, fk_source_id, definition,
-    label
-  FROM definitions
-  WHERE definitions.definition_id IN (
-    SELECT definition_id FROM matching_definition_ids
-  )
+  SELECT
+    dar.definition_id,
+    d.fk_entry_id,
+    d.fk_source_id,
+    d.definition,
+    d.label,
+    RANK
+  FROM definitions_and_ranks AS dar
+    JOIN definitions AS d
+      ON dar.definition_id = d.definition_id
 ),
 
 matching_definition_groups AS (
   SELECT fk_entry_id,
+    CASE sourceshortname
+      WHEN 'ABY' THEN AVG(md.rank) * 3
+      WHEN 'CCY' THEN AVG(md.rank) * 3
+      WHEN 'WHK' THEN AVG(md.rank) * 3
+      WHEN 'YF' THEN AVG(md.rank) * 3
+      ELSE AVG(md.rank)
+    END AS RANK,
     json_object('source', sourcename,
                 'definitions',
                 json_group_array(json_object(
@@ -526,12 +557,17 @@ matching_definition_groups AS (
 ),
 
 matching_entries AS (
-  SELECT simplified, traditional, jyutping, pinyin,
+  SELECT
+    simplified,
+    traditional,
+    jyutping,
+    pinyin,
+    SUM(RANK) AS RANK,
     json_group_array(json(definitions)) AS definitions
   FROM matching_definition_groups AS mdg
   LEFT JOIN entries ON entries.entry_id = mdg.fk_entry_id
   GROUP BY entry_id
-  ORDER BY frequency DESC
+  ORDER BY RANK ASC, frequency DESC
 )
 
 SELECT traditional, simplified, jyutping, pinyin, definitions FROM
