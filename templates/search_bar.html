@@ -2,7 +2,7 @@
 <div class="input-group p-0 d-none d-md-flex flex-nowrap">
   <input name="search_term" class="form-control rounded-start py-2 fs-5" style="text-overflow: ellipsis;" type="search"
     placeholder="{{ _('Rechercher dans le dictionnaire...') }}" value="{{ search_term }}" autofocus="autofocus"
-    autocomplete="off" autocorrect="off" autocapitalize="false" spellcheck="false">
+    autocomplete="false" autocorrect="false" autocapitalize="false" spellcheck="false">
   <select name="search_type" class="form-select fs-5" style="text-overflow: ellipsis;"
     aria-label="{{ _('Sélection de langue') }}">
     <option value="{{ _('auto') }}" {% if search_type=="{{ _('auto') }}" %}selected{% endif %}>
@@ -33,7 +33,7 @@
   <div class="input-group flex">
     <input name="search_term_mobile" class="form-control rounded-start" style="text-overflow: ellipsis;" type="search"
       placeholder="{{ _('Rechercher dans le dictionnaire...') }}" value="{{ search_term }}" autocomplete="off"
-      autocorrect="off" autocapitalize="false" spellcheck="false">
+      autocorrect="false" autocapitalize="false" spellcheck="false">
     <button class="input-group-text btn btn-primary flex-shrink-0" type="submit" aria-label="{{ _('Rechercher') }}"><i
         class="bi-search"></i></button>
   </div>
