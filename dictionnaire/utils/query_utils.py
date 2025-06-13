@@ -56,12 +56,13 @@ def construct_romanization_query(syllables: list[str], delimiter: str) -> str:
     return processed_syllables
 
 
-def prepare_jyutping_bind_values(jyutping: str) -> str:
+def prepare_jyutping_bind_values(jyutping: str, fuzzy_jyutping: bool) -> str:
     """Formats Jyutping bind value such that we respect exact matches, wildcards,
     and Jyutping segmentation
 
     Args:
         jyutping (str): String containing raw user input
+        fuzzy_jyutping (bool): Bool to toggle processing of fuzzy Jyutping modifications
 
     Returns:
         str: Formatted, segmented, cleaned up Jyutping string
