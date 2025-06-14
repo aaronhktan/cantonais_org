@@ -1,6 +1,6 @@
 import re
 
-from . import chinese_utils
+from . import cantonese_utils, mandarin_utils
 
 SIMPLIFIED_CHINESE_CHARS = [
     "\\u343D",
@@ -5570,10 +5570,10 @@ def contains_traditional_chinese(query: str) -> bool:
 
 
 def is_valid_jyutping(query: str) -> bool:
-    valid_jyutping, _ = chinese_utils.segment_jyutping(query)
+    valid_jyutping, _ = cantonese_utils.segment_jyutping(query)
     return valid_jyutping
 
 
 def is_valid_pinyin(query: str) -> bool:
-    valid_pinyin, _ = chinese_utils.segment_pinyin(query)
+    valid_pinyin, _ = mandarin_utils.segment_pinyin(query)
     return valid_pinyin
