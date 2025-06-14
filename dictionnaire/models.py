@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from .utils import chinese_utils, default_settings
+from .utils import cantonese_utils, chinese_utils, default_settings, mandarin_utils
 
 # Python doesn't really have a good way to hide fields,
 # so I'm just gonna use a single underscore prefix to
@@ -42,19 +42,19 @@ class SourceSentence:
     translations: TranslationSet | None = None
 
     def __post_init__(self):
-        self._yale = chinese_utils.jyutping_to_yale(
+        self._yale = cantonese_utils.jyutping_to_yale(
             self.jyutping, use_spaces_to_segment=True
         )
-        self._cantonese_IPA = chinese_utils.jyutping_to_IPA(
+        self._cantonese_IPA = cantonese_utils.jyutping_to_IPA(
             self.jyutping, use_spaces_to_segment=True
         )
 
-        self._pretty_pinyin = chinese_utils.pretty_pinyin(self.pinyin)
-        self._numbered_pinyin = chinese_utils.numbered_pinyin(self.pinyin)
-        self._zhuyin = chinese_utils.pinyin_to_zhuyin(
+        self._pretty_pinyin = mandarin_utils.pretty_pinyin(self.pinyin)
+        self._numbered_pinyin = mandarin_utils.numbered_pinyin(self.pinyin)
+        self._zhuyin = mandarin_utils.pinyin_to_zhuyin(
             self.pinyin, use_spaces_to_segment=True
         )
-        self._mandarin_IPA = chinese_utils.pinyin_to_IPA(
+        self._mandarin_IPA = mandarin_utils.pinyin_to_IPA(
             self.pinyin, use_spaces_to_segment=True
         )
 
@@ -114,12 +114,12 @@ class Entry:
         # Generate all the read-only fields
         self._coloured_traditional = chinese_utils.apply_colours(
             self.traditional,
-            chinese_utils.extract_jyutping_tones(self.jyutping),
+            cantonese_utils.extract_jyutping_tones(self.jyutping),
             default_settings.DEFAULT_JYUTPING_TONES,
         )
         self._coloured_simplified = chinese_utils.apply_colours(
             self.traditional,
-            chinese_utils.extract_jyutping_tones(self.jyutping),
+            cantonese_utils.extract_jyutping_tones(self.jyutping),
             default_settings.DEFAULT_JYUTPING_TONES,
         )
 
@@ -128,7 +128,7 @@ class Entry:
         )
         self._coloured_traditional_difference = chinese_utils.apply_colours(
             self._traditional_difference,
-            chinese_utils.extract_jyutping_tones(self.jyutping),
+            cantonese_utils.extract_jyutping_tones(self.jyutping),
             default_settings.DEFAULT_JYUTPING_TONES,
         )
         self._simplified_difference = chinese_utils.compare_strings(
@@ -136,14 +136,14 @@ class Entry:
         )
         self._coloured_simplified_difference = chinese_utils.apply_colours(
             self._simplified_difference,
-            chinese_utils.extract_jyutping_tones(self.jyutping),
+            cantonese_utils.extract_jyutping_tones(self.jyutping),
             default_settings.DEFAULT_JYUTPING_TONES,
         )
 
-        self._yale = chinese_utils.jyutping_to_yale(self.jyutping)
-        self._cantonese_IPA = chinese_utils.jyutping_to_IPA(self.jyutping)
+        self._yale = cantonese_utils.jyutping_to_yale(self.jyutping)
+        self._cantonese_IPA = cantonese_utils.jyutping_to_IPA(self.jyutping)
 
-        self._pretty_pinyin = chinese_utils.pretty_pinyin(self.pinyin)
-        self._numbered_pinyin = chinese_utils.numbered_pinyin(self.pinyin)
-        self._zhuyin = chinese_utils.pinyin_to_zhuyin(self.pinyin)
-        self._mandarin_IPA = chinese_utils.pinyin_to_IPA(self.pinyin)
+        self._pretty_pinyin = mandarin_utils.pretty_pinyin(self.pinyin)
+        self._numbered_pinyin = mandarin_utils.numbered_pinyin(self.pinyin)
+        self._zhuyin = mandarin_utils.pinyin_to_zhuyin(self.pinyin)
+        self._mandarin_IPA = mandarin_utils.pinyin_to_IPA(self.pinyin)
