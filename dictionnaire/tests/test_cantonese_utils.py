@@ -122,6 +122,393 @@ class TestJyutpingToIPA(TestCase):
         self.assertEqual(res, "mok")
 
 
+class TestJyutpingAutocorrect(TestCase):
+    def test_hui(self):
+        res = cantonese_utils.jyutping_autocorrect("hui")
+        self.assertEqual(res, "heoi")
+
+        res = cantonese_utils.jyutping_autocorrect("shui")
+        self.assertEqual(res, "seoi")
+
+    def test_cu(self):
+        res = cantonese_utils.jyutping_autocorrect("cui")
+        self.assertEqual(res, "(k)(eo|u)i")
+
+        res = cantonese_utils.jyutping_autocorrect("cum")
+        self.assertEqual(res, "(k)am")
+
+    def test_x(self):
+        res = cantonese_utils.jyutping_autocorrect("xuet")
+        self.assertEqual(res, "s(yu)t")
+
+        res = cantonese_utils.jyutping_autocorrect("xui")
+        self.assertEqual(res, "s(eo|u)i")
+
+    def test_ch(self):
+        res = cantonese_utils.jyutping_autocorrect("choeng")
+        self.assertEqual(res, "coeng")
+
+        res = cantonese_utils.jyutping_autocorrect("chi")
+        self.assertEqual(res, "ci")
+
+    def test_sh(self):
+        res = cantonese_utils.jyutping_autocorrect("shoeng")
+        self.assertEqual(res, "soeng")
+
+        res = cantonese_utils.jyutping_autocorrect("shi")
+        self.assertEqual(res, "si")
+
+    def test_zh(self):
+        res = cantonese_utils.jyutping_autocorrect("zhoeng")
+        self.assertEqual(res, "zoeng")
+
+        res = cantonese_utils.jyutping_autocorrect("zhi")
+        self.assertEqual(res, "zi")
+
+    def test_eung_erng_eong(self):
+        res = cantonese_utils.jyutping_autocorrect("zeung")
+        self.assertEqual(res, "zoeng")
+
+        res = cantonese_utils.jyutping_autocorrect("zerng")
+        self.assertEqual(res, "zoeng")
+
+        res = cantonese_utils.jyutping_autocorrect("zeong")
+        self.assertEqual(res, "zoeng")
+
+    def test_eui(self):
+        res = cantonese_utils.jyutping_autocorrect("zeui")
+        self.assertEqual(res, "zeoi")
+
+    def test_euk(self):
+        res = cantonese_utils.jyutping_autocorrect("seuk")
+        self.assertEqual(res, "soek")
+
+    def test_eun(self):
+        res = cantonese_utils.jyutping_autocorrect("ceun")
+        self.assertEqual(res, "c(eo|yu)n")
+
+    def test_eut(self):
+        res = cantonese_utils.jyutping_autocorrect("seut")
+        self.assertEqual(res, "s(eo|yu)t")
+
+    def test_eu(self):
+        res = cantonese_utils.jyutping_autocorrect("zeu")
+        self.assertEqual(res, "z(e|y)u")
+
+    def test_ern(self):
+        res = cantonese_utils.jyutping_autocorrect("zern")
+        self.assertEqual(res, "zeon")
+
+    def test_oen(self):
+        res = cantonese_utils.jyutping_autocorrect("zoen")
+        self.assertEqual(res, "zeon")
+
+    def test_ar(self):
+        res = cantonese_utils.jyutping_autocorrect("char")
+        self.assertEqual(res, "caa")
+
+    def test_ee(self):
+        res = cantonese_utils.jyutping_autocorrect("see")
+        self.assertEqual(res, "si")
+
+    def test_ay(self):
+        res = cantonese_utils.jyutping_autocorrect("hay")
+        self.assertEqual(res, "hei")
+
+    def test_oy(self):
+        res = cantonese_utils.jyutping_autocorrect("choy")
+        self.assertEqual(res, "coi")
+
+    def test_oo(self):
+        res = cantonese_utils.jyutping_autocorrect("soot")
+        self.assertEqual(res, "s(y!u)t")
+
+    def test_ong(self):
+        res = cantonese_utils.jyutping_autocorrect("fong")
+        self.assertEqual(res, "f(o|u)ng")
+
+    def test_young(self):
+        res = cantonese_utils.jyutping_autocorrect("young")
+        self.assertEqual(res, "j(y!u|a|eo)ng")
+
+    def test_yue(self):
+        res = cantonese_utils.jyutping_autocorrect("yuet")
+        self.assertEqual(res, "j(yu)t")
+
+    def test_ue(self):
+        res = cantonese_utils.jyutping_autocorrect("tsuen")
+        self.assertEqual(res, "c(yu)n")
+
+    def test_tsz(self):
+        res = cantonese_utils.jyutping_autocorrect("tsz")
+        self.assertEqual(res, "zi")
+
+    def test_ck(self):
+        res = cantonese_utils.jyutping_autocorrect("back")
+        self.assertEqual(res, "bak")
+
+    def test_ey(self):
+        res = cantonese_utils.jyutping_autocorrect("gey ")
+        self.assertEqual(res, "gei ")
+
+        res = cantonese_utils.jyutping_autocorrect("gey'")
+        self.assertEqual(res, "gei'")
+
+        res = cantonese_utils.jyutping_autocorrect("gey")
+        self.assertEqual(res, "gei")
+
+        res = cantonese_utils.jyutping_autocorrect("geyhey")
+        self.assertEqual(res, "geihei")
+
+        res = cantonese_utils.jyutping_autocorrect("peylou")
+        self.assertEqual(res, "peilou")
+
+        res = cantonese_utils.jyutping_autocorrect("yeye")
+        self.assertEqual(res, "je je")
+
+        res = cantonese_utils.jyutping_autocorrect("beycaam")
+        self.assertEqual(res, "beicaam")
+
+        res = cantonese_utils.jyutping_autocorrect("geye")
+        self.assertEqual(res, "ge je")
+
+        res = cantonese_utils.jyutping_autocorrect("geyegeye beycaamyeyeyeyeyeyeyepeylougeyheygeygey'gey")
+        self.assertEqual(res, "ge jege je beicaamje je je je je je jepeilougeiheigeigei'gei")
+
+    def test_oh(self):
+        res = cantonese_utils.jyutping_autocorrect("moh ")
+        self.assertEqual(res, "mou ")
+
+        res = cantonese_utils.jyutping_autocorrect("moh'")
+        self.assertEqual(res, "mou'")
+
+        res = cantonese_utils.jyutping_autocorrect("moh")
+        self.assertEqual(res, "mou")
+
+        res = cantonese_utils.jyutping_autocorrect("ohoh")
+        self.assertEqual(res, "ouou")
+
+        res = cantonese_utils.jyutping_autocorrect("nohdoi")
+        self.assertEqual(res, "noudoi")
+
+        res = cantonese_utils.jyutping_autocorrect("lohjan")
+        self.assertEqual(res, "loujan")
+
+        res = cantonese_utils.jyutping_autocorrect("lohon")
+        self.assertEqual(res, "lo hon")
+
+        res = cantonese_utils.jyutping_autocorrect("mohmohmohlohonlohonlohjannohdoimoh moh")
+        self.assertEqual(res, "moumoumoulo honlo honloujannoudoimou mou")
+
+    def test_ow(self):
+        res = cantonese_utils.jyutping_autocorrect("gow ")
+        self.assertEqual(res, "gau ")
+
+        res = cantonese_utils.jyutping_autocorrect("gow'")
+        self.assertEqual(res, "gau'")
+
+        res = cantonese_utils.jyutping_autocorrect("gow ")
+        self.assertEqual(res, "gau ")
+
+        res = cantonese_utils.jyutping_autocorrect("mow")
+        self.assertEqual(res, "mau")
+
+        res = cantonese_utils.jyutping_autocorrect("towgai")
+        self.assertEqual(res, "taugai")
+
+        res = cantonese_utils.jyutping_autocorrect("gowcat")
+        self.assertEqual(res, "gaucat")
+
+        res = cantonese_utils.jyutping_autocorrect("howu")
+        self.assertEqual(res, "ho wu")
+
+        res = cantonese_utils.jyutping_autocorrect("mowmowmowhowuho wu towgai")
+        self.assertEqual(res, "maumaumauho wuho wu taugai")
+
+    def test_um(self):
+        res = cantonese_utils.jyutping_autocorrect("gum ")
+        self.assertEqual(res, "gam ")
+
+        res = cantonese_utils.jyutping_autocorrect("gum'")
+        self.assertEqual(res, "gam'")
+
+        res = cantonese_utils.jyutping_autocorrect("gum")
+        self.assertEqual(res, "gam")
+
+        res = cantonese_utils.jyutping_autocorrect("bum")
+        self.assertEqual(res, "bam")
+
+        res = cantonese_utils.jyutping_autocorrect("bumbumbumbum")
+        self.assertEqual(res, "bambambambam")
+
+        res = cantonese_utils.jyutping_autocorrect("wumit")
+        self.assertEqual(res, "wumit")
+
+        res = cantonese_utils.jyutping_autocorrect("gumzau")
+        self.assertEqual(res, "gamzau")
+
+        res = cantonese_utils.jyutping_autocorrect("guman")
+        self.assertEqual(res, "gu man")
+
+        res = cantonese_utils.jyutping_autocorrect("gumangumzauwumitbumbumbumbum")
+        self.assertEqual(res, "gu mangamzauwumitbambambambam")
+
+    def test_yum(self):
+        res = cantonese_utils.jyutping_autocorrect("yum ")
+        self.assertEqual(res, "jam ")
+
+        res = cantonese_utils.jyutping_autocorrect("yum'")
+        self.assertEqual(res, "jam'")
+
+        res = cantonese_utils.jyutping_autocorrect("yum")
+        self.assertEqual(res, "jam")
+
+        res = cantonese_utils.jyutping_autocorrect("cyumat")
+        self.assertEqual(res, "cyu mat")
+
+        res = cantonese_utils.jyutping_autocorrect("syuyum")
+        self.assertEqual(res, "syujam")
+
+        res = cantonese_utils.jyutping_autocorrect("cyumatcyumatcyumatsyuyumyumyum")
+        self.assertEqual(res, "cyu matcyu matcyu matsyujamjamjam")
+
+    def test_yup(self):
+        res = cantonese_utils.jyutping_autocorrect("yup ")
+        self.assertEqual(res, "jap ")
+
+        res = cantonese_utils.jyutping_autocorrect("yup'")
+        self.assertEqual(res, "jap'")
+
+        res = cantonese_utils.jyutping_autocorrect("yup")
+        self.assertEqual(res, "jap")
+
+        res = cantonese_utils.jyutping_autocorrect("syupei")
+        self.assertEqual(res, "syu pei")
+
+        res = cantonese_utils.jyutping_autocorrect("zeonyup")
+        self.assertEqual(res, "zeonjap")
+
+        res = cantonese_utils.jyutping_autocorrect("zeonyupzeonyupsyupeisyupeiyupyupzeonyup")
+        self.assertEqual(res, "zeonjapzeonjapsyu peisyu peijapjapzeonjap")
+
+    def test_yuk(self):
+        res = cantonese_utils.jyutping_autocorrect("yuk")
+        self.assertEqual(res, "juk")
+
+        res = cantonese_utils.jyutping_autocorrect(" yuk")
+        self.assertEqual(res, " juk")
+
+        res = cantonese_utils.jyutping_autocorrect("geyyuk")
+        self.assertEqual(res, "geijuk")
+
+        res = cantonese_utils.jyutping_autocorrect("gey yuk")
+        self.assertEqual(res, "gei juk")
+
+        res = cantonese_utils.jyutping_autocorrect("jyukap")
+        self.assertEqual(res, "jyu kap")
+
+        res = cantonese_utils.jyutping_autocorrect("jyu kap")
+        self.assertEqual(res, "jyu kap")
+
+        res = cantonese_utils.jyutping_autocorrect("jyu kapgey yukgeyyukyukyukyukyuk yuk")
+        self.assertEqual(res, "jyu kapgei jukgeijukjukjukjukjuk juk")
+
+    def test_jung(self):
+        res = cantonese_utils.jyutping_autocorrect("yung")
+        self.assertEqual(res, "j(y!u|a|eo)ng")
+
+        res = cantonese_utils.jyutping_autocorrect(" yung")
+        self.assertEqual(res, " j(y!u|a|eo)ng")
+
+        res = cantonese_utils.jyutping_autocorrect("gumyung")
+        self.assertEqual(res, "gamj(y!u|a|eo)ng")
+
+        res = cantonese_utils.jyutping_autocorrect("zyungaa")
+        self.assertEqual(res, "z(yu)n gaa")
+
+        res = cantonese_utils.jyutping_autocorrect("jyungin")
+        self.assertEqual(res, "j(yu)n gin")
+
+        res = cantonese_utils.jyutping_autocorrect("jyungingumyung yungyungyungzyungaa")
+        self.assertEqual(res, "j(yu)n gingamj(y!u|a|eo)ng j(y!u|a|eo)ngj(y!u|a|eo)ngj(y!u|a|eo)ngz(yu)n gaa")
+
+    def test_yun(self):
+        res = cantonese_utils.jyutping_autocorrect("yun")
+        self.assertEqual(res, "j(a|yu)n")
+
+        res = cantonese_utils.jyutping_autocorrect(" yun")
+        self.assertEqual(res, " (ja|jyu|yu)n")
+
+        res = cantonese_utils.jyutping_autocorrect("gumyun")
+        self.assertEqual(res, "gam(ja|jyu|yu)n")
+
+        res = cantonese_utils.jyutping_autocorrect("syuntau")
+        self.assertEqual(res, "sy(y!u|a|eo)ntau")
+
+        res = cantonese_utils.jyutping_autocorrect("syuntausyuntaugumyunyun yunyunyun")
+        self.assertEqual(
+            res, "sy(y!u|a|eo)ntausy(y!u|a|eo)ntaugam(ja|jyu|yu)n(ja|jyu|yu)n (ja|jyu|yu)n(ja|jyu|yu)n(ja|jyu|yu)n")
+
+    def test_yut(self):
+        res = cantonese_utils.jyutping_autocorrect("yut")
+        self.assertEqual(res, "j(a|yu)t")
+
+        res = cantonese_utils.jyutping_autocorrect(" yut")
+        self.assertEqual(res, " (ja|jyu|yu)t")
+
+        res = cantonese_utils.jyutping_autocorrect("gamyut")
+        self.assertEqual(res, "gam(ja|jyu|yu)t")
+
+        res = cantonese_utils.jyutping_autocorrect("jyutjyu")
+        self.assertEqual(res, "j(yu)tjyu")
+
+        res = cantonese_utils.jyutping_autocorrect("zyutai")
+        self.assertEqual(res, "z(yu)tai")
+
+        res = cantonese_utils.jyutping_autocorrect("zyutaijyutjyugamyut yut yutyutyut")
+        self.assertEqual(res, "z(yu)taij(yu)tjyugam(ja|jyu|yu)t (ja|jyu|yu)t (ja|jyu|yu)t(ja|jyu|yu)t(ja|jyu|yu)t")
+
+    def test_y(self):
+        res = cantonese_utils.jyutping_autocorrect("yaang")
+        self.assertEqual(res, "jaang")
+
+        res = cantonese_utils.jyutping_autocorrect("yeng")
+        self.assertEqual(res, "jeng")
+
+        res = cantonese_utils.jyutping_autocorrect("yuen")
+        self.assertEqual(res, "jy(y!u|a|eo)n")
+
+    def test_ui(self):
+        res = cantonese_utils.jyutping_autocorrect("gui")
+        self.assertEqual(res, "g(eo|u)i")
+
+        res = cantonese_utils.jyutping_autocorrect(" gui")
+        self.assertEqual(res, " g(eo|u)i")
+
+        res = cantonese_utils.jyutping_autocorrect("yumsui")
+        self.assertEqual(res, "jams(eo|u)i")
+
+    def test_un(self):
+        res = cantonese_utils.jyutping_autocorrect("gun")
+        self.assertEqual(res, "g(y!u|a|eo)n")
+
+        res = cantonese_utils.jyutping_autocorrect(" gun")
+        self.assertEqual(res, " g(y!u|a|eo)n")
+
+        res = cantonese_utils.jyutping_autocorrect("gunzoeng")
+        self.assertEqual(res, "g(y!u|a|eo)nzoeng")
+
+    def test_ut(self):
+        res = cantonese_utils.jyutping_autocorrect("gut")
+        self.assertEqual(res, "g(a|u)t")
+
+        res = cantonese_utils.jyutping_autocorrect(" gut")
+        self.assertEqual(res, " g(a|u)t")
+
+        res = cantonese_utils.jyutping_autocorrect("gumgut")
+        self.assertEqual(res, "gamg(a|u)t")
+
+
 class TestJyutpingSegmentation(TestCase):
     def test_simple(self):
         _, res = cantonese_utils.segment_jyutping("m4 goi1")

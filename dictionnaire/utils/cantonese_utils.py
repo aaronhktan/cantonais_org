@@ -601,7 +601,7 @@ def jyutping_autocorrect(
                     if initial_found:
                         result = result[:idx] + "ou" + result[idx+2:]
                     else:
-                        result = result[:idx] + "e h" + result[idx+2:]
+                        result = result[:idx] + "o h" + result[idx+2:]
         idx = result.find("oh", idx+1)
 
     # 4. Check if the user intends to write an [-ɔː w-] or [-auː] cluster
@@ -638,7 +638,7 @@ def jyutping_autocorrect(
                         result = result[:idx] + "au" + result[idx+2:]
                     else:
                         result = result[:idx] + "o w" + result[idx+2:]
-        idx = result.find("oh", idx+1)
+        idx = result.find("ow", idx+1)
 
     # 5. Check if the user intends to write an [ɐm] or [-uː  m-] cluster
     result = result.replace("um ", "am ")
@@ -775,7 +775,7 @@ def jyutping_autocorrect(
                 if result[initial_idx] in close_front_cluster:
                     result = result[:idx] + "yun" + result[idx+3:]
                 else:
-                    result = result[:idx] + "j(a|yu)n" + result[idx+3:]
+                    result = result[:idx] + "(ja|jyu|yu)n" + result[idx+3:]
         idx = result.find("yun", idx+1)
 
     # 11. Check if the user intends to write an [-yt] or [jɐt], [jyt], [yt] cluster
