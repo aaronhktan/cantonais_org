@@ -825,6 +825,92 @@ def jyutping_autocorrect(
     return result
 
 
+def jyutping_sound_changes(syllables: list[str]) -> list[str]:
+    res = [x for x in syllables]
+    for i in range(len(res)):
+        # 1. Whole-syllable sound changes
+        if res[i] == "ng" or res[i] == "m":
+            res[i] = "(ng|m)"
+            continue
+        elif (len(res[i]) == 3 and res[i][:-1] == "ng"
+              and (res[i][-1].isnumeric() or res[i][-1] == "?")):
+            res[i] = "(ng|m)" + res[i][-1]
+            continue
+        elif (len(res[i]) == 2 and res[i][-2] == "m"
+              and (res[i][-1].isnumeric() or res[i][-1] == "?")):
+            res[i] = "(ng|m)" + res[i][-1]
+            continue
+
+        # 2. Initial sound changes
+        # 2.1 "Lazy" pronunciations
+        if (len(res[i]) >= 3 and res[i].startswith("ng")
+                and not res[i][2].isnumeric() and res[i][2] != "?"):
+            # loss of [ŋ] initial, replacement with null initial
+            res[i] = "(ng)!" + res[i][2:]
+        elif res[i][0] in "aou":
+            # merging of null initial with initial [ŋ] before [a, ɐ, ɔ, o]
+            res[i] = "(ng)!" + res[i]
+        elif res[i][0] in "nl":
+            # merge of [n] and [l] initials
+            res[i] = "(n|l)" + res[i][1:]
+        elif (res[i].startswith("go") or res[i].startswith("ko")
+              or res[i].startswith("g(o") or res[i].startswith("k(o")):
+            # merging of [k]/[kʷ] and [kʰ]/[kʷʰ] initials before [ɔ]
+            if res[i][0] == "g":
+                res[i] = "gw!" + res[i][1:]
+            elif res[i][0] == "k":
+                res[i] = "kw!" + res[i][1:]
+
+        # 2.2 Lack of distinction between aspirated and unaspirated initials
+        if res[i][0] in "dt":
+            res[i] = "(d|t)" + res[i][1:]
+        elif res[i][0] in "cz":
+            res[i] = "(c|z)" + res[i][1:]
+        elif res[i][0] in "gk":
+            res[i] = "(g|k)" + res[i][1:]
+
+        # 3. Nucleus sound changes
+        idx = res[i].find("a")
+        while idx != -1:
+            if res[i][idx:idx+2] == "aa":
+                res[i] = res[i][:idx+2] + "!" + res[i][idx+2:]
+                idx = res[i].find("a", idx+3)
+            else:
+                res[i] = res[i][:idx+1] + "a!" + res[i][idx+1:]
+                idx = res[i].find("a", idx+2)
+
+        # 4. Final sound changes
+        if (res[i].endswith("ang") or res[i].endswith("a!ng")
+                or res[i].endswith("ong")):
+            # alveolarization of final [ŋ]
+            res[i] = res[i] + "!"
+        elif (res[i][:-1].endswith("ang") or res[i][:-1].endswith("aa!ng")
+                or res[i][:-1].endswith("ong")):
+            res[i] = res[i][:-1] + "!" + res[i][-1]
+        elif res[i].endswith("an") or res[i].endswith("a!n") or res[i].endswith("on"):
+            # velarization of final [n]
+            res[i] = res[i] + "g!"
+        elif (res[i][:-1].endswith("an") or res[i][:-1].endswith("a!n")
+              or res[i][:-1].endswith("on")):
+            res[i] = res[i][:-1] + "g!" + res[i][-1]
+        elif (res[i].endswith("t")
+              and not res[i].endswith("it") and not res[i].endswith(("ut"))):
+            # velarization of final [t]
+            res[i] = res[i][:-1] + "(k|t)"
+        elif (res[i][:-1].endswith("t")
+              and not res[i][:-1].endswith("it") and not res[i][:-1].endswith(("ut"))):
+            res[i] = res[i][:-2] + "(k|t)" + res[i][-1]
+        elif (res[i].endswith("k")
+              and not res[i].endswith("ik") and not res[i].endswith(("uk"))):
+            # alveolarization of final [k]
+            res[i] = res[i][:-1] + "(k|t)"
+        elif (res[i][:-1].endswith("k")
+              and not res[i][:-1].endswith("ik") and not res[i][:-1].endswith(("uk"))):
+            res[i] = res[i][:-2] + "(k|t)" + res[i][-1]
+
+    return res
+
+
 def segment_jyutping(
     jyutping: str,
     remove_special_characters: bool = True,
