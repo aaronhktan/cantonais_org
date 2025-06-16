@@ -509,6 +509,317 @@ class TestJyutpingAutocorrect(TestCase):
         self.assertEqual(res, "gamg(a|u)t")
 
 
+class TestJyutpingSoundChanges(TestCase):
+    def test_ng(self):
+        res = cantonese_utils.jyutping_sound_changes(["ng"])
+        self.assertEqual(res, ["(ng|m)"])
+
+        res = cantonese_utils.jyutping_sound_changes(["ng4"])
+        self.assertEqual(res, ["(ng|m)4"])
+
+        res = cantonese_utils.jyutping_sound_changes(["ng?"])
+        self.assertEqual(res, ["(ng|m)?"])
+
+    def test_m(self):
+        res = cantonese_utils.jyutping_sound_changes(["m"])
+        self.assertEqual(res, ["(ng|m)"])
+
+        res = cantonese_utils.jyutping_sound_changes(["m4"])
+        self.assertEqual(res, ["(ng|m)4"])
+
+        res = cantonese_utils.jyutping_sound_changes(["m?"])
+        self.assertEqual(res, ["(ng|m)?"])
+
+    def test_ng_initial(self):
+        res = cantonese_utils.jyutping_sound_changes(["ngo"])
+        self.assertEqual(res, ["(ng)!o"])
+
+        res = cantonese_utils.jyutping_sound_changes(["ngo5"])
+        self.assertEqual(res, ["(ng)!o5"])
+
+        res = cantonese_utils.jyutping_sound_changes(["ngo?"])
+        self.assertEqual(res, ["(ng)!o?"])
+
+    def test_null_initial(self):
+        res = cantonese_utils.jyutping_sound_changes(["o"])
+        self.assertEqual(res, ["(ng)!o"])
+
+        res = cantonese_utils.jyutping_sound_changes(["o5"])
+        self.assertEqual(res, ["(ng)!o5"])
+
+        res = cantonese_utils.jyutping_sound_changes(["o?"])
+        self.assertEqual(res, ["(ng)!o?"])
+
+        res = cantonese_utils.jyutping_sound_changes(["ang"])
+        self.assertEqual(res, ["(ng)!aa!ng!"])
+
+        res = cantonese_utils.jyutping_sound_changes(["ang2"])
+        self.assertEqual(res, ["(ng)!aa!ng!2"])
+
+        res = cantonese_utils.jyutping_sound_changes(["ang?"])
+        self.assertEqual(res, ["(ng)!aa!ng!?"])
+
+        res = cantonese_utils.jyutping_sound_changes(["uk"])
+        self.assertEqual(res, ["(ng)!uk"])
+
+        res = cantonese_utils.jyutping_sound_changes(["uk1"])
+        self.assertEqual(res, ["(ng)!uk1"])
+
+        res = cantonese_utils.jyutping_sound_changes(["uk?"])
+        self.assertEqual(res, ["(ng)!uk?"])
+
+    def test_n_initial(self):
+        res = cantonese_utils.jyutping_sound_changes(["nei"])
+        self.assertEqual(res, ["(n|l)ei"])
+
+        res = cantonese_utils.jyutping_sound_changes(["nei5"])
+        self.assertEqual(res, ["(n|l)ei5"])
+
+        res = cantonese_utils.jyutping_sound_changes(["nei?"])
+        self.assertEqual(res, ["(n|l)ei?"])
+
+    def test_l_initial(self):
+        res = cantonese_utils.jyutping_sound_changes(["lei"])
+        self.assertEqual(res, ["(n|l)ei"])
+
+        res = cantonese_utils.jyutping_sound_changes(["lei5"])
+        self.assertEqual(res, ["(n|l)ei5"])
+
+        res = cantonese_utils.jyutping_sound_changes(["lei?"])
+        self.assertEqual(res, ["(n|l)ei?"])
+
+    def test_gw(self):
+        res = cantonese_utils.jyutping_sound_changes(["gok"])
+        self.assertEqual(res, ["(g|k)w!o(k|t)"])
+
+        res = cantonese_utils.jyutping_sound_changes(["gok3"])
+        self.assertEqual(res, ["(g|k)w!o(k|t)3"])
+
+        res = cantonese_utils.jyutping_sound_changes(["gok?"])
+        self.assertEqual(res, ["(g|k)w!o(k|t)?"])
+
+        res = cantonese_utils.jyutping_sound_changes(["g(o|u)ng"])
+        self.assertEqual(res, ["(g|k)w!(o|u)ng"])
+
+        res = cantonese_utils.jyutping_sound_changes(["g(o|u)ng3"])
+        self.assertEqual(res, ["(g|k)w!(o|u)ng3"])
+
+        res = cantonese_utils.jyutping_sound_changes(["g(o|u)ng?"])
+        self.assertEqual(res, ["(g|k)w!(o|u)ng?"])
+
+    def test_kw(self):
+        res = cantonese_utils.jyutping_sound_changes(["kok"])
+        self.assertEqual(res, ["(g|k)w!o(k|t)"])
+
+        res = cantonese_utils.jyutping_sound_changes(["kok3"])
+        self.assertEqual(res, ["(g|k)w!o(k|t)3"])
+
+        res = cantonese_utils.jyutping_sound_changes(["kok?"])
+        self.assertEqual(res, ["(g|k)w!o(k|t)?"])
+
+        res = cantonese_utils.jyutping_sound_changes(["k(o|u)ng"])
+        self.assertEqual(res, ["(g|k)w!(o|u)ng"])
+
+        res = cantonese_utils.jyutping_sound_changes(["k(o|u)ng3"])
+        self.assertEqual(res, ["(g|k)w!(o|u)ng3"])
+
+        res = cantonese_utils.jyutping_sound_changes(["k(o|u)ng?"])
+        self.assertEqual(res, ["(g|k)w!(o|u)ng?"])
+
+    def test_d(self):
+        res = cantonese_utils.jyutping_sound_changes(["deng"])
+        self.assertEqual(res, ["(d|t)eng"])
+
+        res = cantonese_utils.jyutping_sound_changes(["deng1"])
+        self.assertEqual(res, ["(d|t)eng1"])
+
+        res = cantonese_utils.jyutping_sound_changes(["deng?"])
+        self.assertEqual(res, ["(d|t)eng?"])
+
+    def test_t_initial(self):
+        res = cantonese_utils.jyutping_sound_changes(["teng"])
+        self.assertEqual(res, ["(d|t)eng"])
+
+        res = cantonese_utils.jyutping_sound_changes(["teng1"])
+        self.assertEqual(res, ["(d|t)eng1"])
+
+        res = cantonese_utils.jyutping_sound_changes(["teng?"])
+        self.assertEqual(res, ["(d|t)eng?"])
+
+    def test_c(self):
+        res = cantonese_utils.jyutping_sound_changes(["ceng"])
+        self.assertEqual(res, ["(c|z)eng"])
+
+        res = cantonese_utils.jyutping_sound_changes(["ceng1"])
+        self.assertEqual(res, ["(c|z)eng1"])
+
+        res = cantonese_utils.jyutping_sound_changes(["ceng?"])
+        self.assertEqual(res, ["(c|z)eng?"])
+
+    def test_z(self):
+        res = cantonese_utils.jyutping_sound_changes(["zeng"])
+        self.assertEqual(res, ["(c|z)eng"])
+
+        res = cantonese_utils.jyutping_sound_changes(["zeng2"])
+        self.assertEqual(res, ["(c|z)eng2"])
+
+        res = cantonese_utils.jyutping_sound_changes(["zeng?"])
+        self.assertEqual(res, ["(c|z)eng?"])
+
+    def test_g(self):
+        res = cantonese_utils.jyutping_sound_changes(["ging"])
+        self.assertEqual(res, ["(g|k)ing"])
+
+        res = cantonese_utils.jyutping_sound_changes(["ging1"])
+        self.assertEqual(res, ["(g|k)ing1"])
+
+        res = cantonese_utils.jyutping_sound_changes(["ging?"])
+        self.assertEqual(res, ["(g|k)ing?"])
+
+    def test_k_initial(self):
+        res = cantonese_utils.jyutping_sound_changes(["king"])
+        self.assertEqual(res, ["(g|k)ing"])
+
+        res = cantonese_utils.jyutping_sound_changes(["king1"])
+        self.assertEqual(res, ["(g|k)ing1"])
+
+        res = cantonese_utils.jyutping_sound_changes(["king?"])
+        self.assertEqual(res, ["(g|k)ing?"])
+
+    def test_aa(self):
+        res = cantonese_utils.jyutping_sound_changes(["mak"])
+        self.assertEqual(res, ["maa!(k|t)"])
+
+        res = cantonese_utils.jyutping_sound_changes(["mak6"])
+        self.assertEqual(res, ["maa!(k|t)6"])
+
+        res = cantonese_utils.jyutping_sound_changes(["mak?"])
+        self.assertEqual(res, ["maa!(k|t)?"])
+
+        res = cantonese_utils.jyutping_sound_changes(["maak"])
+        self.assertEqual(res, ["maa!(k|t)"])
+
+        res = cantonese_utils.jyutping_sound_changes(["maak1"])
+        self.assertEqual(res, ["maa!(k|t)1"])
+
+        res = cantonese_utils.jyutping_sound_changes(["maak?"])
+        self.assertEqual(res, ["maa!(k|t)?"])
+
+    def test_ang(self):
+        res = cantonese_utils.jyutping_sound_changes(["maang"])
+        self.assertEqual(res, ["maa!ng!"])
+
+        res = cantonese_utils.jyutping_sound_changes(["maang4"])
+        self.assertEqual(res, ["maa!ng!4"])
+
+        res = cantonese_utils.jyutping_sound_changes(["maang?"])
+        self.assertEqual(res, ["maa!ng!?"])
+
+        res = cantonese_utils.jyutping_sound_changes(["mang"])
+        self.assertEqual(res, ["maa!ng!"])
+
+        res = cantonese_utils.jyutping_sound_changes(["mang1"])
+        self.assertEqual(res, ["maa!ng!1"])
+
+        res = cantonese_utils.jyutping_sound_changes(["mang?"])
+        self.assertEqual(res, ["maa!ng!?"])
+
+    def test_ong(self):
+        res = cantonese_utils.jyutping_sound_changes(["bong"])
+        self.assertEqual(res, ["bong!"])
+
+        res = cantonese_utils.jyutping_sound_changes(["bong2"])
+        self.assertEqual(res, ["bong!2"])
+
+        res = cantonese_utils.jyutping_sound_changes(["bong?"])
+        self.assertEqual(res, ["bong!?"])
+
+    def test_an(self):
+        res = cantonese_utils.jyutping_sound_changes(["maan"])
+        self.assertEqual(res, ["maa!ng!"])
+
+        res = cantonese_utils.jyutping_sound_changes(["maan4"])
+        self.assertEqual(res, ["maa!ng!4"])
+
+        res = cantonese_utils.jyutping_sound_changes(["maan?"])
+        self.assertEqual(res, ["maa!ng!?"])
+
+        res = cantonese_utils.jyutping_sound_changes(["man"])
+        self.assertEqual(res, ["maa!ng!"])
+
+        res = cantonese_utils.jyutping_sound_changes(["man1"])
+        self.assertEqual(res, ["maa!ng!1"])
+
+        res = cantonese_utils.jyutping_sound_changes(["man?"])
+        self.assertEqual(res, ["maa!ng!?"])
+
+    def test_on(self):
+        res = cantonese_utils.jyutping_sound_changes(["mon"])
+        self.assertEqual(res, ["mong!"])
+
+        res = cantonese_utils.jyutping_sound_changes(["mon2"])
+        self.assertEqual(res, ["mong!2"])
+
+        res = cantonese_utils.jyutping_sound_changes(["mon?"])
+        self.assertEqual(res, ["mong!?"])
+
+    def test_t_final(self):
+        res = cantonese_utils.jyutping_sound_changes(["got"])
+        self.assertEqual(res, ["(g|k)w!o(k|t)"])
+
+        res = cantonese_utils.jyutping_sound_changes(["got3"])
+        self.assertEqual(res, ["(g|k)w!o(k|t)3"])
+
+        res = cantonese_utils.jyutping_sound_changes(["got?"])
+        self.assertEqual(res, ["(g|k)w!o(k|t)?"])
+
+        res = cantonese_utils.jyutping_sound_changes(["bit"])
+        self.assertEqual(res, ["bit"])
+
+        res = cantonese_utils.jyutping_sound_changes(["bit6"])
+        self.assertEqual(res, ["bit6"])
+
+        res = cantonese_utils.jyutping_sound_changes(["bit?"])
+        self.assertEqual(res, ["bit?"])
+
+        res = cantonese_utils.jyutping_sound_changes(["but"])
+        self.assertEqual(res, ["but"])
+
+        res = cantonese_utils.jyutping_sound_changes(["but6"])
+        self.assertEqual(res, ["but6"])
+
+        res = cantonese_utils.jyutping_sound_changes(["but?"])
+        self.assertEqual(res, ["but?"])
+
+    def test_k_final(self):
+        res = cantonese_utils.jyutping_sound_changes(["gok"])
+        self.assertEqual(res, ["(g|k)w!o(k|t)"])
+
+        res = cantonese_utils.jyutping_sound_changes(["gok3"])
+        self.assertEqual(res, ["(g|k)w!o(k|t)3"])
+
+        res = cantonese_utils.jyutping_sound_changes(["gok?"])
+        self.assertEqual(res, ["(g|k)w!o(k|t)?"])
+
+        res = cantonese_utils.jyutping_sound_changes(["bik"])
+        self.assertEqual(res, ["bik"])
+
+        res = cantonese_utils.jyutping_sound_changes(["bik6"])
+        self.assertEqual(res, ["bik6"])
+
+        res = cantonese_utils.jyutping_sound_changes(["bik?"])
+        self.assertEqual(res, ["bik?"])
+
+        res = cantonese_utils.jyutping_sound_changes(["buk"])
+        self.assertEqual(res, ["buk"])
+
+        res = cantonese_utils.jyutping_sound_changes(["buk1"])
+        self.assertEqual(res, ["buk1"])
+
+        res = cantonese_utils.jyutping_sound_changes(["buk?"])
+        self.assertEqual(res, ["buk?"])
+
+
 class TestJyutpingSegmentation(TestCase):
     def test_simple(self):
         _, res = cantonese_utils.segment_jyutping("m4 goi1")
