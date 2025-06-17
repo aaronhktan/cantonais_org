@@ -46,22 +46,22 @@
   </div>
   <select name="search_type_mobile" class="form-select" style="text-overflow: ellipsis;"
     aria-label="{{ _('Sélection de langue') }}">
-    <option value="{{ _('auto') }}" {% if search_type=="{{ _('auto') }}" %}selected{% endif %}>
+    <option value="{{ auto }}" {% if search_type == auto %}selected{% endif %}>
       {{ _("Détection de langue automatique") }}
     </option>
-    <option value="{{ _('traditionnel') }}" {% if search_type=="{{ _('traditionnel') }}" %}selected{% endif %}>
+    <option value="{{ traditionnel }}" {% if search_type == traditionnel %}selected{% endif %}>
       {{ _("Caractères traditionnels") }}
     </option>
-    <option value="{{ _('simplifie') }}" {% if search_type=="{{ _('simplifie') }}" %}selected{% endif %}>
+    <option value="{{ simplifie }}" {% if search_type == simplifie %}selected{% endif %}>
       {{ _("Caractères simplifiés") }}
     </option>
-    <option value="{{ _('jyutping') }}" {% if search_type=="{{ _('jyutping') }}" %}selected{% endif %}>
+    <option value="{{ jyutping }}" {% if search_type == jyutping %}selected{% endif %}>
       {{ _("Jyutping") }}
     </option>
-    <option value="{{ _('pinyin') }}" {% if search_type=="{{ _('pinyin') }}" %}selected{% endif %}>
+    <option value="{{ pinyin }}" {% if search_type == pinyin %}selected{% endif %}>
       {{ _("Pinyin") }}
     </option>
-    <option value="{{ _('fr') }}" {% if search_type=="{{ _('fr') }}" %}selected{% endif %}>
+    <option value="{{ fr }}" {% if search_type == fr %}selected{% endif %}>
       {{ _("Français") }}
     </option>
   </select>
