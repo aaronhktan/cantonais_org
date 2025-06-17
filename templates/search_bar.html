@@ -36,6 +36,13 @@
 {%- endmacro %}
 
 {% macro mobile_input(search_term, search_type='') -%}
+{% set auto %}{{ _('auto') }}{% endset %}
+{% set traditionnel %}{{ _('traditionnel') }}{% endset %}
+{% set simplifie %}{{ _('simplifie') }}{% endset %}
+{% set jyutping %}{{ _('jyutping') }}{% endset %}
+{% set pinyin %}{{ _('pinyin') }}{% endset %}
+{% set fr %}{{ _('fr') }}{% endset %}
+
 <div class="d-flex d-md-none flex-column gap-2">
   <div class="input-group flex">
     <input name="search_term_mobile" class="form-control rounded-start" style="text-overflow: ellipsis;" type="search"
