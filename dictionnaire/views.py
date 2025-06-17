@@ -1,4 +1,5 @@
 from flask import render_template
+from flask_babel import _
 
 from . import queries
 from .utils import script_detector
@@ -31,7 +32,7 @@ def render_search_auto(search_term):
     return render_template(
         "dictionary_search.html",
         search_term=search_term,
-        search_type="search_auto",
+        search_type=_("auto"),
         entries=entries,
     )
 
@@ -41,7 +42,7 @@ def render_search_traditional(search_term):
     return render_template(
         "dictionary_search.html",
         search_term=search_term,
-        search_type="search_traditional",
+        search_type=_("traditionnel"),
         entries=entries,
     )
 
@@ -51,7 +52,7 @@ def render_search_simplified(search_term):
     return render_template(
         "dictionary_search.html",
         search_term=search_term,
-        search_type="search_simplified",
+        search_type=_("simplifie"),
         entries=entries,
     )
 
@@ -61,7 +62,7 @@ def render_search_jyutping(search_term):
     return render_template(
         "dictionary_search.html",
         search_term=search_term,
-        search_type="search_jyutping",
+        search_type=_("jyutping"),
         entries=entries,
     )
 
@@ -71,7 +72,7 @@ def render_search_pinyin(search_term):
     return render_template(
         "dictionary_search.html",
         search_term=search_term,
-        search_type="search_pinyin",
+        search_type=_("pinyin"),
         entries=entries,
     )
 
@@ -81,7 +82,7 @@ def render_search_french(search_term):
     return render_template(
         "dictionary_search.html",
         search_term=search_term,
-        search_type="search_french",
+        search_type=_("fr"),
         entries=entries,
     )
 

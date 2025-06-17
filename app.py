@@ -68,6 +68,7 @@ app.register_blueprint(dictionary_app, name="dictionnaire", url_prefix="/diction
 app.register_blueprint(dictionary_app, name="dictionary", url_prefix="/dictionary")
 
 app.jinja_env.filters["quote"] = lambda x: urllib.parse.quote(x, safe="")
+app.jinja_env.filters["log"] = lambda x: print(x)
 
 generate_sitemap(app)
 
