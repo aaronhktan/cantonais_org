@@ -1,26 +1,33 @@
 {% macro desktop_input(search_term, search_type='') -%}
+{% set auto %}{{ _('auto') }}{% endset %}
+{% set traditionnel %}{{ _('traditionnel') }}{% endset %}
+{% set simplifie %}{{ _('simplifie') }}{% endset %}
+{% set jyutping %}{{ _('jyutping') }}{% endset %}
+{% set pinyin %}{{ _('pinyin') }}{% endset %}
+{% set fr %}{{ _('fr') }}{% endset %}
+
 <div class="input-group p-0 d-none d-md-flex flex-nowrap">
   <input name="search_term" class="form-control rounded-start py-2 fs-5" style="text-overflow: ellipsis;" type="search"
     placeholder="{{ _('Rechercher dans le dictionnaire...') }}" value="{{ search_term }}" autofocus="autofocus"
     autocomplete="false" autocorrect="false" autocapitalize="false" spellcheck="false">
   <select name="search_type" class="form-select fs-5" style="text-overflow: ellipsis;"
     aria-label="{{ _('Sélection de langue') }}">
-    <option value="{{ _('auto') }}" {% if search_type=="{{ _('auto') }}" %}selected{% endif %}>
+    <option value="{{ auto }}" {% if search_type == auto %}selected{% endif %}>
       {{ _("Détection de langue automatique") }}
     </option>
-    <option value="{{ _('traditionnel') }}" {% if search_type=="{{ _('traditionnel') }}" %}selected{% endif %}>
+    <option value="{{ traditionnel }}" {% if search_type == traditionnel %}selected{% endif %}>
       {{ _("Caractères traditionnels") }}
     </option>
-    <option value="{{ _('simplifie') }}" {% if search_type=="{{ _('simplifie') }}" %}selected{% endif %}>
+    <option value="{{ simplifie }}" {% if search_type == simplifie %}selected{% endif %}>
       {{ _("Caractères simplifiés") }}
     </option>
-    <option value="{{ _('jyutping') }}" {% if search_type=="{{ _('jyutping') }}" %}selected{% endif %}>
+    <option value="{{ jyutping }}" {% if search_type == jyutping %}selected{% endif %}>
       {{ _("Jyutping") }}
     </option>
-    <option value="{{ _('pinyin') }}" {% if search_type=="{{ _('pinyin') }}" %}selected{% endif %}>
+    <option value="{{ pinyin }}" {% if search_type == pinyin %}selected{% endif %}>
       {{ _("Pinyin") }}
     </option>
-    <option value="{{ _('fr') }}" {% if search_type=="{{ _('fr') }}" %}selected{% endif %}>
+    <option value="{{ fr }}" {% if search_type == fr %}selected{% endif %}>
       {{ _("Français") }}
     </option>
   </select>

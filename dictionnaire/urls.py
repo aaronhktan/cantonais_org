@@ -55,7 +55,7 @@ def search_auto(search_term):
     resp = make_response(views.render_search_auto(search_term))
 
     resp.set_cookie("search_term", search_term)
-    resp.set_cookie("search_type", search_auto.__name__)
+    resp.set_cookie("search_type", _("auto"))
 
     return resp
 
@@ -71,7 +71,7 @@ def search_traditional(search_term):
     resp = make_response(views.render_search_traditional(search_term))
 
     resp.set_cookie("search_term", search_term)
-    resp.set_cookie("search_type", search_traditional.__name__)
+    resp.set_cookie("search_type", _("traditionnel"))
 
     return resp
 
@@ -87,7 +87,7 @@ def search_simplified(search_term):
     resp = make_response(views.render_search_simplified(search_term))
 
     resp.set_cookie("search_term", search_term)
-    resp.set_cookie("search_type", search_simplified.__name__)
+    resp.set_cookie("search_type", _("simplifie"))
 
     return resp
 
@@ -103,7 +103,7 @@ def search_jyutping(search_term):
     resp = make_response(views.render_search_jyutping(search_term))
 
     resp.set_cookie("search_term", search_term)
-    resp.set_cookie("search_type", search_jyutping.__name__)
+    resp.set_cookie("search_type", _("jyutping"))
 
     return resp
 
@@ -119,7 +119,7 @@ def search_pinyin(search_term):
     resp = make_response(views.render_search_pinyin(search_term))
 
     resp.set_cookie("search_term", search_term)
-    resp.set_cookie("search_type", search_pinyin.__name__)
+    resp.set_cookie("search_type", _("pinyin"))
 
     return resp
 
@@ -135,7 +135,7 @@ def search_french(search_term):
     resp = make_response(views.render_search_french(search_term))
 
     resp.set_cookie("search_term", search_term)
-    resp.set_cookie("search_type", search_french.__name__)
+    resp.set_cookie("search_type", _("fr"))
 
     return resp
 
