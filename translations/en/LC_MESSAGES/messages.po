@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cantonais_org 2.0.0\n"
 "Report-Msgid-Bugs-To: hi@aaronhktan.com\n"
-"POT-Creation-Date: 2025-06-17 00:09-0400\n"
+"POT-Creation-Date: 2025-06-17 15:58-0400\n"
 "PO-Revision-Date: 2025-06-03 01:14-0400\n"
 "Last-Translator: Aaron Tan <hi@aaronhktan.com>\n"
 "Language: en\n"
@@ -33,32 +33,29 @@ msgstr "dictionary./search"
 
 #: dictionnaire/urls.py:58 dictionnaire/views.py:35 templates/index_en.html:49
 #: templates/index_en.html:68 templates/search_bar.html:2
-#: templates/search_bar.html:49
 msgid "auto"
 msgstr "auto"
 
 #: dictionnaire/urls.py:74 dictionnaire/views.py:45 templates/search_bar.html:3
-#: templates/search_bar.html:52
 msgid "traditionnel"
 msgstr "traditional"
 
 #: dictionnaire/urls.py:90 dictionnaire/views.py:55 templates/search_bar.html:4
-#: templates/search_bar.html:55
 msgid "simplifie"
 msgstr "simplified"
 
 #: dictionnaire/urls.py:106 dictionnaire/views.py:65
-#: templates/search_bar.html:5 templates/search_bar.html:58
+#: templates/search_bar.html:5
 msgid "jyutping"
 msgstr "jyutping"
 
 #: dictionnaire/urls.py:122 dictionnaire/views.py:75
-#: templates/search_bar.html:6 templates/search_bar.html:61
+#: templates/search_bar.html:6
 msgid "pinyin"
 msgstr "pinyin"
 
 #: dictionnaire/urls.py:138 dictionnaire/views.py:85 templates/base.html:2
-#: templates/search_bar.html:7 templates/search_bar.html:64
+#: templates/search_bar.html:7
 msgid "fr"
 msgstr "en"
 
@@ -223,3 +220,4 @@ msgstr "Pinyin"
 #: templates/search_bar.html:31 templates/search_bar.html:65
 msgid "Français"
 msgstr "English"
+
