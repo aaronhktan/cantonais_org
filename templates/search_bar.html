@@ -3,6 +3,7 @@
 {% set traditionnel %}{{ _('traditionnel') }}{% endset %}
 {% set simplifie %}{{ _('simplifie') }}{% endset %}
 {% set jyutping %}{{ _('jyutping') }}{% endset %}
+{% set jyutping_approximatif %}{{ _('jyutping-approximatif') }}{% endset %}
 {% set pinyin %}{{ _('pinyin') }}{% endset %}
 {% set fr %}{{ _('fr') }}{% endset %}
 
@@ -24,6 +25,9 @@
     <option value="{{ jyutping }}" {% if search_type == jyutping %}selected{% endif %}>
       {{ _("Jyutping") }}
     </option>
+    <option value="{{ jyutping_approximatif }}" {% if search_type == jyutping_approximatif %}selected{% endif %}>
+      {{ _("Jyutping approximatif") }}
+    </option>
     <option value="{{ pinyin }}" {% if search_type == pinyin %}selected{% endif %}>
       {{ _("Pinyin") }}
     </option>
@@ -40,6 +44,7 @@
 {% set traditionnel %}{{ _('traditionnel') }}{% endset %}
 {% set simplifie %}{{ _('simplifie') }}{% endset %}
 {% set jyutping %}{{ _('jyutping') }}{% endset %}
+{% set jyutping_approximatif %}{{ _('jyutping-approximatif') }}{% endset %}
 {% set pinyin %}{{ _('pinyin') }}{% endset %}
 {% set fr %}{{ _('fr') }}{% endset %}
 
@@ -64,6 +69,9 @@
     </option>
     <option value="{{ jyutping }}" {% if search_type == jyutping %}selected{% endif %}>
       {{ _("Jyutping") }}
+    </option>
+    <option value="{{ jyutping_approximatif }}" {% if search_type == jyutping_approximatif %}selected{% endif %}>
+      {{ _("Jyutping approximatif") }}
     </option>
     <option value="{{ pinyin }}" {% if search_type == pinyin %}selected{% endif %}>
       {{ _("Pinyin") }}

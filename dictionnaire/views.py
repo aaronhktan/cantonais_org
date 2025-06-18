@@ -57,12 +57,13 @@ def render_search_simplified(search_term):
     )
 
 
-def render_search_jyutping(search_term):
-    entries = queries.query_jyutping(search_term)
+def render_search_jyutping(search_term: str, fuzzy: bool) -> str:
+    entries = queries.query_jyutping(search_term, fuzzy)
+    search_type = _("fuzzy-jyutping") if fuzzy else _("jyutping")
     return render_template(
         "dictionary_search.html",
         search_term=search_term,
-        search_type=_("jyutping"),
+        search_type=search_type,
         entries=entries,
     )
 

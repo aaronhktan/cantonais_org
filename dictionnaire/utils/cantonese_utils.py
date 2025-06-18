@@ -1,26 +1,12 @@
 import re
 
 SPECIAL_CHARACTERS = (
-    ".",
-    "。",
-    ",",
-    "，",
-    "!",
-    "！",
-    "?",
-    "？",
-    "%",
-    "－",
-    "…",
-    "⋯",
-    ".",
-    "·",
-    '"',
-    "“",
-    "”",
-    "$",
-    "｜",
+    ".",  "。", ",",  "，", "！", "？", "%",  "－", "…",  "⋯",
+    ".",  "·",  "\"", "“",  "”",  "$",  "｜", "：", "１", "２",
+    "３", "４", "５", "６", "７", "８", "９", "０",
 )
+
+REGEX_CHARACTERS = ("!", "(", ")", "|")
 
 JYUTPING_INITIALS = (
     "b",
@@ -446,6 +432,61 @@ def jyutping_to_IPA(jyutping: str, use_spaces_to_segment: bool = False) -> str:
         res.append(convert_ipa_syllable(syllable))
 
     return " ".join(res)
+
+
+def unfold_jyutping_regex(jyutping: str) -> tuple[bool, list[str]]:
+    """Lists possibilities when multiple "or" clauses are
+    in Regex. Invariant: input must contain only one set
+    of parentheses and one exclamation point
+
+    Args:
+        jyutping (str): Jyutping that may contain a single regex term,
+            with one set of parenthese and one exclamation, such as
+            "(aa!|eo)"
+
+    Returns:
+        list[str]: A list of all possibilities from the regex. From the
+            previous example, would return ["a", "aa", "eo"]
+    """
+
+    if (jyutping.count("(") > 1 or jyutping.count(")") > 1
+            or jyutping.count("!") > 1):
+        return False, []
+
+    res = []
+    possibilities = []
+    if jyutping.find("(") != -1 and jyutping.find(")") != -1:
+        # If there is a parenthesis, then all of the options must be checked
+        start_idx = jyutping.find("(") + 1
+        end_idx = jyutping.find(")")
+        or_idx = jyutping.find("|")
+
+        while or_idx != -1:
+            possibilities.append(jyutping[:jyutping.find("(")]
+                                 + jyutping[start_idx:or_idx]
+                                 + jyutping[jyutping.find(")")+1:])
+            start_idx = or_idx + 1
+            or_idx = jyutping.find("|", start_idx)
+
+        possibilities.append(jyutping[:jyutping.find("(")]
+                             + jyutping[start_idx:end_idx]
+                             + jyutping[end_idx+1:])
+    else:
+        possibilities.append(jyutping)
+
+    # If there is a "!", then the initial with and the initial without
+    # that optional character should be considered
+    for x in possibilities:
+        regex_idx = x.find("!")
+        if regex_idx == -1:
+            res.append(x)
+        elif regex_idx == 0:
+            res.append(x[1:])
+        else:
+            res.append(x[:regex_idx-1] + x[regex_idx+1:])
+            res.append(x[:regex_idx] + x[regex_idx+1:])
+
+    return True, res
 
 
 def jyutping_autocorrect(
@@ -915,6 +956,7 @@ def segment_jyutping(
     jyutping: str,
     remove_special_characters: bool = True,
     remove_glob_characters: bool = True,
+    remove_regex_characters: bool = True,
 ) -> tuple[bool, list[str]]:
     """Segments Jyutping by looking at valid Jyutping initials and finals.
     Can be configured to remove special characters and/or
@@ -923,9 +965,11 @@ def segment_jyutping(
     Args:
         jyutping (str): String of valid Jyutping syllables, possibly with
             special characters or glob characters
-        removeSpecialCharacters (bool, optional): Do not include special
+        remove_special_characters (bool, optional): Do not include special
             characters in output list. Defaults to True.
-        removeGlobCharacters (bool, optional): Do not include glob characters
+        remove_glob_characters (bool, optional): Do not include glob characters
+            in output list. Defaults to True.
+        remove_regex_characters (bool, optional): Do not include regex characters
             in output list. Defaults to True.
 
     Returns:
@@ -937,6 +981,16 @@ def segment_jyutping(
     valid_jyutping = True
     start_idx, end_idx, initial_found = 0, 0, False
     res = []
+
+    if remove_special_characters:
+        for c in SPECIAL_CHARACTERS:
+            jyutping = jyutping.replace(c, " ")
+    if remove_glob_characters:
+        for c in "*?":
+            jyutping = jyutping.replace(c, " ")
+    if remove_regex_characters:
+        for c in REGEX_CHARACTERS:
+            jyutping = jyutping.replace(c, " ")
 
     while end_idx < len(jyutping):
         component_found = False
@@ -961,7 +1015,7 @@ def segment_jyutping(
                 start_idx = end_idx
                 initial_found = False
 
-            if not remove_glob_characters and is_glob_character:
+            if is_glob_character:
                 # Whitespace matters for glob characters! Consume
                 # the next or previous whitespace if it exists and the
                 # whitespace was not consumed by another syllable
@@ -987,7 +1041,7 @@ def segment_jyutping(
                 res.append(glob_str)
 
                 start_idx = end_idx
-            elif not remove_special_characters and is_special_character:
+            elif is_special_character:
                 special_char = curr_string
                 res.append(special_char)
 
@@ -1001,21 +1055,56 @@ def segment_jyutping(
             # checks for the latter case.
             if initial_found:
                 initial = jyutping[start_idx:end_idx]
-                if initial in JYUTPING_FINALS:
+
+                if remove_regex_characters:
+                    is_valid_final = initial in JYUTPING_FINALS
+                else:
+                    # Regex characters need to be handled in a special way;
+                    # essentially, we need to check every possibility. If at
+                    # least one possibility is a valid final, then the Jyutping
+                    # can be considered valid.
+                    _, strings_to_search = unfold_jyutping_regex(initial)
+
+                    is_valid_final = False
+                    for s in strings_to_search:
+                        if s in JYUTPING_FINALS:
+                            is_valid_final = True
+
+                if is_valid_final:
                     initial_with_digit = initial + curr_string
                     res.append(initial_with_digit)
                     end_idx += 1
                     start_idx = end_idx
                     initial_found = False
+
+                    if (int(curr_string) < 1 or int(curr_string) > 6):
+                        valid_jyutping = False
+
                     continue
-
-        for initial_len in range(2, 0, -1):
-            # Initials can be length 2 or less; check for longer initials
-            # before checking for shorter initials
-            curr_string = jyutping[end_idx: end_idx + initial_len]
-
-            if curr_string not in JYUTPING_INITIALS:
+            else:
+                valid_jyutping = False
                 continue
+
+        if remove_regex_characters:
+            max_initial_len = 2
+        else:
+            max_initial_len = min(17, len(jyutping) - end_idx)
+
+        for initial_len in range(max_initial_len, 0, -1):
+            curr_string = jyutping[end_idx:end_idx+initial_len]
+
+            if remove_regex_characters:
+                is_valid_initial = curr_string in JYUTPING_INITIALS
+                if not is_valid_initial:
+                    continue
+            else:
+                _, strings_to_search = unfold_jyutping_regex(curr_string)
+                is_valid_initial = False
+                for s in strings_to_search:
+                    if s in JYUTPING_INITIALS:
+                        is_valid_initial = True
+                if not is_valid_initial:
+                    continue
 
             if initial_found:
                 # Multiple initials in a row are only valid if what the
@@ -1026,9 +1115,19 @@ def segment_jyutping(
                 # In this case, the first initial is a valid syllable if it
                 # can be a syllable per se; in that case, it would also be
                 # a member of JYUTPING_FINALS
-                first_initial = jyutping[start_idx:end_idx]
-                if first_initial in JYUTPING_FINALS:
-                    res.append(first_initial)
+                previous_initial = jyutping[start_idx:end_idx]
+                if remove_regex_characters:
+                    is_valid_final = previous_initial in JYUTPING_FINALS
+                else:
+                    _, strings_to_search = unfold_jyutping_regex(previous_initial)
+
+                    is_valid_final = False
+                    for s in strings_to_search:
+                        if s in JYUTPING_FINALS:
+                            is_valid_final = True
+
+                if is_valid_final:
+                    res.append(previous_initial)
                     start_idx = end_idx
                 else:
                     valid_jyutping = False
@@ -1040,11 +1139,25 @@ def segment_jyutping(
         if component_found:
             continue
 
-        for final_len in range(4, 0, -1):
-            # Finals (nucleus + coda) can be length 4 or less; check for longer
-            # finals before checking for shorter finals
-            curr_string = jyutping[end_idx: end_idx + final_len]
-            if curr_string in JYUTPING_FINALS:
+        if remove_regex_characters:
+            max_final_len = 4
+        else:
+            max_final_len = min(17, len(jyutping) - end_idx)
+
+        for final_len in range(max_final_len, 0, -1):
+            curr_string = jyutping[end_idx:end_idx+final_len]
+
+            if remove_regex_characters:
+                is_valid_final = curr_string in JYUTPING_FINALS
+            else:
+                _, strings_to_search = unfold_jyutping_regex(curr_string)
+
+                is_valid_final = False
+                for s in strings_to_search:
+                    if s in JYUTPING_FINALS:
+                        is_valid_final = True
+
+            if is_valid_final:
                 end_idx += final_len
                 if end_idx < len(jyutping):
                     if jyutping[end_idx].isnumeric():

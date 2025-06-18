@@ -1,7 +1,7 @@
 import copy
 import json
 
-from . import chinese_utils
+from . import cantonese_utils, chinese_utils, mandarin_utils
 from ..models import (
     Definition,
     DefinitionsSet,
@@ -74,21 +74,41 @@ def prepare_jyutping_bind_values(jyutping: str, fuzzy_jyutping: bool) -> str:
     # Wildcard character should only be appended if the last character is not "$"
     append_wildcard = not (jyutping[-1] == "$")
 
+    corrected_term = jyutping
+    if not search_exact_match and fuzzy_jyutping:
+        if append_wildcard:
+            corrected_term = cantonese_utils.jyutping_autocorrect(jyutping)
+        else:
+            corrected_term = cantonese_utils.jyutping_autocorrect(jyutping[:-1])
+
     if search_exact_match:
         # Remove the double-quotes
-        jyutping_syllables = jyutping[1:-1].split()
+        jyutping_syllables = corrected_term[1:-1].split()
     else:
-        _, jyutping_syllables = chinese_utils.segment_jyutping(
-            jyutping, remove_glob_characters=False
+        _, jyutping_syllables = cantonese_utils.segment_jyutping(
+            corrected_term,
+            remove_special_characters=True,
+            remove_glob_characters=False,
+            remove_regex_characters=not fuzzy_jyutping
         )
+
+    if not search_exact_match and fuzzy_jyutping:
+        jyutping_syllables = cantonese_utils.jyutping_sound_changes(jyutping_syllables)
 
     if search_exact_match:
         query_param = " ".join(jyutping_syllables)
     else:
         query_param = construct_romanization_query(jyutping_syllables, "?")
 
-    if append_wildcard and not search_exact_match:
-        query_param += "*"
+    if fuzzy_jyutping:
+        query_param = f"^{query_param.replace("*", ".*").replace("?", ".").replace("!", "?")}"
+        if search_exact_match or not append_wildcard:
+            query_param = f"{query_param}$"
+        else:
+            query_param = f"{query_param}.*"
+    else:
+        if append_wildcard and not search_exact_match:
+            query_param = f"{query_param}*"
 
     return query_param
 
