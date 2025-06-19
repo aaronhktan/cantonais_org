@@ -4,6 +4,14 @@
 {{ super() }}
 {% endblock %}
 {% block content %}
+{% set auto %}{{ _('auto') }}{% endset %}
+{% set traditionnel %}{{ _('traditionnel') }}{% endset %}
+{% set simplifie %}{{ _('simplifie') }}{% endset %}
+{% set jyutping %}{{ _('jyutping') }}{% endset %}
+{% set jyutping_approximatif %}{{ _('jyutping-approximatif') }}{% endset %}
+{% set pinyin %}{{ _('pinyin') }}{% endset %}
+{% set fr %}{{ _('fr') }}{% endset %}
+
 <div class="container">
     <div class="mx-auto py-2" style="max-width: 50rem">
         <div class="pb-1 fs-6 text-secondary">
@@ -13,6 +21,9 @@
             {{ _("Il y a %(num_results)s résultats correspondant à la requête.", num_results=entries|length) }}
             {% else %}
             {{ _("Il y a %(num_results)s résultat correspondant à la requête.", num_results=entries|length) }}
+            {% endif %}
+            {% if search_type == auto %}
+            {{ _("Méthode de saisie détectée : %(type)s.", type=detected_search_type) }}
             {% endif %}
         </div>
         <div class="list-group pt-1">

@@ -132,7 +132,7 @@ def prepare_pinyin_bind_values(pinyin: str) -> str:
         # Remove the double-quotes
         pinyin_syllables = pinyin[1:-1].split()
     else:
-        _, pinyin_syllables = chinese_utils.segment_pinyin(pinyin)
+        _, pinyin_syllables = mandarin_utils.segment_pinyin(pinyin)
 
     if search_exact_match:
         query_param = " ".join(pinyin_syllables)

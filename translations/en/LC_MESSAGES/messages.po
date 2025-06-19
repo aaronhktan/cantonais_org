@@ -8,7 +8,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cantonais_org 2.0.0\n"
 "Report-Msgid-Bugs-To: hi@aaronhktan.com\n"
+<<<<<<< HEAD
 "POT-Creation-Date: 2025-06-20 15:49-0400\n"
+=======
+"POT-Creation-Date: 2025-06-18 21:22-0400\n"
+>>>>>>> 227d13d (Ajouter le Jyutping approximatif à la détection automatique de langue)
 "PO-Revision-Date: 2025-06-03 01:14-0400\n"
 "Last-Translator: Aaron Tan <hi@aaronhktan.com>\n"
 "Language: en\n"
@@ -31,12 +35,14 @@ msgstr "search"
 msgid "dictionnaire./recherche"
 msgstr "dictionary./search"
 
-#: dictionnaire/urls.py:58 dictionnaire/views.py:35 templates/index_en.html:49
+#: dictionnaire/templates/dictionary_search.html:7 dictionnaire/urls.py:58
+#: dictionnaire/views.py:39 templates/index_en.html:49
 #: templates/index_en.html:68 templates/search_bar.html:2
 #: templates/search_bar.html:39
 msgid "auto"
 msgstr "auto"
 
+<<<<<<< HEAD
 #: dictionnaire/urls.py:74 dictionnaire/views.py:45 templates/search_bar.html:3
 #: templates/search_bar.html:40
 msgid "traditionnel"
@@ -59,8 +65,73 @@ msgstr "pinyin"
 
 #: dictionnaire/urls.py:138 dictionnaire/views.py:85 templates/base.html:2
 #: templates/search_bar.html:7 templates/search_bar.html:44
+=======
+#: dictionnaire/templates/dictionary_search.html:8 dictionnaire/urls.py:74
+#: dictionnaire/views.py:50 templates/search_bar.html:3
+#: templates/search_bar.html:44
+msgid "traditionnel"
+msgstr "traditional"
+
+#: dictionnaire/templates/dictionary_search.html:9 dictionnaire/urls.py:90
+#: dictionnaire/views.py:60 templates/search_bar.html:4
+#: templates/search_bar.html:45
+msgid "simplifie"
+msgstr "simplified"
+
+#: dictionnaire/templates/dictionary_search.html:10 dictionnaire/urls.py:106
+#: dictionnaire/views.py:67 templates/search_bar.html:5
+#: templates/search_bar.html:46
+msgid "jyutping"
+msgstr "jyutping"
+
+#: dictionnaire/templates/dictionary_search.html:11 dictionnaire/urls.py:126
+#: templates/search_bar.html:6 templates/search_bar.html:47
+msgid "jyutping-approximatif"
+msgstr "fuzzy-jyutping"
+
+#: dictionnaire/templates/dictionary_search.html:12 dictionnaire/urls.py:142
+#: dictionnaire/views.py:81 templates/search_bar.html:7
+#: templates/search_bar.html:48
+msgid "pinyin"
+msgstr "pinyin"
+
+#: dictionnaire/templates/dictionary_search.html:13 dictionnaire/urls.py:158
+#: dictionnaire/views.py:91 templates/base.html:2 templates/search_bar.html:8
+#: templates/search_bar.html:49
+>>>>>>> 227d13d (Ajouter le Jyutping approximatif à la détection automatique de langue)
 msgid "fr"
 msgstr "en"
+
+#: dictionnaire/views.py:17
+msgid "caractères simplifiés"
+msgstr "simplified Chinese"
+
+#: dictionnaire/views.py:22
+msgid "caractères traditionnels"
+msgstr "traditional Chinese"
+
+#: dictionnaire/views.py:25 templates/search_bar.html:26
+#: templates/search_bar.html:71
+msgid "Jyutping"
+msgstr "Jyutping"
+
+#: dictionnaire/views.py:28
+msgctxt "views.py"
+msgid "Jyutping approximatif"
+msgstr "fuzzy Jyutping"
+
+#: dictionnaire/views.py:31 templates/search_bar.html:32
+#: templates/search_bar.html:77
+msgid "Pinyin"
+msgstr "Pinyin"
+
+#: dictionnaire/views.py:34
+msgid "français"
+msgstr "English"
+
+#: dictionnaire/views.py:67
+msgid "fuzzy-jyutping"
+msgstr "fuzzy-jyutping"
 
 #: dictionnaire/templates/dictionary_entry.html:5
 #, python-format
@@ -105,23 +176,28 @@ msgstr "A project by Aaron Tan 🇨🇦"
 msgid "Recherche"
 msgstr "Search"
 
-#: dictionnaire/templates/dictionary_search.html:11
+#: dictionnaire/templates/dictionary_search.html:19
 msgid "Il n'y a aucun résultat correspondant à la requête."
-msgstr "No results were found for this search."
+msgstr "No results were found."
 
-#: dictionnaire/templates/dictionary_search.html:13
+#: dictionnaire/templates/dictionary_search.html:21
 #, python-format
 msgid "Il y a %(num_results)s résultats correspondant à la requête."
 msgstr "%(num_results)s results were found."
 
-#: dictionnaire/templates/dictionary_search.html:15
+#: dictionnaire/templates/dictionary_search.html:23
 #, python-format
 msgid "Il y a %(num_results)s résultat correspondant à la requête."
-msgstr "%(num_results)s result was found."
+msgstr "%(num_results)s result was found"
 
-#: dictionnaire/templates/dictionary_search.html:20
+#: dictionnaire/templates/dictionary_search.html:26
+msgid "Méthode de saisie détectée : %(type)s."
+msgstr "Detected input: %(type)s."
+
+#: dictionnaire/templates/dictionary_search.html:31
+#, fuzzy
 msgid "dictionnaire./entree"
-msgstr "dictionary./entry"
+msgstr "dictionary./search"
 
 #: templates/base.html:10
 msgid ""
@@ -229,6 +305,11 @@ msgid "Pinyin"
 msgstr "Pinyin"
 
 #: templates/search_bar.html:31 templates/search_bar.html:72
+#: templates/search_bar.html:29 templates/search_bar.html:74
+msgid "Jyutping approximatif"
+msgstr "Fuzzy Jyutping"
+
+#: templates/search_bar.html:35 templates/search_bar.html:80
 msgid "Français"
 msgstr "English"
 
