@@ -84,10 +84,10 @@ le site de référence de la langue cantonaise.
                         <div style="padding-block: 0.25rem; ">
                             {% if source_example.source_language == "yue"%}
                             <span
-                                style="background-color: #AD1F5A; border-radius: 2rem; padding-block: 0.25rem; padding-inline: 0.5rem;">Cantonais</span>
+                                style="background-color: #AD1F5A; border-radius: 2rem; padding-block: 0.25rem; padding-inline: 0.5rem;">{{ _("Cantonais") }}</span>
                             {% elif source_example.source_language == "cmn"%}
                             <span
-                                style="background-color: #0E8B53; border-radius: 2rem; padding-block: 0.25rem; padding-inline: 0.5rem;">Mandarin</span>
+                                style="background-color: #0E8B53; border-radius: 2rem; padding-block: 0.25rem; padding-inline: 0.5rem;">{{ _("Mandarin") }}</span>
                             {% endif %}
                         </div>
                         {{ source_example.traditional.replace("\n", "")|safe }}
