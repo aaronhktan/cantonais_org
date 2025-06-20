@@ -549,6 +549,12 @@ def jyutping_autocorrect(
         result = result[:idx] + "oeng"
     result = result.replace("eok", "oek")
 
+    result = result.replace("ao ", "au ")
+    result = result.replace("ao'", "au'")
+    if result.endswith("ao"):
+        idx = result.rfind("ao")
+        result = result[:idx] + "au"
+
     result = result.replace("ar", "aa")
     result = result.replace("ee", "i")
     result = result.replace("ay", "ei")

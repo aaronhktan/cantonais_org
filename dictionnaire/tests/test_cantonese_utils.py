@@ -203,6 +203,13 @@ class TestJyutpingAutocorrect(TestCase):
         res = cantonese_utils.jyutping_autocorrect("zoen")
         self.assertEqual(res, "zeon")
 
+    def test_ao(self):
+        res = cantonese_utils.jyutping_autocorrect("haagao")
+        self.assertEqual(res, "haagau")
+
+        res = cantonese_utils.jyutping_autocorrect("gaolyun")
+        self.assertEqual(res, "gaol(ja|jyu|yu)n")
+
     def test_ar(self):
         res = cantonese_utils.jyutping_autocorrect("char")
         self.assertEqual(res, "caa")
