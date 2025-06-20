@@ -371,3 +371,5 @@ dist
 
 # Project-specific folders
 db/*
+static/robots/*
+static/sitemap/*

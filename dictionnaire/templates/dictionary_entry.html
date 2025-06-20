@@ -17,8 +17,12 @@ le site de référence de la langue cantonaise.
         <h1 class="display-4 pt-1">{{ entry._coloured_traditional|safe }} [{{ entry._coloured_simplified_difference|safe
             }}]</h1>
         <p>
-            <span class="text-secondary">Jyutping</span> {{ entry.jyutping }}
-            <br><span class="text-secondary">Pinyin</span> {{ entry._pretty_pinyin }}
+            <span class="text-secondary">Jyutping</span>
+            <a class="btn p-0 border border-0 prononciation-jp" onclick="return playAudio(this, '{{ entry.jyutping }}');"><i class="bi-volume-up"></i></a>
+            {{ entry.jyutping }}
+            <br><span class="text-secondary">Pinyin</span>
+            <a class="btn p-0 border border-0 prononciation-py" onclick="return playAudio(this, '{{ entry.pinyin }}');"><i class="bi-volume-up"></i></a>
+            {{ entry._pretty_pinyin }}
         </p>
         {% for definition_set in entry.definitions_sets %}
         <div class="card my-2 my-md-3">
@@ -63,6 +67,7 @@ le site de référence de la langue cantonaise.
                 </ol>
             </div>
         </div>
+        {% endfor %}
         {% endfor %}
         {% if examples %}
         {% for source in examples %}
@@ -114,9 +119,41 @@ le site de référence de la langue cantonaise.
         {% endfor %}
         {% endif %}
         <p class="pb-1"></p>
-        {% endfor %}
         {% else %}
         {% endif %}
     </div>
 </div>
+<script>
+function playAudio(elem, text) {
+    let syllables = text.trim().split(" ");
+
+    let locale = elem.classList.contains("prononciation-jp") ? "zh_HK" : "zh_TW";
+    let audioDir = `{{ url_for('static', filename="") }}audio/${locale}/` ;
+    let audioObjs = [];
+
+    for (const syllable of syllables) {
+        let audio = new Audio(`${audioDir}${syllable}.mp3`);
+        audioObjs.push(audio);
+    }
+
+    if (!audioObjs) {
+        return;
+    }
+
+    for (i = 0; i < audioObjs.length; i++) {
+        if (i === (audioObjs.length - 1)) {
+            break;
+        }
+
+        let nextIdx = i + 1;
+        ["failed", "ended"].forEach((e) => {
+            audioObjs[i].addEventListener(e, () => {
+                audioObjs[nextIdx].play();
+            });
+        });
+    }
+
+    audioObjs[0].play();
+}
+</script>
 {% endblock %}
