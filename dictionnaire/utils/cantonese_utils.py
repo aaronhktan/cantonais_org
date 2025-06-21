@@ -867,7 +867,7 @@ def jyutping_autocorrect(
 
     result = result.replace("ui", "(eo|u)i")
     result = result.replace("un", "(y!u|a|eo)n")
-    result = result.replace("ut", "(a|u)t")
+    result = result.replace("ut", "(a|y!u)t")
 
     return result
 

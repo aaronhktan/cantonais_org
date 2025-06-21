@@ -507,13 +507,16 @@ class TestJyutpingAutocorrect(TestCase):
 
     def test_ut(self):
         res = cantonese_utils.jyutping_autocorrect("gut")
-        self.assertEqual(res, "g(a|u)t")
+        self.assertEqual(res, "g(a|y!u)t")
 
         res = cantonese_utils.jyutping_autocorrect(" gut")
-        self.assertEqual(res, " g(a|u)t")
+        self.assertEqual(res, " g(a|y!u)t")
 
         res = cantonese_utils.jyutping_autocorrect("gumgut")
-        self.assertEqual(res, "gamg(a|u)t")
+        self.assertEqual(res, "gamg(a|y!u)t")
+
+        res = cantonese_utils.jyutping_autocorrect("shut goh")
+        self.assertEqual(res, "s(a|y!u)t gou")
 
 
 class TestJyutpingSoundChanges(TestCase):
@@ -922,3 +925,77 @@ class TestJyutpingSegmentation(TestCase):
         validity, res = cantonese_utils.segment_jyutping("kljnxclkjvnl")
         self.assertEqual(validity, False)
         self.assertEqual(res, ["kljnxclkjvnl"])
+
+
+class TestFuzzyJyutping(TestCase):
+    def test_clarence(self):
+        cases = [("seut goh", ["s(eo|yu)(k|t)", "(g|k)w!ou"]),
+                 ("gongyeun", ["(g|k)w!(o|u)ng", "j(eo|yu)n"]),
+                 ("tsum4yut6", ["(c|z)aa!m4", "(jaa!|jyu|yu)(k|t)6"]),
+                 ("tsum yut", ["(c|z)aa!m", "(jaa!|jyu|yu)(k|t)"]),
+                 ("gum yut", ["(g|k)aa!m", "(jaa!|jyu|yu)(k|t)"]),
+                 ("gum man", ["(g|k)aa!m", "maa!ng!"]),
+                 ("sum", ["saa!m"]),
+                 ("sun", ["s(y!u|aa!|eo)n"]),
+                 ("cheung", ["(c|z)oeng"]),
+                 ("chun", ["(c|z)(y!u|aa!|eo)n"]),
+                 ("hui", ["heoi"]),
+                 ("yutback", ["j(aa!|yu)(k|t)", "baa!(k|t)"])]
+
+        for case in cases:
+            input = case[0]
+            expected_output = case[1]
+
+            intermediate = cantonese_utils.jyutping_autocorrect(input)
+            _, intermediate = cantonese_utils.segment_jyutping(intermediate, True, False, False)
+            output = cantonese_utils.jyutping_sound_changes(intermediate)
+
+            self.assertEqual(expected_output, output)
+
+    def test_michelle(self):
+        cases = [("xuet go", ["s(yu)(k|t)", "(g|k)w!o"]),
+                 ("gong yuen", ["(g|k)w!(o|u)ng", "jy(y!u|aa!|eo)n"]),
+                 ("kum yut", ["(g|k)aa!m", "(jaa!|jyu|yu)(k|t)"]),
+                 ("gai suen gay", ["(g|k)aa!i", "s(yu)n", "(g|k)ei"]),
+                 ("yut bak", ["j(aa!|yu)(k|t)", "baa!(k|t)"])]
+
+        for case in cases:
+            input = case[0]
+            expected_output = case[1]
+
+            intermediate = cantonese_utils.jyutping_autocorrect(input)
+            _, intermediate = cantonese_utils.segment_jyutping(intermediate, True, False, False)
+            output = cantonese_utils.jyutping_sound_changes(intermediate)
+
+            self.assertEqual(expected_output, output)
+
+    def test_yvonne(self):
+        cases = [("shyut go", ["s(yu)(k|t)", "(g|k)w!o"]),
+                 ("gong yun", ["(g|k)w!(o|u)ng", "(jaa!|jyu|yu)n"]),
+                 ("cum yut", ["(k)aa!m", "(jaa!|jyu|yu)(k|t)"]),
+                 ("cheun", ["(c|z)(eo|yu)n"]),
+                 ("gai syun gei", ["(g|k)aa!i", "sy(y!u|aa!|eo)n", "(g|k)ei"]),
+                 ("yut baat", ["j(aa!|yu)(k|t)", "baa!(k|t)"])]
+
+        for case in cases:
+            input = case[0]
+            expected_output = case[1]
+
+            intermediate = cantonese_utils.jyutping_autocorrect(input)
+            _, intermediate = cantonese_utils.segment_jyutping(intermediate, True, False, False)
+            output = cantonese_utils.jyutping_sound_changes(intermediate)
+
+            self.assertEqual(expected_output, output)
+
+    def test_other(self):
+        cases = [("shut goh", ["s(aa!|y!u)(k|t)", "(g|k)w!ou"])]
+
+        for case in cases:
+            input = case[0]
+            expected_output = case[1]
+
+            intermediate = cantonese_utils.jyutping_autocorrect(input)
+            _, intermediate = cantonese_utils.segment_jyutping(intermediate, True, False, False)
+            output = cantonese_utils.jyutping_sound_changes(intermediate)
+
+            self.assertEqual(expected_output, output)
