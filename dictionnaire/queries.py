@@ -1,4 +1,5 @@
 import os
+import re
 import sqlite3
 
 from collections import defaultdict
@@ -9,13 +10,19 @@ from .models import Entry, SourceSentence
 from .utils import chinese_utils, query_utils
 
 DB_PATH = os.environ["CANTONAIS_ORG_DB_PATH"]
+REGEX_OPERATOR = "REGEXP"
+GLOB_OPERATOR = "GLOB"
 
 print(f"database path: {DB_PATH}")
-
 
 def get_db():
     if "db" not in g:
         g.db = sqlite3.connect(DB_PATH)
+
+    def regexp(y, x, search=re.search):
+        return 1 if search(y, x) else 0
+
+    g.db.create_function("REGEXP", 2, regexp)
 
     return g.db
 
@@ -309,16 +316,21 @@ SELECT traditional, simplified, jyutping, pinyin, definitions FROM
     return query_utils.parse_returned_records(records)
 
 
-def query_jyutping(jyutping: str) -> Entry | None:
+def query_jyutping(jyutping: str, fuzzy: bool) -> Entry | None:
     db = get_db()
     c = db.cursor()
 
-    query_param = query_utils.prepare_jyutping_bind_values(jyutping)
+    query_param = query_utils.prepare_jyutping_bind_values(jyutping, fuzzy)
+
+    if fuzzy:
+        operator = REGEX_OPERATOR
+    else:
+        operator = GLOB_OPERATOR
 
     c.execute(
-        """
+        f"""
 WITH matching_entry_ids AS (
-  SELECT rowid FROM entries WHERE jyutping GLOB ?
+  SELECT rowid FROM entries WHERE jyutping {operator} ?
 ),
 
 matching_definition_ids AS (
@@ -368,22 +380,27 @@ SELECT traditional, simplified, jyutping, pinyin, definitions FROM
     return query_utils.parse_returned_records(records)
 
 
-def query_jyutping_exists(pinyin: str) -> bool:
+def query_jyutping_exists(jyutping: str, fuzzy: bool) -> bool:
     db = get_db()
     c = db.cursor()
 
-    globTerm = query_utils.prepare_jyutping_bind_values(pinyin)
+    query_param = query_utils.prepare_jyutping_bind_values(jyutping, fuzzy)
+
+    if fuzzy:
+        operator = REGEX_OPERATOR
+    else:
+        operator = GLOB_OPERATOR
 
     c.execute(
-        """
+        f"""
 SELECT EXISTS (
   SELECT
     rowid
   FROM entries
-  WHERE jyutping GLOB ?
+  WHERE jyutping {operator} ?
 ) AS existence
 """,
-        (globTerm,),
+        (query_param,),
     )
 
     records = c.fetchall()

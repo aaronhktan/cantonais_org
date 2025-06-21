@@ -100,10 +100,30 @@ def search_jyutping(search_term):
 
     search_term = urllib.parse.unquote(search_term)
 
-    resp = make_response(views.render_search_jyutping(search_term))
+    resp = make_response(views.render_search_jyutping(search_term, fuzzy=False))
 
     resp.set_cookie("search_term", search_term)
     resp.set_cookie("search_type", _("jyutping"))
+
+    return resp
+
+
+@dictionary_app.route("/recherche/jyutping-approximatif/<search_term>",
+                      endpoint="/recherche/jyutping-approximatif",
+                      methods=("GET", "POST"))
+@dictionary_app.route("/search/fuzzy-jyutping/<search_term>",
+                      endpoint="/search/fuzzy-jyutping",
+                      methods=("GET", "POST"))
+def search_fuzzy_jyutping(search_term):
+    if request.method == "POST":
+        return redirect_post()
+
+    search_term = urllib.parse.unquote(search_term)
+
+    resp = make_response(views.render_search_jyutping(search_term, fuzzy=True))
+
+    resp.set_cookie("search_term", search_term)
+    resp.set_cookie("search_type", _("jyutping-approximatif"))
 
     return resp
 
