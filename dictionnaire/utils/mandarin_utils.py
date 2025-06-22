@@ -765,6 +765,19 @@ def pinyin_to_IPA(pinyin: str, use_spaces_to_segment: bool = False) -> str:
 
 
 def pinyin_sound_changes(syllables: list[str]) -> list[str]:
+    """Accounts for changes in pronunciation by modifying syllables
+    *after* being segmented.
+
+    Args:
+        syllables (list[str]): list of syllables that have already
+            been processed by segment_pinyin
+
+    Returns:
+        list[str]: list of syllables, with pronunciation possibilities
+        in regex alternate syntax (e.g. "li" -> could match "li" or
+        "ni" -> return "(l|n)i")
+    """
+
     res = [x for x in syllables]
     for i in range(len(res)):
         if res[i].startswith("zh"):

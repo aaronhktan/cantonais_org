@@ -493,13 +493,14 @@ def jyutping_autocorrect(
         jyutping: str
 ) -> str:
     """Attempts to correct for common misspellings for Jyutping syllables.
+    Handles syllables *before* Jyutping segmentation.
 
     Args:
         jyutping (str): Raw Jyutping or Jyutping-adjacent string to correct
 
     Returns:
         str: Corrected Jyutping string, formatted with REGEX operators "()",
-        "|", "?" (notated as "!") in case of ambiguity.
+        "|", "?" (notated as "!") in case of ambiguity
     """
     result = jyutping
 
@@ -873,6 +874,19 @@ def jyutping_autocorrect(
 
 
 def jyutping_sound_changes(syllables: list[str]) -> list[str]:
+    """Accounts for changes in pronunciation by modifying syllables
+    *after* being segmented.
+
+    Args:
+        syllables (list[str]): list of syllables that have already
+            been processed by segment_jyutping
+
+    Returns:
+        list[str]: list of syllables, with pronunciation possibilities
+            in regex alternate syntax (e.g. "nei" -> could match "nei" or
+            "lei" -> return "(n|l)ei")
+    """
+
     res = [x for x in syllables]
     for i in range(len(res)):
         # 1. Whole-syllable sound changes
@@ -965,8 +979,8 @@ def segment_jyutping(
     remove_regex_characters: bool = True,
 ) -> tuple[bool, list[str]]:
     """Segments Jyutping by looking at valid Jyutping initials and finals.
-    Can be configured to remove special characters and/or
-    wildcard delimiter (glob) characters.
+    Can be configured to remove special characters, and/or
+    wildcard delimiter (glob) characters, and/or regex characters.
 
     Args:
         jyutping (str): String of valid Jyutping syllables, possibly with
