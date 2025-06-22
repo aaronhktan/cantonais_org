@@ -410,16 +410,21 @@ SELECT EXISTS (
     return query_utils.parse_existence(records)
 
 
-def query_pinyin(pinyin: str) -> list[Entry] | None:
+def query_pinyin(pinyin: str, fuzzy: bool) -> list[Entry] | None:
     db = get_db()
     c = db.cursor()
 
-    query_param = query_utils.prepare_pinyin_bind_values(pinyin)
+    query_param = query_utils.prepare_pinyin_bind_values(pinyin, fuzzy)
+
+    if fuzzy:
+        operator = REGEX_OPERATOR
+    else:
+        operator = GLOB_OPERATOR
 
     c.execute(
-        """
+        f"""
 WITH matching_entry_ids AS (
-  SELECT rowid FROM entries WHERE pinyin GLOB ?
+  SELECT rowid FROM entries WHERE pinyin {operator} ?
 ),
 
 matching_definition_ids AS (
@@ -469,22 +474,27 @@ SELECT traditional, simplified, jyutping, pinyin, definitions FROM
     return query_utils.parse_returned_records(records)
 
 
-def query_pinyin_exists(pinyin: str) -> bool:
+def query_pinyin_exists(pinyin: str, fuzzy: bool) -> bool:
     db = get_db()
     c = db.cursor()
 
-    globTerm = query_utils.prepare_pinyin_bind_values(pinyin)
+    query_param = query_utils.prepare_pinyin_bind_values(pinyin, fuzzy)
+
+    if fuzzy:
+        operator = REGEX_OPERATOR
+    else:
+        operator = GLOB_OPERATOR
 
     c.execute(
-        """
+        f"""
 SELECT EXISTS (
   SELECT
     rowid
   FROM entries
-  WHERE pinyin GLOB ?
+  WHERE pinyin {operator} ?
 ) AS existence
 """,
-        (globTerm,),
+        (query_param,),
     )
 
     records = c.fetchall()

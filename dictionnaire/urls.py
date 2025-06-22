@@ -136,10 +136,29 @@ def search_pinyin(search_term):
 
     search_term = urllib.parse.unquote(search_term)
 
-    resp = make_response(views.render_search_pinyin(search_term))
+    resp = make_response(views.render_search_pinyin(search_term, fuzzy=False))
 
     resp.set_cookie("search_term", search_term)
     resp.set_cookie("search_type", _("pinyin"))
+
+    return resp
+
+@dictionary_app.route("/recherche/pinyin-approximatif/<search_term>",
+                      endpoint="/recherche/pinyin-approximatif",
+                      methods=("GET", "POST"))
+@dictionary_app.route("/search/fuzzy-pinyin/<search_term>",
+                      endpoint="/search/fuzzy-pinyin",
+                      methods=("GET", "POST"))
+def search_fuzzy_pinyin(search_term):
+    if request.method == "POST":
+        return redirect_post()
+
+    search_term = urllib.parse.unquote(search_term)
+
+    resp = make_response(views.render_search_pinyin(search_term, fuzzy=True))
+
+    resp.set_cookie("search_term", search_term)
+    resp.set_cookie("search_type", _("pinyin-approximatif"))
 
     return resp
 
