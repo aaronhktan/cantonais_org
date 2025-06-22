@@ -69,6 +69,10 @@ class TestJyutpingToYale(TestCase):
         res = cantonese_utils.jyutping_to_yale("mit")
         self.assertEqual(res, "mit")
 
+    def test_malformed_space(self):
+        res = cantonese_utils.jyutping_to_yale("mat 6")
+        self.assertEqual(res, "mat 6")
+
 
 class TestJyutpingToIPA(TestCase):
     def test_simple(self):
