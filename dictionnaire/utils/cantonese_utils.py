@@ -1089,6 +1089,9 @@ def segment_jyutping(
                     continue
             else:
                 valid_jyutping = False
+                res.append(curr_string)
+                start_idx += 1
+                end_idx += 1
                 continue
 
         if remove_regex_characters:
