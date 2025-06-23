@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cantonais_org 2.0.0\n"
 "Report-Msgid-Bugs-To: hi@aaronhktan.com\n"
-"POT-Creation-Date: 2025-06-20 16:01-0400\n"
+"POT-Creation-Date: 2025-06-21 23:46-0400\n"
 "PO-Revision-Date: 2025-06-03 01:14-0400\n"
 "Last-Translator: Aaron Tan <hi@aaronhktan.com>\n"
 "Language: en\n"
@@ -32,44 +32,45 @@ msgid "dictionnaire./recherche"
 msgstr "dictionary./search"
 
 #: dictionnaire/templates/dictionary_search.html:7 dictionnaire/urls.py:58
-#: dictionnaire/views.py:39 templates/index_en.html:49
+#: dictionnaire/views.py:42 templates/index_en.html:49
 #: templates/index_en.html:68 templates/search_bar.html:2
-#: templates/search_bar.html:43
+#: templates/search_bar.html:47
 msgid "auto"
 msgstr "auto"
 
 #: dictionnaire/templates/dictionary_search.html:8 dictionnaire/urls.py:74
-#: dictionnaire/views.py:50 templates/search_bar.html:3
-#: templates/search_bar.html:44
+#: dictionnaire/views.py:53 templates/search_bar.html:3
+#: templates/search_bar.html:48
 msgid "traditionnel"
 msgstr "traditional"
 
 #: dictionnaire/templates/dictionary_search.html:9 dictionnaire/urls.py:90
-#: dictionnaire/views.py:60 templates/search_bar.html:4
-#: templates/search_bar.html:45
+#: dictionnaire/views.py:63 templates/search_bar.html:4
+#: templates/search_bar.html:49
 msgid "simplifie"
 msgstr "simplified"
 
 #: dictionnaire/templates/dictionary_search.html:10 dictionnaire/urls.py:106
-#: dictionnaire/views.py:67 templates/search_bar.html:5
-#: templates/search_bar.html:46
+#: dictionnaire/views.py:70 templates/search_bar.html:5
+#: templates/search_bar.html:50
 msgid "jyutping"
 msgstr "jyutping"
 
 #: dictionnaire/templates/dictionary_search.html:11 dictionnaire/urls.py:126
-#: templates/search_bar.html:6 templates/search_bar.html:47
+#: dictionnaire/views.py:70 templates/search_bar.html:6
+#: templates/search_bar.html:51
 msgid "jyutping-approximatif"
 msgstr "fuzzy-jyutping"
 
 #: dictionnaire/templates/dictionary_search.html:12 dictionnaire/urls.py:142
 #: dictionnaire/views.py:81 templates/search_bar.html:7
-#: templates/search_bar.html:48
+#: templates/search_bar.html:52
 msgid "pinyin"
 msgstr "pinyin"
 
 #: dictionnaire/templates/dictionary_search.html:13 dictionnaire/urls.py:158
-#: dictionnaire/views.py:91 templates/base.html:2 templates/search_bar.html:8
-#: templates/search_bar.html:49
+#: dictionnaire/views.py:95 templates/base.html:2 templates/search_bar.html:9
+#: templates/search_bar.html:54
 msgid "fr"
 msgstr "en"
 
@@ -81,8 +82,8 @@ msgstr "simplified Chinese"
 msgid "caractères traditionnels"
 msgstr "traditional Chinese"
 
-#: dictionnaire/views.py:25 templates/search_bar.html:26
-#: templates/search_bar.html:71
+#: dictionnaire/views.py:25 templates/search_bar.html:27
+#: templates/search_bar.html:76
 msgid "Jyutping"
 msgstr "Jyutping"
 
@@ -91,18 +92,25 @@ msgctxt "views.py"
 msgid "Jyutping approximatif"
 msgstr "fuzzy Jyutping"
 
-#: dictionnaire/views.py:31 templates/search_bar.html:32
-#: templates/search_bar.html:77
+#: dictionnaire/views.py:31 templates/search_bar.html:33
+#: templates/search_bar.html:82
 msgid "Pinyin"
 msgstr "Pinyin"
 
 #: dictionnaire/views.py:34
+#, fuzzy
+msgctxt "views.py"
+msgid "Pinyin approximatif"
+msgstr "Fuzzy Jyutping"
+
+#: dictionnaire/views.py:37
 msgid "français"
 msgstr "English"
 
-#: dictionnaire/views.py:67
-msgid "fuzzy-jyutping"
-msgstr "fuzzy-jyutping"
+#: dictionnaire/views.py:81 templates/search_bar.html:8
+#: templates/search_bar.html:53
+msgid "pinyin-approximatif"
+msgstr "fuzzy-pinyin"
 
 #: dictionnaire/templates/dictionary_entry.html:5
 #, python-format
@@ -167,9 +175,8 @@ msgid "Méthode de saisie détectée : %(type)s."
 msgstr "Detected input: %(type)s."
 
 #: dictionnaire/templates/dictionary_search.html:31
-#, fuzzy
 msgid "dictionnaire./entree"
-msgstr "dictionary./search"
+msgstr "dictionary./entry"
 
 #: templates/base.html:10
 msgid ""
@@ -202,17 +209,17 @@ msgid "cantonais.org"
 msgstr "Jyut Dictionary"
 
 #: templates/index_en.html:48 templates/index_en.html:67
-#: templates/search_bar.html:15 templates/search_bar.html:60
+#: templates/search_bar.html:16 templates/search_bar.html:65
 msgid "Sélection de langue"
 msgstr "Language selection"
 
 #: templates/index_en.html:51 templates/index_en.html:70
-#: templates/search_bar.html:17 templates/search_bar.html:62
+#: templates/search_bar.html:18 templates/search_bar.html:67
 msgid "Détection de langue automatique"
 msgstr "Auto-detect search language"
 
 #: templates/index_en.html:55 templates/index_en.html:74
-#: templates/search_bar.html:38 templates/search_bar.html:56
+#: templates/search_bar.html:42 templates/search_bar.html:61
 msgid "Rechercher"
 msgstr "Search"
 
@@ -256,23 +263,27 @@ msgstr "about"
 msgid "À propos"
 msgstr "About"
 
-#: templates/search_bar.html:12 templates/search_bar.html:54
+#: templates/search_bar.html:13 templates/search_bar.html:59
 msgid "Rechercher dans le dictionnaire..."
 msgstr "Search Jyut Dictionary..."
 
-#: templates/search_bar.html:20 templates/search_bar.html:65
+#: templates/search_bar.html:21 templates/search_bar.html:70
 msgid "Caractères traditionnels"
 msgstr "Traditional Chinese"
 
-#: templates/search_bar.html:23 templates/search_bar.html:68
+#: templates/search_bar.html:24 templates/search_bar.html:73
 msgid "Caractères simplifiés"
 msgstr "Simplified Chinese"
 
-#: templates/search_bar.html:29 templates/search_bar.html:74
+#: templates/search_bar.html:30 templates/search_bar.html:79
 msgid "Jyutping approximatif"
 msgstr "Fuzzy Jyutping"
 
-#: templates/search_bar.html:35 templates/search_bar.html:80
+#: templates/search_bar.html:36 templates/search_bar.html:85
+msgid "Pinyin approximatif"
+msgstr "Fuzzy Pinyin"
+
+#: templates/search_bar.html:39 templates/search_bar.html:88
 msgid "Français"
 msgstr "English"
 

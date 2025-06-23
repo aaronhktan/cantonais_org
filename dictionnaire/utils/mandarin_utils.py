@@ -764,6 +764,76 @@ def pinyin_to_IPA(pinyin: str, use_spaces_to_segment: bool = False) -> str:
     return " ".join(res)
 
 
+def pinyin_sound_changes(syllables: list[str]) -> list[str]:
+    """Accounts for changes in pronunciation by modifying syllables
+    *after* being segmented.
+
+    Args:
+        syllables (list[str]): list of syllables that have already
+            been processed by segment_pinyin
+
+    Returns:
+        list[str]: list of syllables, with pronunciation possibilities
+        in regex alternate syntax (e.g. "li" -> could match "li" or
+        "ni" -> return "(l|n)i")
+    """
+
+    res = [x for x in syllables]
+    for i in range(len(res)):
+        if res[i].startswith("zh"):
+            res[i] = "z(h)!" + res[i][2:]
+        elif res[i].startswith("z"):
+            res[i] = "z(h)!" + res[i][1:]
+
+        if res[i].startswith("ch"):
+            res[i] = "c(h)!" + res[i][2:]
+        elif res[i].startswith("c"):
+            res[i] = "c(h)!" + res[i][1:]
+
+        if res[i].startswith("sh"):
+            res[i] = "s(h)!" + res[i][2:]
+        elif res[i].startswith("s"):
+            res[i] = "s(h)!" + res[i][1:]
+
+        if res[i].startswith("n"):
+            res[i] = "(n|l)" + res[i][1:]
+        if res[i].startswith("r"):
+            res[i] = "(l|r)" + res[i][1:]
+        if res[i].startswith(("li", "lie", "liao", "liu", "lian", "lin", "liang", "ling", "lu:", "lu:e")):
+            res[i] = "(l|n)" + res[i][1:]
+        elif res[i].startswith("l"):
+            res[i] = "(l|n|r)" + res[i][1:]
+
+        if res[i].endswith("ang"):
+            res[i] = res[i] + "!"
+        elif res[i][-4:-1] == "ang":
+            res[i] = res[i][:-1] + "!" + res[i][-1]
+        elif res[i].endswith("an"):
+            res[i] = res[i] + "g!"
+        elif res[i][-3:-1] == "an":
+            res[i] = res[i][:-1] + "g!" + res[i][-1]
+
+        if res[i].endswith("eng"):
+            res[i] = res[i] + "!"
+        elif res[i][-4:-1] == "eng":
+            res[i] = res[i][:-1] + "!" + res[i][-1]
+        elif res[i].endswith("en"):
+            res[i] = res[i] + "g!"
+        elif res[i][-3:-1] == "en":
+            res[i] = res[i][:-1] + "g!" + res[i][-1]
+
+        if res[i].endswith("ing"):
+            res[i] = res[i] + "!"
+        elif res[i][-4:-1] == "ing":
+            res[i] = res[i][:-1] + "!" + res[i][-1]
+        elif res[i].endswith("in"):
+            res[i] = res[i] + "g!"
+        elif res[i][-3:-1] == "in":
+            res[i] = res[i][:-1] + "g!" + res[i][-1]
+
+    return res
+
+
 def segment_pinyin(
     pinyin: str,
     remove_special_characters: bool = True,

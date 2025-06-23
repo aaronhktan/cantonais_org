@@ -5,6 +5,7 @@
 {% set jyutping %}{{ _('jyutping') }}{% endset %}
 {% set jyutping_approximatif %}{{ _('jyutping-approximatif') }}{% endset %}
 {% set pinyin %}{{ _('pinyin') }}{% endset %}
+{% set pinyin_approximatif %}{{ _('pinyin-approximatif') }}{% endset %}
 {% set fr %}{{ _('fr') }}{% endset %}
 
 <div class="input-group p-0 d-none d-md-flex flex-nowrap">
@@ -31,6 +32,9 @@
     <option value="{{ pinyin }}" {% if search_type == pinyin %}selected{% endif %}>
       {{ _("Pinyin") }}
     </option>
+    <option value="{{ pinyin_approximatif }}" {% if search_type == pinyin_approximatif %}selected{% endif %}>
+      {{ _("Pinyin approximatif") }}
+    </option>
     <option value="{{ fr }}" {% if search_type == fr %}selected{% endif %}>
       {{ _("Français") }}
     </option>
@@ -46,6 +50,7 @@
 {% set jyutping %}{{ _('jyutping') }}{% endset %}
 {% set jyutping_approximatif %}{{ _('jyutping-approximatif') }}{% endset %}
 {% set pinyin %}{{ _('pinyin') }}{% endset %}
+{% set pinyin_approximatif %}{{ _('pinyin-approximatif') }}{% endset %}
 {% set fr %}{{ _('fr') }}{% endset %}
 
 <div class="d-flex d-md-none flex-column gap-2">
@@ -75,6 +80,9 @@
     </option>
     <option value="{{ pinyin }}" {% if search_type == pinyin %}selected{% endif %}>
       {{ _("Pinyin") }}
+    </option>
+    <option value="{{ pinyin_approximatif }}" {% if search_type == pinyin_approximatif %}selected{% endif %}>
+      {{ _("Pinyin approximatif") }}
     </option>
     <option value="{{ fr }}" {% if search_type == fr %}selected{% endif %}>
       {{ _("Français") }}

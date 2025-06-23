@@ -5,13 +5,13 @@ from . import queries
 from .utils import script_detector
 
 
-def render_index(search_term="", search_type="search_auto"):
+def render_index(search_term: str = "", search_type: str = "auto"):
     return render_template(
         "dictionary_index.html", search_term=search_term, search_type=search_type
     )
 
 
-def render_search_auto(search_term):
+def render_search_auto(search_term: str) -> str:
     if script_detector.contains_simplified_chinese(search_term):
         entries = queries.query_simplified(search_term)
         detected_search_type = _("caractères simplifiés")
@@ -26,9 +26,12 @@ def render_search_auto(search_term):
     elif queries.query_jyutping_exists(search_term, fuzzy=True):
         entries = queries.query_jyutping(search_term, fuzzy=True)
         detected_search_type = pgettext("views.py", "Jyutping approximatif")
-    elif queries.query_pinyin_exists(search_term):
-        entries = queries.query_pinyin(search_term)
+    elif queries.query_pinyin_exists(search_term, fuzzy=False):
+        entries = queries.query_pinyin(search_term, fuzzy=False)
         detected_search_type = _("Pinyin")
+    elif queries.query_pinyin_exists(search_term, fuzzy=True):
+        entries = queries.query_pinyin(search_term, fuzzy=True)
+        detected_search_type = pgettext("views.py", "Pinyin approximatif")
     else:
         entries = queries.query_full_text(search_term)
         detected_search_type = _("français")
@@ -42,7 +45,7 @@ def render_search_auto(search_term):
     )
 
 
-def render_search_traditional(search_term):
+def render_search_traditional(search_term: str) -> str:
     entries = queries.query_traditional(search_term)
     return render_template(
         "dictionary_search.html",
@@ -52,7 +55,7 @@ def render_search_traditional(search_term):
     )
 
 
-def render_search_simplified(search_term):
+def render_search_simplified(search_term: str) -> str:
     entries = queries.query_simplified(search_term)
     return render_template(
         "dictionary_search.html",
@@ -64,7 +67,7 @@ def render_search_simplified(search_term):
 
 def render_search_jyutping(search_term: str, fuzzy: bool) -> str:
     entries = queries.query_jyutping(search_term, fuzzy)
-    search_type = _("fuzzy-jyutping") if fuzzy else _("jyutping")
+    search_type = _("jyutping-approximatif") if fuzzy else _("jyutping")
     return render_template(
         "dictionary_search.html",
         search_term=search_term,
@@ -73,17 +76,18 @@ def render_search_jyutping(search_term: str, fuzzy: bool) -> str:
     )
 
 
-def render_search_pinyin(search_term):
-    entries = queries.query_pinyin(search_term)
+def render_search_pinyin(search_term: str, fuzzy: bool) -> str:
+    entries = queries.query_pinyin(search_term, fuzzy)
+    search_type = _("pinyin-approximatif") if fuzzy else _("pinyin")
     return render_template(
         "dictionary_search.html",
         search_term=search_term,
-        search_type=_("pinyin"),
+        search_type=search_type,
         entries=entries,
     )
 
 
-def render_search_french(search_term):
+def render_search_french(search_term: str) -> str:
     entries = queries.query_full_text(search_term)
     return render_template(
         "dictionary_search.html",
@@ -93,7 +97,7 @@ def render_search_french(search_term):
     )
 
 
-def render_entry(entry, search_term="", search_type="search_traditional"):
+def render_entry(entry: str, search_term: str = "", search_type: str = "search_traditional") -> str:
     entries = queries.get_traditional(entry)
     example_sample = queries.get_example_sample(entry)
 

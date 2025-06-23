@@ -113,12 +113,13 @@ def prepare_jyutping_bind_values(jyutping: str, fuzzy_jyutping: bool) -> str:
     return query_param
 
 
-def prepare_pinyin_bind_values(pinyin: str) -> str:
+def prepare_pinyin_bind_values(pinyin: str, fuzzy_pinyin: bool) -> str:
     """Formats Pinyin bind value such that we respect exact matches, wildcards,
     and Pinyin segmentation
 
     Args:
         pinyin (str): String containing raw user input
+        fuzzy_pinyin (bool): Bool to toggle processing of fuzzy Jyutping modifications
 
     Returns:
         str: Formatted, segmented, cleaned up Pinyin string
@@ -134,13 +135,23 @@ def prepare_pinyin_bind_values(pinyin: str) -> str:
     else:
         _, pinyin_syllables = mandarin_utils.segment_pinyin(pinyin)
 
+    if not search_exact_match and fuzzy_pinyin:
+        pinyin_syllables = mandarin_utils.pinyin_sound_changes(pinyin_syllables)
+
     if search_exact_match:
         query_param = " ".join(pinyin_syllables)
     else:
         query_param = construct_romanization_query(pinyin_syllables, "?")
 
-    if append_wildcard and not search_exact_match:
-        query_param += "*"
+    if fuzzy_pinyin:
+        query_param = f"^{query_param.replace("*", ".*").replace("?", ".").replace("!", "?")}"
+        if search_exact_match or not append_wildcard:
+            query_param = f"{query_param}$"
+        else:
+            query_param = f"{query_param}.*"
+    else:
+        if append_wildcard and not search_exact_match:
+            query_param = f"{query_param}*"
 
     return query_param
 
