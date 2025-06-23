@@ -23,23 +23,23 @@
   {% endset %}
   <meta name="description" content="{{ meta_description | replace('\n', ' ') | trim }}">
   {% endblock %}
-  <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='img/apple-touch-icon.png') }}">
-  <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='img/favicon-32x32.png') }}">
-  <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='img/favicon-16x16.png') }}">
-  <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='img/icon.svg') }}">
-  <link rel="manifest" href="{{ url_for('static', filename='/site.webmanifest') }}">
-  <link rel="mask-icon" href="{{ url_for('static', filename='img/safari-pinned-tab.svg') }}" color="#5bbad5">
+  <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='img/apple-touch-icon.png?v=1') | replace('%3F', '?')}}">
+  <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='img/favicon-32x32.png?v=1') | replace('%3F', '?')}}">
+  <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='img/favicon-16x16.png?v=1') | replace('%3F', '?')}}">
+  <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='img/icon.svg?v=1') | replace('%3F', '?') }}">
+  <link rel="manifest" href="{{ url_for('static', filename='/site.webmanifest?v=1') | replace('%3F', '?')}}">
+  <link rel="mask-icon" href="{{ url_for('static', filename='img/safari-pinned-tab.svg?v=1') | replace('%3F', '?')}}" color="#5bbad5">
   <meta name="msapplication-TileColor" content="#a30001">
   <meta name="theme-color" content="#D03439">
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css') }}">
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap-icons.min.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css?v=1') | replace('%3F', '?')}}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap-icons.min.css?v=1') | replace('%3F', '?')}}">
   <title>{% block title %}{% endblock %}{{ _("cantonais.org") }}</title>
   {% endblock %}
 </head>
 
 <body class="h-100">
-  <script src="{{ url_for('static', filename='js/jquery-3.7.0.min.js') }}"></script>
-  <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/jquery-3.7.0.min.js?v=1') | replace('%3F', '?')}}"></script>
+  <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js?v=1') | replace('%3F', '?')}}"></script>
 
   <div class="bg-body bg-dark p-0">
     {% block navbar %}{% endblock %}
