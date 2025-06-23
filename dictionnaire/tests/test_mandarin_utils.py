@@ -201,6 +201,156 @@ class TestPinyinToIPA(TestCase):
         self.assertEqual(res, "t͡ɕʰɥɑɻ˥˥")
 
 
+class TestPinyinSoundChanges(TestCase):
+    def test_z(self):
+        res = mandarin_utils.pinyin_sound_changes(["zuan"])
+        self.assertEqual(res, ["z(h)!uang!"])
+
+        res = mandarin_utils.pinyin_sound_changes(["zuan3"])
+        self.assertEqual(res, ["z(h)!uang!3"])
+
+        res = mandarin_utils.pinyin_sound_changes(["zuan?"])
+        self.assertEqual(res, ["z(h)!uang!?"])
+
+    def test_c(self):
+        res = mandarin_utils.pinyin_sound_changes(["cuan"])
+        self.assertEqual(res, ["c(h)!uang!"])
+
+        res = mandarin_utils.pinyin_sound_changes(["cuan3"])
+        self.assertEqual(res, ["c(h)!uang!3"])
+
+        res = mandarin_utils.pinyin_sound_changes(["cuan?"])
+        self.assertEqual(res, ["c(h)!uang!?"])
+
+    def test_s(self):
+        res = mandarin_utils.pinyin_sound_changes(["se"])
+        self.assertEqual(res, ["s(h)!e"])
+
+        res = mandarin_utils.pinyin_sound_changes(["se2"])
+        self.assertEqual(res, ["s(h)!e2"])
+
+        res = mandarin_utils.pinyin_sound_changes(["se?"])
+        self.assertEqual(res, ["s(h)!e?"])
+
+    def test_n(self):
+        res = mandarin_utils.pinyin_sound_changes(["ni"])
+        self.assertEqual(res, ["(n|l)i"])
+
+        res = mandarin_utils.pinyin_sound_changes(["ni3"])
+        self.assertEqual(res, ["(n|l)i3"])
+
+        res = mandarin_utils.pinyin_sound_changes(["ni?"])
+        self.assertEqual(res, ["(n|l)i?"])
+
+    def test_r(self):
+        res = mandarin_utils.pinyin_sound_changes(["re"])
+        self.assertEqual(res, ["(l|r)e"])
+
+        res = mandarin_utils.pinyin_sound_changes(["re4"])
+        self.assertEqual(res, ["(l|r)e4"])
+
+        res = mandarin_utils.pinyin_sound_changes(["re?"])
+        self.assertEqual(res, ["(l|r)e?"])
+
+    def test_ln(self):
+        res = mandarin_utils.pinyin_sound_changes(["li"])
+        self.assertEqual(res, ["(l|n)i"])
+
+        res = mandarin_utils.pinyin_sound_changes(["lie4"])
+        self.assertEqual(res, ["(l|n)ie4"])
+
+        res = mandarin_utils.pinyin_sound_changes(["liao?"])
+        self.assertEqual(res, ["(l|n)iao?"])
+
+        res = mandarin_utils.pinyin_sound_changes(["liu"])
+        self.assertEqual(res, ["(l|n)iu"])
+
+        res = mandarin_utils.pinyin_sound_changes(["lian2"])
+        self.assertEqual(res, ["(l|n)iang!2"])
+
+        res = mandarin_utils.pinyin_sound_changes(["lin?"])
+        self.assertEqual(res, ["(l|n)ing!?"])
+
+        res = mandarin_utils.pinyin_sound_changes(["liang"])
+        self.assertEqual(res, ["(l|n)iang!"])
+
+        res = mandarin_utils.pinyin_sound_changes(["ling1"])
+        self.assertEqual(res, ["(l|n)ing!1"])
+
+        res = mandarin_utils.pinyin_sound_changes(["lu:?"])
+        self.assertEqual(res, ["(l|n)u:?"])
+
+        res = mandarin_utils.pinyin_sound_changes(["lu:e"])
+        self.assertEqual(res, ["(l|n)u:e"])
+
+    def test_lnr(self):
+        res = mandarin_utils.pinyin_sound_changes(["lang"])
+        self.assertEqual(res, ["(l|n|r)ang!"])
+
+        res = mandarin_utils.pinyin_sound_changes(["lang4"])
+        self.assertEqual(res, ["(l|n|r)ang!4"])
+
+        res = mandarin_utils.pinyin_sound_changes(["lang?"])
+        self.assertEqual(res, ["(l|n|r)ang!?"])
+
+    def test_ang(self):
+        res = mandarin_utils.pinyin_sound_changes(["bang"])
+        self.assertEqual(res, ["bang!"])
+
+        res = mandarin_utils.pinyin_sound_changes(["bang1"])
+        self.assertEqual(res, ["bang!1"])
+
+        res = mandarin_utils.pinyin_sound_changes(["bang?"])
+        self.assertEqual(res, ["bang!?"])
+
+        res = mandarin_utils.pinyin_sound_changes(["ban"])
+        self.assertEqual(res, ["bang!"])
+
+        res = mandarin_utils.pinyin_sound_changes(["ban1"])
+        self.assertEqual(res, ["bang!1"])
+
+        res = mandarin_utils.pinyin_sound_changes(["ban?"])
+        self.assertEqual(res, ["bang!?"])
+
+    def test_eng(self):
+        res = mandarin_utils.pinyin_sound_changes(["peng"])
+        self.assertEqual(res, ["peng!"])
+
+        res = mandarin_utils.pinyin_sound_changes(["peng4"])
+        self.assertEqual(res, ["peng!4"])
+
+        res = mandarin_utils.pinyin_sound_changes(["peng?"])
+        self.assertEqual(res, ["peng!?"])
+
+        res = mandarin_utils.pinyin_sound_changes(["pen"])
+        self.assertEqual(res, ["peng!"])
+
+        res = mandarin_utils.pinyin_sound_changes(["pen4"])
+        self.assertEqual(res, ["peng!4"])
+
+        res = mandarin_utils.pinyin_sound_changes(["pen?"])
+        self.assertEqual(res, ["peng!?"])
+
+    def test_ing(self):
+        res = mandarin_utils.pinyin_sound_changes(["bing"])
+        self.assertEqual(res, ["bing!"])
+
+        res = mandarin_utils.pinyin_sound_changes(["bing3"])
+        self.assertEqual(res, ["bing!3"])
+
+        res = mandarin_utils.pinyin_sound_changes(["bing?"])
+        self.assertEqual(res, ["bing!?"])
+
+        res = mandarin_utils.pinyin_sound_changes(["pin"])
+        self.assertEqual(res, ["ping!"])
+
+        res = mandarin_utils.pinyin_sound_changes(["pin1"])
+        self.assertEqual(res, ["ping!1"])
+
+        res = mandarin_utils.pinyin_sound_changes(["pin?"])
+        self.assertEqual(res, ["ping!?"])
+
+
 class TestPinyinSegmentation(TestCase):
     def test_simple(self):
         _, res = mandarin_utils.segment_pinyin("guang3 dong1")
