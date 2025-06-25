@@ -1,42 +1,42 @@
 [
 	{
 		"channel": "release",
-		"versionNumber": "2.23.0408",
-		"description": "<h3>New:</h3>\r\n- <b>Yale, Bopomofo/Zhuyin, and IPA:</b> You can now choose to use Yale, Bopomofo/Zhuyin, and IPA to display pronunciation, in addition to the existing Jyutping and Pinyin. Thanks for the feature request <a href=https://github.com/vintotal>@vintotal</a>!\r\n<br>- <b>Wildcard searching:</b> When searching using Simplified/Traditional Chinese, Jyutping, or Pinyin, you can now use * and ? as wildcards to mean any number of characters and one character respectively. For example, maybe you remember a 成語 ending with 鄉 — you could search ???鄉 to find 走鄉隨鄉!\r\n<br>- <b>Exact match searching:</b> Surrounding your search with \"\" quotes means that the dictionary will only find entries that match exactly what is enclosed within the quotes. For example, \"鄉\" will return <b>only</b> the entry 鄉, <b>not</b> 鄉鎮 or 走鄉隨鄉.\r\n<br>- <b>Adjust interface size:</b> If you find that the interface was too small before, good news! You can make it humongous or tiny, with five size settings. <a href= https://github.com/AlienKevin>@AlienKevin</a> this one’s for you!\r\n<br>- <b>Magnify and Open In New Window:</b> To see a larger version of an entry, or open it in a different window, there are new buttons in the entry detail view.\r\n<br>- <b>New dictionaries:</b> If you are a new user, the program now comes with HSK3 tags and Wiktionary! If you're upgrading from an older version, please visit the <a href=https://jyutdictionary.com/#download-addon>Jyut Dictionary website</a> to download and add these new dictionaries.\r\n\r\n<h3>Improvements:</h3>\r\n- <b>Refreshed light mode UI on Windows and Linux:</b> Light more now has less grey, and the UI has been updated to fit in better with Windows 11.\r\n<br>- <b>Immediate settings:</b> Settings now apply immediately instead of on next search.\r\n<br>- <b>More obvious search options:</b> Buttons to switch between Simplified Chinese/Traditional Chinese/Jyutping/Pinyin/English are now larger and not abbreviated. <a href= https://github.com/derekyin>@derekyin</a> this is for you!\r\n<br>- <b>Pour les utilisateurs francophones :</b> La version 2016 de CFDICT, qui contient beaucoup plus d'entrées et définitions, est maintenant disponible! Pour en savoir plus, veuillez cliquer sur <a href=https://chine.in/forum/relance-programme-cfdict_45959.html>ce lien</a>.\r\n\r\n<h3>Notes:</h3>\r\n- <b>On Ubuntu 20.04:</b> You must run `sudo add-apt-repository ppa:beineri/opt-qt-5.15.2-focal` before installing the .deb file. This version drops support for Ubuntu 16.04 and Ubuntu 18.04.",
+		"versionNumber": "4.25.0623",
+		"description": "<h3>New:</h3>\r\n- <b>Fuzzy Jyutping:</b> You may not be as familiar with Jyutping as you would like. Fuzzy Jyutping helps with that! When enabled, you can type \"gum yut\" and still find 今日. This feature can be toggled in settings, or by using the keyboard shortcut ⌘ + Shift + J / Ctrl + Shift + J.\r\n- <b>Fuzzy Pinyin:</b> A similar feature now exists for Pinyin as well. This feature can be toggled in settings, or by using the keyboard shortcut ⌘ + Shift + P / Ctrl + Shift + P.\r\n- <b>Search by voice (Windows and Mac only):</b> Click on the microphone icon in the search bar to search by dictation! This feature on macOS is fully supported. On Windows, the dictation system is a little wobbly, so it may take a few tries to get the input to work. Language support depends on language packs installed on your system, but can support Cantonese, Mandarin, English, and French. This feature can also be activated using the keyboard shortcut ⌘ + D / Ctrl + D.\r\n- <b>Search by handwriting:</b> Click on the handwriting icon in the search bar to search by handwriting! Both traditional and simplified characters are supported. This feature can also be activated using the keyboard shortcut ⌘ + K / Ctrl + K.\r\n- <b>Wikipedia Article Titles as new source:</b> Translations for many proper nouns and recent events is now available via the Wikipedia source - head over to the <a href=\"https://jyutdictionary.com/#download-program\" rel=\"nofollow\">Jyut Dictionary website</a> to download!\r\n- <b>Online version:</b> Jyut Dictionary is now also available as a website! Check it out at: <a href=\"https://jyutdictionary.com/\" rel=\"nofollow\">https://jyutdictionary.com</a>.\r\n<h3>Fixes and Improvements:</h3>\r\n- <b>Linux audio fixes:</b> The new version uses a different audio backend to pronounce entries in the dictionary. It's worked on testing across Pop!_OS 22.04 and Fedora 39/42, and should support a much wider spectrum of Linux distros.\r\n<br>- <b>Search history fixes:</b> When language auto-detection is turned on, searches are now persisted in search history.\r\n<h3>Notes:</h3>\r\n- <b>Linux dependency:</b> <b>You must install libharfbuzz on your system for the AppImage to work.</b> This can be done with `sudo dnf install harfbuzz-devel` on Fedora or `sudo apt install libharfbuzz-dev` on Ubuntu.\r\n<br>- <b>Windows 7 and 8 support:</b> Support for Windows 7 and 8 has been dropped. Those operating systems have not been supported by Microsoft for quite some years now. The build system has also moved to Qt 6, which drops support for Windows 7 and 8.",
 		"links": [
 			{
-				"arch": ["arm64", "x86_64"],
+				"arch": ["arm64"],
 				"kernel": "darwin",
-				"minOSVersionNumber": "11.0",
-				"updateLink": "https://github.com/aaronhktan/jyut-dict/releases/download/v2.23.0408-release/Jyut-Dictionary_2.23.0408_macOS_64bit_install.dmg",
+				"minOSVersionNumber": "15.0",
+				"updateLink": "https://github.com/aaronhktan/jyut-dict/releases/download/v4.25.0623-release/Jyut-Dictionary_4.25.0623_macOS_64bit_install.dmg",
 				"variant": "install"
 			},
 			{
-				"arch": ["arm64", "x86_64"],
+				"arch": ["arm64"],
 				"kernel": "darwin",
-				"minOSVersionNumber": "11.0",
-				"updateLink": "https://github.com/aaronhktan/jyut-dict/releases/download/v2.23.0408-release/Jyut-Dictionary_2.23.0408_macOS_64bit_portable.zip",
+				"minOSVersionNumber": "15.0",
+				"updateLink": "https://github.com/aaronhktan/jyut-dict/releases/download/v4.25.0623-release/Jyut-Dictionary_4.25.0623_macOS_64bit_portable.zip",
 				"variant": "portable"
 			},
 			{
 				"arch": ["x86_64"],
 				"kernel": "linux",
 				"minOSVersionNumber": "0",
-				"updateLink": "https://github.com/aaronhktan/jyut-dict/releases/download/v2.23.0408-release/Jyut-Dictionary_2.23.0408_Linux_64bit_appimage.tar.bz2",
+				"updateLink": "https://github.com/aaronhktan/jyut-dict/releases/download/v4.25.0623-release/Jyut-Dictionary_4.25.0623_Linux_64bit_appimage.tar.bz2",
 				"variant": "appimage"
 			},
 			{
 				"arch": ["x86_64"],
 				"kernel": "winnt",
-				"minOSVersionNumber": "7",
-				"updateLink": "https://github.com/aaronhktan/jyut-dict/releases/download/v2.23.0408-release/Jyut-Dictionary_2.23.0408_Windows_64bit_install.exe",
+				"minOSVersionNumber": "10",
+				"updateLink": "https://github.com/aaronhktan/jyut-dict/releases/download/v4.25.0623-release/Jyut-Dictionary_4.25.0623_Windows_64bit_install.exe",
 				"variant": "install"
 			},
 			{
 				"arch": ["x86_64"],
 				"kernel": "winnt",
-				"minOSVersionNumber": "7",
-				"updateLink": "https://github.com/aaronhktan/jyut-dict/releases/download/v2.23.0408-release/Jyut-Dictionary_2.23.0408_Windows_64bit_portable.zip",
+				"minOSVersionNumber": "10",
+				"updateLink": "https://github.com/aaronhktan/jyut-dict/releases/download/v4.25.0623-release/Jyut-Dictionary_4.25.0623_Windows_64bit_portable.zip",
 				"variant": "portable"
 			}
 		]
