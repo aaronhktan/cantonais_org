@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cantonais_org 2.0.0\n"
 "Report-Msgid-Bugs-To: hi@aaronhktan.com\n"
-"POT-Creation-Date: 2025-06-21 23:46-0400\n"
+"POT-Creation-Date: 2025-07-02 19:56-0400\n"
 "PO-Revision-Date: 2025-06-03 01:14-0400\n"
 "Last-Translator: Aaron Tan <hi@aaronhktan.com>\n"
 "Language: en\n"
@@ -68,7 +68,12 @@ msgstr "fuzzy-jyutping"
 msgid "pinyin"
 msgstr "pinyin"
 
-#: dictionnaire/templates/dictionary_search.html:13 dictionnaire/urls.py:158
+#: dictionnaire/urls.py:161 dictionnaire/views.py:81
+#: templates/search_bar.html:8 templates/search_bar.html:53
+msgid "pinyin-approximatif"
+msgstr "fuzzy-pinyin"
+
+#: dictionnaire/templates/dictionary_search.html:13 dictionnaire/urls.py:177
 #: dictionnaire/views.py:95 templates/base.html:2 templates/search_bar.html:9
 #: templates/search_bar.html:54
 msgid "fr"
@@ -107,12 +112,12 @@ msgstr "Fuzzy Jyutping"
 msgid "français"
 msgstr "English"
 
-#: dictionnaire/views.py:81 templates/search_bar.html:8
-#: templates/search_bar.html:53
-msgid "pinyin-approximatif"
-msgstr "fuzzy-pinyin"
+#: dictionnaire/templates/dictionary_entry.html:4
+#: dictionnaire/templates/dictionary_entry.html:6
+msgid " : définitions et traductions"
+msgstr ": Definitions and Translations"
 
-#: dictionnaire/templates/dictionary_entry.html:5
+#: dictionnaire/templates/dictionary_entry.html:11
 #, python-format
 msgid ""
 "\n"
@@ -123,19 +128,19 @@ msgstr ""
 "See definitions and examples for %(headword)s on Jyut Dictionary, the "
 "most comprehensive online Cantonese dictionary."
 
-#: dictionnaire/templates/dictionary_entry.html:31
+#: dictionnaire/templates/dictionary_entry.html:37
 msgid "Définitions"
 msgstr "Definitions"
 
-#: dictionnaire/templates/dictionary_entry.html:77
+#: dictionnaire/templates/dictionary_entry.html:83
 msgid "Exemples"
 msgstr "Examples"
 
-#: dictionnaire/templates/dictionary_entry.html:87
+#: dictionnaire/templates/dictionary_entry.html:93
 msgid "Cantonais"
 msgstr "Cantonese"
 
-#: dictionnaire/templates/dictionary_entry.html:90
+#: dictionnaire/templates/dictionary_entry.html:96
 msgid "Mandarin"
 msgstr "Mandarin"
 
