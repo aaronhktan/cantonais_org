@@ -1,5 +1,15 @@
 {% extends "dictionary.html" %}
-{% block title %}{{ headword }} | {% endblock %}
+{% block title %}
+{% if entries %}
+{% if entries[0].traditional == entries[0].simplified %}
+{{ entries[0].traditional }}{{ _(" : définitions et traductions") }} |
+{% else %}
+{{ entries[0].traditional }} / {{ entries[0].simplified }}{{ _(" : définitions et traductions") }} |
+{% endif %}
+{% else %}
+{{ headword }}{{ _(" : définitions et traductions") }} |
+{% endif %}
+{% endblock %}
 {% block description %}
 {% set meta_description %}
 {% trans %}
