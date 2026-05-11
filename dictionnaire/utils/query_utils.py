@@ -185,7 +185,8 @@ def parse_returned_records(records: list[str]) -> list[Entry]:
                         if sentence["translations"]:
                             for translation in sentence["translations"]:
                                 target = Translation(
-                                    translation["sentence"], translation["language"]
+                                    translation=translation["sentence"],
+                                    language=translation["language"],
                                 )
                                 translations.append(target)
                         translation_set = TranslationSet(
@@ -194,11 +195,11 @@ def parse_returned_records(records: list[str]) -> list[Entry]:
                         )
                         sentences.append(
                             SourceSentence(
-                                sentence["language"],
-                                sentence["simplified"],
-                                sentence["traditional"],
-                                sentence["jyutping"],
-                                sentence["pinyin"],
+                                source_language=sentence["language"],
+                                simplified=sentence["simplified"],
+                                traditional=sentence["traditional"],
+                                jyutping=sentence["jyutping"],
+                                pinyin=sentence["pinyin"],
                                 translations=translation_set,
                             )
                         )
@@ -239,7 +240,7 @@ def parse_existence(records: list[str]) -> bool:
 
 
 def parse_returned_sentences(records: list[str]) -> list[SourceSentence]:
-    """Parses records returned by a sequel query into a list of SourceSentence objects.
+    """Parses records returned by a SQL query into a list of SourceSentence objects.
 
     Args:
         records (list[str]): Result from a cursor.readall()
@@ -264,11 +265,11 @@ def parse_returned_sentences(records: list[str]) -> list[SourceSentence]:
             translation_sets.append(translation_set)
         res.append(
             SourceSentence(
-                record[5],
-                record[1],
-                record[2],
-                record[4],
-                record[3],
+                source_language=record[5],
+                traditional=record[1],
+                simplified=record[2],
+                jyutping=record[4],
+                pinyin=record[3],
                 translations=translation_sets,
             )
         )
