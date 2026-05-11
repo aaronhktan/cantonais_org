@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cantonais_org 2.0.0\n"
 "Report-Msgid-Bugs-To: hi@aaronhktan.com\n"
-"POT-Creation-Date: 2025-07-02 19:56-0400\n"
+"POT-Creation-Date: 2026-05-11 17:30+0800\n"
 "PO-Revision-Date: 2025-06-03 01:14-0400\n"
 "Last-Translator: Aaron Tan <hi@aaronhktan.com>\n"
 "Language: en\n"
@@ -17,7 +17,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.17.0\n"
+"Generated-By: Babel 2.18.0\n"
 
 #: app.py:108
 msgid "dictionnaire"
@@ -32,49 +32,49 @@ msgid "dictionnaire./recherche"
 msgstr "dictionary./search"
 
 #: dictionnaire/templates/dictionary_search.html:7 dictionnaire/urls.py:58
-#: dictionnaire/views.py:42 templates/index_en.html:49
+#: dictionnaire/views.py:43 templates/index_en.html:49
 #: templates/index_en.html:68 templates/search_bar.html:2
 #: templates/search_bar.html:47
 msgid "auto"
 msgstr "auto"
 
 #: dictionnaire/templates/dictionary_search.html:8 dictionnaire/urls.py:74
-#: dictionnaire/views.py:53 templates/search_bar.html:3
+#: dictionnaire/views.py:54 templates/search_bar.html:3
 #: templates/search_bar.html:48
 msgid "traditionnel"
 msgstr "traditional"
 
 #: dictionnaire/templates/dictionary_search.html:9 dictionnaire/urls.py:90
-#: dictionnaire/views.py:63 templates/search_bar.html:4
+#: dictionnaire/views.py:64 templates/search_bar.html:4
 #: templates/search_bar.html:49
 msgid "simplifie"
 msgstr "simplified"
 
 #: dictionnaire/templates/dictionary_search.html:10 dictionnaire/urls.py:106
-#: dictionnaire/views.py:70 templates/search_bar.html:5
+#: dictionnaire/views.py:71 templates/search_bar.html:5
 #: templates/search_bar.html:50
 msgid "jyutping"
 msgstr "jyutping"
 
 #: dictionnaire/templates/dictionary_search.html:11 dictionnaire/urls.py:126
-#: dictionnaire/views.py:70 templates/search_bar.html:6
+#: dictionnaire/views.py:71 templates/search_bar.html:6
 #: templates/search_bar.html:51
 msgid "jyutping-approximatif"
 msgstr "fuzzy-jyutping"
 
 #: dictionnaire/templates/dictionary_search.html:12 dictionnaire/urls.py:142
-#: dictionnaire/views.py:81 templates/search_bar.html:7
+#: dictionnaire/views.py:82 templates/search_bar.html:7
 #: templates/search_bar.html:52
 msgid "pinyin"
 msgstr "pinyin"
 
-#: dictionnaire/urls.py:161 dictionnaire/views.py:81
+#: dictionnaire/urls.py:161 dictionnaire/views.py:82
 #: templates/search_bar.html:8 templates/search_bar.html:53
 msgid "pinyin-approximatif"
 msgstr "fuzzy-pinyin"
 
 #: dictionnaire/templates/dictionary_search.html:13 dictionnaire/urls.py:177
-#: dictionnaire/views.py:95 templates/base.html:2 templates/search_bar.html:9
+#: dictionnaire/views.py:96 templates/base.html:2 templates/search_bar.html:9
 #: templates/search_bar.html:54
 msgid "fr"
 msgstr "en"
@@ -102,22 +102,22 @@ msgstr "fuzzy Jyutping"
 msgid "Pinyin"
 msgstr "Pinyin"
 
-#: dictionnaire/views.py:34
-#, fuzzy
+#: dictionnaire/views.py:34 dictionnaire/views.py:35
 msgctxt "views.py"
 msgid "Pinyin approximatif"
-msgstr "Fuzzy Jyutping"
+msgstr "fuzzy Pinyin"
 
-#: dictionnaire/views.py:37
+#: dictionnaire/views.py:38
 msgid "français"
 msgstr "English"
 
-#: dictionnaire/templates/dictionary_entry.html:4
-#: dictionnaire/templates/dictionary_entry.html:6
+#: dictionnaire/templates/dictionary_entry.html:5
+#: dictionnaire/templates/dictionary_entry.html:7
+#: dictionnaire/templates/dictionary_entry.html:10
 msgid " : définitions et traductions"
 msgstr ": Definitions and Translations"
 
-#: dictionnaire/templates/dictionary_entry.html:11
+#: dictionnaire/templates/dictionary_entry.html:15
 #, python-format
 msgid ""
 "\n"
@@ -128,19 +128,19 @@ msgstr ""
 "See definitions and examples for %(headword)s on Jyut Dictionary, the "
 "most comprehensive online Cantonese dictionary."
 
-#: dictionnaire/templates/dictionary_entry.html:37
+#: dictionnaire/templates/dictionary_entry.html:41
 msgid "Définitions"
 msgstr "Definitions"
 
-#: dictionnaire/templates/dictionary_entry.html:83
+#: dictionnaire/templates/dictionary_entry.html:87
 msgid "Exemples"
 msgstr "Examples"
 
-#: dictionnaire/templates/dictionary_entry.html:93
+#: dictionnaire/templates/dictionary_entry.html:97
 msgid "Cantonais"
 msgstr "Cantonese"
 
-#: dictionnaire/templates/dictionary_entry.html:96
+#: dictionnaire/templates/dictionary_entry.html:100
 msgid "Mandarin"
 msgstr "Mandarin"
 
