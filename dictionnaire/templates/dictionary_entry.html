@@ -51,22 +51,22 @@ le site de référence de la langue cantonaise.
                         {% endif %}
                         {{ definition.definition_content.replace("\n", "<br>")|safe }}
                         <ul class="ps-4 mb-0">
-                            {% for sentence in definition.sentences %}
+                            {% for example in definition.examples %}
                             <li>
-                                {{ sentence.traditional.replace("\n", "<br>")|safe }}
+                                {{ example.traditional.replace("\n", "<br>")|safe }}
                                 <br>
-                                {{ sentence.simplified.replace("\n", "<br>")|safe }}
-                                {% if sentence.source_language == "yue" and sentence.jyutping %}
+                                {{ example.simplified.replace("\n", "<br>")|safe }}
+                                {% if example.source_language == "yue" and example.jyutping %}
                                 <br>
-                                <span class="text-secondary">{{ sentence.jyutping }}</span>
-                                {% elif sentence.source_language == "cmn" and sentence.pinyin %}
+                                <span class="text-secondary">{{ example.jyutping }}</span>
+                                {% elif example.source_language == "cmn" and example.pinyin %}
                                 <br>
-                                <span class="text-secondary">{{ sentence._pretty_pinyin }}</span>
+                                <span class="text-secondary">{{ example._pretty_pinyin }}</span>
                                 {% endif %}
                                 <br>
-                                {% if sentence.translations and sentence.translations.translations %}
+                                {% if example.translations and example.translations.translations %}
                                 <span class="text-secondary fst-italic">{{
-                                    sentence.translations.translations[0].translation.replace("\n", "<br>")|safe
+                                    example.translations.translations[0].translation.replace("\n", "<br>")|safe
                                     }}</span>
                                 {% endif %}
                             </li>

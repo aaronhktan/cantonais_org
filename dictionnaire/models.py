@@ -23,7 +23,7 @@ class TranslationSet:
 
 
 @dataclass
-class SourceSentence:
+class Example:
     source_language: str
     simplified: str
     traditional: str
@@ -63,7 +63,7 @@ class SourceSentence:
 class Definition:
     definition_content: str
     label: str
-    sentences: list[SourceSentence] | None = None
+    examples: list[Example] | None = None
 
 
 @dataclass
