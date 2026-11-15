@@ -6,7 +6,7 @@ from collections import defaultdict
 
 from flask import g
 
-from .models import Entry, SourceSentence
+from .models import Entry, Example
 from .utils import chinese_utils, query_utils
 
 DB_PATH = os.environ["CANTONAIS_ORG_DB_PATH"]
@@ -40,52 +40,52 @@ WITH matching_entry_ids AS (
 matching_definition_ids AS (
   SELECT definition_id, definition FROM definitions WHERE fk_entry_id
   IN matching_entry_ids
-  ),
+),
 
-matching_chinese_sentence_ids AS (
-  SELECT definition_id, fk_chinese_sentence_id
+matching_example_ids AS (
+  SELECT definition_id, fk_example_id
   FROM matching_definition_ids AS mdi
-  JOIN definitions_chinese_sentences_links AS dcsl ON
-    mdi.definition_id = dcsl.fk_definition_id
-    ),
+  JOIN definitions_examples_links AS del ON
+    mdi.definition_id = del.fk_definition_id
+),
 
 matching_translations AS (
-  SELECT mcsi.fk_chinese_sentence_id,
+  SELECT mei.fk_example_id,
     json_group_array(DISTINCT
-      json_object('sentence', sentence,
+      json_object('translation', translation,
                   'language', language,
                   'direct', direct
     )) AS translation
-  FROM matching_chinese_sentence_ids AS mcsi
-  JOIN sentence_links AS sl ON mcsi.fk_chinese_sentence_id =
-    sl.fk_chinese_sentence_id
-  JOIN nonchinese_sentences AS ncs ON ncs.non_chinese_sentence_id =
-    sl.fk_non_chinese_sentence_id
-  GROUP BY mcsi.fk_chinese_sentence_id
-  ),
+  FROM matching_example_ids AS mei
+  JOIN example_links AS el ON mei.fk_example_id =
+    el.fk_example_id
+  JOIN example_translations AS et ON et.example_translation_id =
+    el.fk_example_translation_id
+  GROUP BY mei.fk_example_id
+),
 
-matching_sentences AS (
- SELECT chinese_sentence_id, traditional, simplified, pinyin,
+matching_examples AS (
+ SELECT example_id, traditional, simplified, pinyin,
    jyutping, language
- FROM chinese_sentences AS cs
- WHERE chinese_sentence_id IN (
-   SELECT fk_chinese_sentence_id FROM
-     matching_chinese_sentence_ids
- )
+ FROM examples AS e
+ WHERE example_id IN (
+   SELECT fk_example_id FROM
+     matching_example_ids
+   )
  ),
 
-matching_sentences_with_translations AS (
-  SELECT chinese_sentence_id,
+matching_examples_with_translations AS (
+  SELECT example_id,
     json_object('traditional', traditional,
                 'simplified', simplified,
                 'pinyin', pinyin,
                 'jyutping', jyutping,
                 'language', language,
-                'translations', json(translation)) AS sentence
-  FROM matching_sentences AS ms
-  LEFT JOIN matching_translations AS mt ON ms.chinese_sentence_id =
-    mt.fk_chinese_sentence_id
-    ),
+                'translations', json(translation)) AS example 
+  FROM matching_examples AS me
+  LEFT JOIN matching_translations AS mt ON me.example_id =
+    mt.fk_example_id
+),
 
 matching_definitions AS (
   SELECT definition_id, fk_entry_id, fk_source_id, definition,
@@ -94,41 +94,41 @@ matching_definitions AS (
   WHERE definitions.definition_id IN (
     SELECT definition_id FROM matching_definition_ids
   )
-  ),
+),
 
-matching_definitions_with_sentences AS (
+matching_definitions_with_examples AS (
   SELECT fk_entry_id, fk_source_id,
     json_object('definition', definition,
-                'label', label, 'sentences',
-                json_group_array(json(sentence))) AS definition
+                'label', label, 'examples',
+                json_group_array(json(example))) AS definition
   FROM matching_definitions AS md
-  LEFT JOIN matching_chinese_sentence_ids AS mcsi ON
-    md.definition_id = mcsi.definition_id
-  LEFT JOIN matching_sentences_with_translations AS mswt ON
-    mcsi.fk_chinese_sentence_id = mswt.chinese_sentence_id
+  LEFT JOIN matching_example_ids AS mei ON
+    md.definition_id = mei.definition_id
+  LEFT JOIN matching_examples_with_translations AS mewt ON
+    mei.fk_example_id = mewt.example_id
   GROUP BY md.definition_id
-  ),
+),
 
 matching_definition_groups AS (
   SELECT fk_entry_id,
     json_object('source', sourcename,
                 'definitions',
                 json_group_array(json(definition))) AS definitions
-  FROM matching_definitions_with_sentences AS mdws
-  LEFT JOIN sources ON sources.source_id = mdws.fk_source_id
+  FROM matching_definitions_with_examples AS mdwe
+  LEFT JOIN sources ON sources.source_id = mdwe.fk_source_id
   GROUP BY fk_entry_id, fk_source_id
-  ),
+),
 
 matching_entries AS (
-  SELECT simplified, traditional, jyutping, pinyin,
+  SELECT entry_id, simplified, traditional, jyutping, pinyin,
     json_group_array(json(definitions)) AS definitions
   FROM matching_definition_groups AS mdg
   LEFT JOIN entries ON entries.entry_id = mdg.fk_entry_id
   GROUP BY entry_id
   ORDER BY frequency DESC
-  )
+)
 
- SELECT traditional, simplified, jyutping, pinyin, definitions FROM
+ SELECT entry_id, traditional, simplified, jyutping, pinyin, definitions FROM
   matching_entries
 """,
         (traditional,),
@@ -141,7 +141,7 @@ matching_entries AS (
     return query_utils.parse_returned_records(records)
 
 
-def get_example_sample(param: str) -> dict[str, SourceSentence] | None:
+def get_example_sample(param: str) -> dict[str, Example] | None:
     examples = query_examples(param)
 
     # Display only a subset of the examples on the entry page
@@ -157,7 +157,7 @@ def get_example_sample(param: str) -> dict[str, SourceSentence] | None:
             if len(example_sample[source]) >= 5:
                 continue
 
-            sample = SourceSentence(
+            sample = Example(
                 example.source_language,
                 example.simplified,
                 example.traditional,
@@ -222,7 +222,7 @@ matching_definition_groups AS (
 ),
 
 matching_entries AS (
-  SELECT simplified, traditional, jyutping, pinyin,
+  SELECT entry_id, simplified, traditional, jyutping, pinyin,
     json_group_array(json(definitions)) AS definitions
   FROM matching_definition_groups AS mdg
   LEFT JOIN entries ON entries.entry_id = mdg.fk_entry_id
@@ -230,7 +230,7 @@ matching_entries AS (
   ORDER BY frequency DESC
 )
 
-SELECT traditional, simplified, jyutping, pinyin, definitions FROM
+SELECT entry_id, traditional, simplified, jyutping, pinyin, definitions FROM
   matching_entries
 """,
         (query_param,),
@@ -295,7 +295,7 @@ matching_definition_groups AS (
 ),
 
 matching_entries AS (
-  SELECT simplified, traditional, jyutping, pinyin,
+  SELECT entry_id, simplified, traditional, jyutping, pinyin,
     json_group_array(json(definitions)) AS definitions
   FROM matching_definition_groups AS mdg
   LEFT JOIN entries ON entries.entry_id = mdg.fk_entry_id
@@ -303,7 +303,7 @@ matching_entries AS (
   ORDER BY frequency DESC
 )
 
-SELECT traditional, simplified, jyutping, pinyin, definitions FROM
+SELECT entry_id, traditional, simplified, jyutping, pinyin, definitions FROM
   matching_entries
 """,
         (query_param,),
@@ -359,7 +359,7 @@ matching_definition_groups AS (
 ),
 
 matching_entries AS (
-  SELECT simplified, traditional, jyutping, pinyin,
+  SELECT entry_id, simplified, traditional, jyutping, pinyin,
     json_group_array(json(definitions)) AS definitions
   FROM matching_definition_groups AS mdg
   LEFT JOIN entries ON entries.entry_id = mdg.fk_entry_id
@@ -367,7 +367,7 @@ matching_entries AS (
   ORDER BY frequency DESC
 )
 
-SELECT traditional, simplified, jyutping, pinyin, definitions FROM
+SELECT entry_id, traditional, simplified, jyutping, pinyin, definitions FROM
   matching_entries
 """,
         (query_param,),
@@ -453,7 +453,7 @@ matching_definition_groups AS (
 ),
 
 matching_entries AS (
-  SELECT simplified, traditional, jyutping, pinyin,
+  SELECT entry_id, simplified, traditional, jyutping, pinyin,
     json_group_array(json(definitions)) AS definitions
   FROM matching_definition_groups AS mdg
   LEFT JOIN entries ON entries.entry_id = mdg.fk_entry_id
@@ -461,7 +461,7 @@ matching_entries AS (
   ORDER BY frequency DESC
 )
 
-SELECT traditional, simplified, jyutping, pinyin, definitions FROM
+SELECT entry_id, traditional, simplified, jyutping, pinyin, definitions FROM
   matching_entries
 """,
         (query_param,),
@@ -522,7 +522,7 @@ def query_full_text(param: str) -> list[Entry] | None:
 
     c.execute(
         """
-WITH matching_entry_ids AS (
+WITH matching_entry_ids AS MATERIALIZED (
   SELECT
     fk_entry_id,
     rowid AS definition_id,
@@ -585,6 +585,7 @@ matching_definition_groups AS (
 
 matching_entries AS (
   SELECT
+    entry_id,
     simplified,
     traditional,
     jyutping,
@@ -597,7 +598,7 @@ matching_entries AS (
   ORDER BY RANK ASC, frequency DESC
 )
 
-SELECT traditional, simplified, jyutping, pinyin, definitions FROM
+SELECT entry_id, traditional, simplified, jyutping, pinyin, definitions FROM
   matching_entries
 """,
         (
@@ -613,7 +614,7 @@ SELECT traditional, simplified, jyutping, pinyin, definitions FROM
     return query_utils.parse_returned_records(records)
 
 
-def query_examples(param: str) -> list[SourceSentence] | None:
+def query_examples(param: str) -> list[Example] | None:
     db = get_db()
     c = db.cursor()
 
@@ -622,19 +623,19 @@ def query_examples(param: str) -> list[SourceSentence] | None:
     c.execute(
         """
 WITH
-  matching_chinese_sentence_ids AS (
-    SELECT chinese_sentence_id
-    FROM chinese_sentences
+  matching_example_ids AS (
+    SELECT example_id
+    FROM examples 
     WHERE traditional LIKE ? ESCAPE '\\'
   ),
   translations_with_source AS (
     SELECT
       s.sourcename AS source,
-      mcsi.chinese_sentence_id AS chinese_sentence_id,
+      mei.example_id AS example_id,
       json_group_array(
         DISTINCT json_object(
-          'sentence',
-          sentence,
+          'translation',
+          translation,
           'language',
           language,
           'direct',
@@ -642,18 +643,18 @@ WITH
         )
       ) AS translation
     FROM
-      matching_chinese_sentence_ids AS mcsi
-      LEFT JOIN sentence_links AS sl
-        ON mcsi.chinese_sentence_id = sl.fk_chinese_sentence_id
-      LEFT JOIN nonchinese_sentences AS ncs
-        ON ncs.non_chinese_sentence_id = sl.fk_non_chinese_sentence_id
+      matching_example_ids AS mei
+      LEFT JOIN example_links AS el
+        ON mei.example_id = el.fk_example_id
+      LEFT JOIN example_translations AS et
+        ON et.example_translation_id = el.fk_example_translation_id
       LEFT JOIN sources AS s
-        ON s.source_id = sl.fk_source_id
-    GROUP BY s.sourcename, mcsi.chinese_sentence_id
+        ON s.source_id = el.fk_source_id
+    GROUP BY s.sourcename, mei.example_id
   ),
   matching_translations AS (
     SELECT
-      chinese_sentence_id,
+      example_id,
       json_group_array(
         json_object(
           'source',
@@ -663,24 +664,24 @@ WITH
         )
       ) AS translations
     FROM translations_with_source AS tws
-    GROUP BY chinese_sentence_id
+    GROUP BY example_id
   ),
-  matching_sentences AS (
+  matching_examples AS (
     SELECT
-      chinese_sentence_id,
+      example_id,
       traditional,
       simplified,
       pinyin,
       jyutping,
       language
-    FROM chinese_sentences AS cs
+    FROM examples AS e
     WHERE
-      chinese_sentence_id IN (
-        SELECT chinese_sentence_id
-        FROM matching_chinese_sentence_ids
+      example_id IN (
+        SELECT example_id
+        FROM matching_example_ids
       )
   ),
-  matching_sentences_with_translations AS (
+  matching_examples_with_translations AS (
     SELECT
       max(sourcename) AS sourcename,
       traditional,
@@ -690,13 +691,13 @@ WITH
       language,
       translations
     FROM
-      matching_sentences AS ms
+      matching_examples AS me
       LEFT JOIN matching_translations AS mt
-        ON ms.chinese_sentence_id = mt.chinese_sentence_id
-      LEFT JOIN definitions_chinese_sentences_links AS dcsl
-        ON ms.chinese_sentence_id = dcsl.fk_chinese_sentence_id
+        ON me.example_id = mt.example_id
+      LEFT JOIN definitions_examples_links AS del
+        ON me.example_id = del.fk_example_id
       LEFT JOIN definitions AS d
-        ON dcsl.fk_definition_id = d.definition_id
+        ON del.fk_definition_id = d.definition_id
       LEFT JOIN sources AS s ON d.fk_source_id = s.source_id
     GROUP BY
       traditional,
@@ -705,7 +706,7 @@ WITH
       jyutping,
       language,
       translations
-    ORDER BY ms.chinese_sentence_id
+    ORDER BY me.example_id
   )
 SELECT
   sourcename,
@@ -715,7 +716,7 @@ SELECT
   jyutping,
   language,
   translations
-FROM matching_sentences_with_translations
+FROM matching_examples_with_translations
 """,
         (like_param,),
     )
@@ -724,4 +725,4 @@ FROM matching_sentences_with_translations
     if not records:
         return None
 
-    return query_utils.parse_returned_sentences(records)
+    return query_utils.parse_returned_examples(records)

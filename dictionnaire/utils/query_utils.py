@@ -6,7 +6,7 @@ from ..models import (
     Definition,
     DefinitionsSet,
     Entry,
-    SourceSentence,
+    Example,
     Translation,
     TranslationSet,
 )
@@ -157,7 +157,7 @@ def prepare_pinyin_bind_values(pinyin: str, fuzzy_pinyin: bool) -> str:
 
 
 def parse_returned_records(records: list[str]) -> list[Entry]:
-    """Parses records returned by a sequel query into a list of Entry objects.
+    """Parses records returned by a SQL query into a list of Entry objects.
 
     Args:
         records (list[str]): The result from a cursor.readall()
@@ -168,53 +168,53 @@ def parse_returned_records(records: list[str]) -> list[Entry]:
     res = []
     for record in records:
         sets = []
-        definitions_col = json.loads(record[4])
+        definitions_col = json.loads(record[5])
         for definitions_group in definitions_col:
             definitions = []
             for definition in definitions_group["definitions"]:
                 if not definition:
                     continue
 
-                sentences = []
-                if "sentences" in definition:
-                    for sentence in definition["sentences"]:
-                        if not sentence:
+                examples = []
+                if "examples" in definition:
+                    for example in definition["examples"]:
+                        if not example:
                             continue
 
                         translations = []
-                        if sentence["translations"]:
-                            for translation in sentence["translations"]:
+                        if example["translations"]:
+                            for translation in example["translations"]:
                                 target = Translation(
-                                    translation=translation["sentence"],
-                                    language=translation["language"],
+                                    translation=translation["translation"],
+                                    language=translation["language"]
                                 )
                                 translations.append(target)
                         translation_set = TranslationSet(
                             source=definitions_group["source"],
                             translations=translations,
                         )
-                        sentences.append(
-                            SourceSentence(
-                                source_language=sentence["language"],
-                                simplified=sentence["simplified"],
-                                traditional=sentence["traditional"],
-                                jyutping=sentence["jyutping"],
-                                pinyin=sentence["pinyin"],
+                        examples.append(
+                            Example(
+                                source_language=example["language"],
+                                simplified=example["simplified"],
+                                traditional=example["traditional"],
+                                jyutping=example["jyutping"],
+                                pinyin=example["pinyin"],
                                 translations=translation_set,
                             )
                         )
 
                 definition_content = definition["definition"].replace(r"\n", "\n")
                 label = definition["label"] if "label" in definition else ""
-                definitions.append(Definition(definition_content, label, sentences))
+                definitions.append(Definition(definition_content, label, examples))
             sets.append(DefinitionsSet(definitions_group["source"], definitions))
 
         res.append(
             Entry(
-                traditional=record[0],
-                simplified=record[1],
-                jyutping=record[2],
-                pinyin=record[3],
+                traditional=record[1],
+                simplified=record[2],
+                jyutping=record[3],
+                pinyin=record[4],
                 definitions_sets=sets,
             )
         )
@@ -239,8 +239,8 @@ def parse_existence(records: list[str]) -> bool:
     return existence_col
 
 
-def parse_returned_sentences(records: list[str]) -> list[SourceSentence]:
-    """Parses records returned by a SQL query into a list of SourceSentence objects.
+def parse_returned_examples(records: list[str]) -> list[Example]:
+    """Parses records returned by a SQL query into a list of Example objects.
 
     Args:
         records (list[str]): Result from a cursor.readall()
@@ -256,7 +256,7 @@ def parse_returned_sentences(records: list[str]) -> list[SourceSentence]:
         for source_set in translations_json:
             translations = []
             for translation in source_set["translations"]:
-                target = Translation(translation["sentence"], translation["language"])
+                target = Translation(translation["translation"], translation["language"])
                 translations.append(target)
             translation_set = TranslationSet(
                 source=source_set["source"],
@@ -264,7 +264,7 @@ def parse_returned_sentences(records: list[str]) -> list[SourceSentence]:
             )
             translation_sets.append(translation_set)
         res.append(
-            SourceSentence(
+            Example(
                 source_language=record[5],
                 traditional=record[1],
                 simplified=record[2],
