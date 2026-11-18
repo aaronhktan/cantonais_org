@@ -461,7 +461,7 @@ def unfold_jyutping_regex(jyutping: str) -> tuple[bool, list[str]]:
         end_idx = jyutping.find(")")
         or_idx = jyutping.find("|")
 
-        while or_idx != -1:
+        while or_idx != -1 and start_idx < or_idx and or_idx < end_idx:
             possibilities.append(jyutping[:jyutping.find("(")]
                                  + jyutping[start_idx:or_idx]
                                  + jyutping[jyutping.find(")")+1:])
@@ -1036,6 +1036,13 @@ def segment_jyutping(
                 initial_found = False
 
             if is_glob_character:
+                if end_idx > 0 and end_idx > start_idx:
+                    previous_initial = jyutping[start_idx:end_idx]
+                    res.append(previous_initial)
+                    if previous_initial not in JYUTPING_FINALS:
+                        valid_jyutping = False
+                    initial_found = False
+
                 # Whitespace matters for glob characters! Consume
                 # the next or previous whitespace if it exists and the
                 # whitespace was not consumed by another syllable
@@ -1184,6 +1191,8 @@ def segment_jyutping(
                 end_idx += final_len
                 if end_idx < len(jyutping):
                     if jyutping[end_idx].isnumeric():
+                        if (int(jyutping[end_idx]) < 1 or int(jyutping[end_idx]) > 6):
+                            valid_jyutping = False
                         # Append the tone digit following the final to the
                         # syllable
                         end_idx += 1
