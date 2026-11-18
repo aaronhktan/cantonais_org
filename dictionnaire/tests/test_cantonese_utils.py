@@ -867,6 +867,10 @@ class TestJyutpingSegmentation(TestCase):
         _, res = cantonese_utils.segment_jyutping("m* goi", remove_glob_characters=False)
         self.assertEqual(res, ["m", "* ", "goi"])
 
+    def test_keep_glob_characters_invalid_previous_initial(self):
+        _, res = cantonese_utils.segment_jyutping("x*", remove_glob_characters=False)
+        self.assertEqual(res, ["x", "*"])
+
     def test_keep_glob_characters_no_whitespace(self):
         _, res = cantonese_utils.segment_jyutping("m*goi", remove_glob_characters=False)
         self.assertEqual(res, ["m", "*", "goi"])
@@ -874,6 +878,10 @@ class TestJyutpingSegmentation(TestCase):
     def test_keep_multiple_glob_characters(self):
         _, res = cantonese_utils.segment_jyutping("m?* goi", remove_glob_characters=False)
         self.assertEqual(res, ["m", "?", "* ", "goi"])
+
+    def test_keep_multiple_glob_characters_no_letters(self):
+        _, res = cantonese_utils.segment_jyutping("****", remove_glob_characters=False)
+        self.assertEqual(res, ["*", "*", "*", "*"])
 
     def test_keep_multiple_glob_characters_whitespace(self):
         _, res = cantonese_utils.segment_jyutping(
@@ -899,6 +907,34 @@ class TestJyutpingSegmentation(TestCase):
         )
         self.assertEqual(res, ["m", "？", "goi"])
 
+    def test_unfold_basic_regex(self):
+        _, res = cantonese_utils.segment_jyutping(
+            "(m|ng) goi", remove_regex_characters=False
+        )
+        self.assertEqual(res, ["(m|ng)", "goi"])
+
+        _, res = cantonese_utils.segment_jyutping(
+            "mang!", remove_regex_characters=False
+        )
+        self.assertEqual(res, ["mang!"])
+
+    def test_unfold_previous_initial(self):
+        _, res = cantonese_utils.segment_jyutping(
+            "ng4", remove_regex_characters=False
+        )
+        self.assertEqual(res, ["ng4"])
+
+    def test_unfold_regex_fail(self):
+        _, res = cantonese_utils.segment_jyutping(
+            "((m)|ng) goi", remove_regex_characters=False
+        )
+        self.assertEqual(res, ["((m)|ng)", "goi"])
+
+        _, res = cantonese_utils.segment_jyutping(
+            "(m!!!) goi", remove_regex_characters=False
+        )
+        self.assertEqual(res, ["(m!!!)", "goi"])
+
     def test_remove_whitespace(self):
         _, res = cantonese_utils.segment_jyutping(
             "  m                           goi      "
@@ -917,13 +953,36 @@ class TestJyutpingSegmentation(TestCase):
         _, res = cantonese_utils.segment_jyutping("aaaa")
         self.assertEqual(res, ["aa", "aa"])
 
+        _, res = cantonese_utils.segment_jyutping("aaaa", remove_regex_characters=False)
+        self.assertEqual(res, ["aa", "aa"])
+
     def test_multiple_finals_consonants_only(self):
         _, res = cantonese_utils.segment_jyutping("ngng")
+        self.assertEqual(res, ["ng", "ng"])
+
+        _, res = cantonese_utils.segment_jyutping("ngng", remove_regex_characters=False)
         self.assertEqual(res, ["ng", "ng"])
 
     def test_multiple_finals(self):
         _, res = cantonese_utils.segment_jyutping("amam")
         self.assertEqual(res, ["am", "am"])
+
+    def test_invalid_tone(self):
+        validity, res = cantonese_utils.segment_jyutping("hang0")
+        self.assertEqual(validity, False)
+        self.assertEqual(res, ["hang0"])
+
+        validity, res = cantonese_utils.segment_jyutping("hang7")
+        self.assertEqual(validity, False)
+        self.assertEqual(res, ["hang7"])
+
+        validity, res = cantonese_utils.segment_jyutping("0")
+        self.assertEqual(validity, False)
+        self.assertEqual(res, ["0"])
+
+        validity, res = cantonese_utils.segment_jyutping("ng0")
+        self.assertEqual(validity, False)
+        self.assertEqual(res, ["ng0"])
 
     def test_garbage(self):
         validity, res = cantonese_utils.segment_jyutping("kljnxclkjvnl")
