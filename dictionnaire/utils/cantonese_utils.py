@@ -1,9 +1,34 @@
 import re
 
 SPECIAL_CHARACTERS = (
-    ".",  "。", ",",  "，", "！", "？", "%",  "－", "…",  "⋯",
-    ".",  "·",  "\"", "“",  "”",  "$",  "｜", "：", "１", "２",
-    "３", "４", "５", "６", "７", "８", "９", "０",
+    ".",
+    "。",
+    ",",
+    "，",
+    "！",
+    "？",
+    "%",
+    "－",
+    "…",
+    "⋯",
+    ".",
+    "·",
+    '"',
+    "“",
+    "”",
+    "$",
+    "｜",
+    "：",
+    "１",
+    "２",
+    "３",
+    "４",
+    "５",
+    "６",
+    "７",
+    "８",
+    "９",
+    "０",
 )
 
 REGEX_CHARACTERS = ("!", "(", ")", "|")
@@ -242,21 +267,14 @@ def jyutping_to_yale(jyutping: str, use_spaces_to_segment: bool = False) -> str:
         for expr, repl in YALE_INITIAL_REGEX:
             # Special initials need to be replaced
             if expr.match(syllable):
-                return repl
-
-        for initial_len in range(2, 0, -1):
-            # Normal initials can just be matched to the predefined list
-            # of initials
-            curr_string = syllable[:initial_len]
-            if curr_string in JYUTPING_INITIALS:
-                return curr_string
-
-        return ""
+                return expr.sub(repl, syllable)
+        return syllable
 
     def convert_yale_final(syllable: str) -> str:
-        expr_result = YALE_FINAL_REGEX.search(syllable)
+        yale_syllable = syllable
+        expr_result = YALE_FINAL_REGEX.search(yale_syllable)
         if not expr_result:
-            return syllable
+            return yale_syllable
 
         final = expr_result.group(1)
         tone = int(expr_result.group(2))
@@ -264,25 +282,25 @@ def jyutping_to_yale(jyutping: str, use_spaces_to_segment: bool = False) -> str:
         if final in YALE_SPECIAL_FINALS:
             # Some syllables have significant differences compared to Yale
             # Switch them out here
-            final = YALE_SPECIAL_FINALS[final]
+            yale_syllable = yale_syllable.replace(final, YALE_SPECIAL_FINALS[final], 1)
 
         if tone in (4, 5, 6):
             # Insert an "h" before the last consonant cluster for light tones
             # as they are indicated in Yale
-            final = YALE_LIGHT_TONE_REGEX.sub(r"h\1", final + str(tone))
+            yale_syllable = YALE_LIGHT_TONE_REGEX.sub(r"h\g<0>", yale_syllable)
 
         # Find first vowel and convert it to display the tone
         for vowel in ("a", "e", "i", "o", "u"):
             vowel_idx = final.find(vowel)
             if vowel_idx != -1:
-                final = (
-                    f"{final[:vowel_idx]}"
-                    f"{YALE_VOWEL_REPLACEMENTS[vowel][tone - 1]}"
-                    f"{final[vowel_idx + 1:]}"
+                yale_syllable = yale_syllable.replace(
+                    vowel, YALE_VOWEL_REPLACEMENTS[vowel][tone - 1], 1
                 )
                 break
 
-        return final
+        yale_syllable = yale_syllable[:-1]
+
+        return yale_syllable
 
     res = []
 
@@ -322,9 +340,10 @@ def jyutping_to_yale(jyutping: str, use_spaces_to_segment: bool = False) -> str:
             res.append(YALE_SPECIAL_SYLLABLES[syllable_without_tone][tone - 1])
             continue
 
-        yale_initial = convert_yale_initial(syllable)
-        yale_final = convert_yale_final(syllable)
-        res.append(f"{yale_initial}{yale_final}")
+        yale_syllable = syllable
+        yale_syllable = convert_yale_final(yale_syllable)
+        yale_syllable = convert_yale_initial(yale_syllable)
+        res.append(yale_syllable)
 
     return " ".join(res)
 
@@ -449,8 +468,7 @@ def unfold_jyutping_regex(jyutping: str) -> tuple[bool, list[str]]:
             previous example, would return ["a", "aa", "eo"]
     """
 
-    if (jyutping.count("(") > 1 or jyutping.count(")") > 1
-            or jyutping.count("!") > 1):
+    if jyutping.count("(") > 1 or jyutping.count(")") > 1 or jyutping.count("!") > 1:
         return False, []
 
     res = []
@@ -462,15 +480,19 @@ def unfold_jyutping_regex(jyutping: str) -> tuple[bool, list[str]]:
         or_idx = jyutping.find("|")
 
         while or_idx != -1 and start_idx < or_idx and or_idx < end_idx:
-            possibilities.append(jyutping[:jyutping.find("(")]
-                                 + jyutping[start_idx:or_idx]
-                                 + jyutping[jyutping.find(")")+1:])
+            possibilities.append(
+                jyutping[: jyutping.find("(")]
+                + jyutping[start_idx:or_idx]
+                + jyutping[jyutping.find(")") + 1 :]
+            )
             start_idx = or_idx + 1
             or_idx = jyutping.find("|", start_idx)
 
-        possibilities.append(jyutping[:jyutping.find("(")]
-                             + jyutping[start_idx:end_idx]
-                             + jyutping[end_idx+1:])
+        possibilities.append(
+            jyutping[: jyutping.find("(")]
+            + jyutping[start_idx:end_idx]
+            + jyutping[end_idx + 1 :]
+        )
     else:
         possibilities.append(jyutping)
 
@@ -483,15 +505,13 @@ def unfold_jyutping_regex(jyutping: str) -> tuple[bool, list[str]]:
         elif regex_idx == 0:
             res.append(x[1:])
         else:
-            res.append(x[:regex_idx-1] + x[regex_idx+1:])
-            res.append(x[:regex_idx] + x[regex_idx+1:])
+            res.append(x[: regex_idx - 1] + x[regex_idx + 1 :])
+            res.append(x[:regex_idx] + x[regex_idx + 1 :])
 
     return True, res
 
 
-def jyutping_autocorrect(
-        jyutping: str
-) -> str:
+def jyutping_autocorrect(jyutping: str) -> str:
     """Attempts to correct for common misspellings for Jyutping syllables.
     Handles syllables *before* Jyutping segmentation.
 
@@ -534,11 +554,11 @@ def jyutping_autocorrect(
 
     idx = result.find("oen")
     while idx != -1:
-        if result[idx:idx+4] == "oeng":
+        if result[idx : idx + 4] == "oeng":
             pass
         else:
-            result = result[:idx] + "eon" + result[idx+3:]
-        idx = result.find("oen", idx+1)
+            result = result[:idx] + "eon" + result[idx + 3 :]
+        idx = result.find("oen", idx + 1)
 
     result = result.replace("oei", "eoi")
     result = result.replace("oet", "eot")
@@ -580,7 +600,7 @@ def jyutping_autocorrect(
     result = result.replace("ey ", "ei ")
     result = result.replace("ey'", "ei'")
     if result.endswith("ey"):
-        result = result[:len(result)-2] + "ei"
+        result = result[: len(result) - 2] + "ei"
 
     # Initials for which <initial> + "-ei" exist in Jyutping
     close_front_cluster = ("p", "f", "d", "n", "l", "h", "w")
@@ -600,32 +620,46 @@ def jyutping_autocorrect(
                     initial_idx = idx - 2
 
                 if result[initial_idx] in close_front_cluster:
-                    result = result[:idx] + "ei" + result[idx+2:]
+                    result = result[:idx] + "ei" + result[idx + 2 :]
                 elif result[initial_idx] in open_mid_cluster:
-                    result = result[:idx] + "e j" + result[idx+2:]
+                    result = result[:idx] + "e j" + result[idx + 2 :]
                 elif result[initial_idx] in ambiguous_cluster:
                     # The [j-] cluster can only occur if what follows is not an initial
                     initial_found = False
                     for initial_len in range(2, 0, -1):
-                        initial = result[idx+2:idx+2+initial_len]
+                        initial = result[idx + 2 : idx + 2 + initial_len]
                         if initial in JYUTPING_INITIALS or initial == "y":
                             initial_found = True
                     if initial_found:
-                        result = result[:idx] + "ei" + result[idx+2:]
+                        result = result[:idx] + "ei" + result[idx + 2 :]
                     else:
-                        result = result[:idx] + "e j" + result[idx+2:]
-        idx = result.find("ey", idx+1)
+                        result = result[:idx] + "e j" + result[idx + 2 :]
+        idx = result.find("ey", idx + 1)
 
     # 3. Check if the user intends to write an [-ɔː h-] or [-ou̯] cluster
     result = result.replace("oh ", "ou ")
     result = result.replace("oh'", "ou'")
     if result.endswith("oh"):
-        result = result[:len(result)-2] + "ou"
+        result = result[: len(result) - 2] + "ou"
 
     # Initials for which <initial> + "-ou" exist in Jyutping
     close_back_cluster = ("n", "j")
     # Initials for which both "-ou" and "-o h-" exist in Jyutping
-    ambiguous_cluster = ("b", "p", "m", "f", "d", "t", "l", "g", "h", "w", "z", "c", "s")
+    ambiguous_cluster = (
+        "b",
+        "p",
+        "m",
+        "f",
+        "d",
+        "t",
+        "l",
+        "g",
+        "h",
+        "w",
+        "z",
+        "c",
+        "s",
+    )
 
     idx = result.find("oh")
     while idx != -1:
@@ -638,25 +672,25 @@ def jyutping_autocorrect(
                     initial_idx = idx - 2
 
                 if result[initial_idx] in close_back_cluster:
-                    result = result[:idx] + "ou" + result[idx+2:]
+                    result = result[:idx] + "ou" + result[idx + 2 :]
                 elif result[initial_idx] in ambiguous_cluster:
                     # The [h-] cluster can only occur if what follows is not an initial
                     initial_found = False
                     for initial_len in range(2, 0, -1):
-                        initial = result[idx+2:idx+2+initial_len]
+                        initial = result[idx + 2 : idx + 2 + initial_len]
                         if initial in JYUTPING_INITIALS or initial == "y":
                             initial_found = True
                     if initial_found:
-                        result = result[:idx] + "ou" + result[idx+2:]
+                        result = result[:idx] + "ou" + result[idx + 2 :]
                     else:
-                        result = result[:idx] + "o h" + result[idx+2:]
-        idx = result.find("oh", idx+1)
+                        result = result[:idx] + "o h" + result[idx + 2 :]
+        idx = result.find("oh", idx + 1)
 
     # 4. Check if the user intends to write an [-ɔː w-] or [-auː] cluster
     result = result.replace("ow ", "au ")
     result = result.replace("ow'", "au'")
     if result.endswith("ow"):
-        result = result[:len(result)-2] + "au"
+        result = result[: len(result) - 2] + "au"
 
     # Initials for which <initial> + "-(a)au" exist in Jyutping
     close_back_cluster = ("b", "m", "k", "s")
@@ -674,28 +708,41 @@ def jyutping_autocorrect(
                     initial_idx = idx - 2
 
                 if result[initial_idx] in close_back_cluster:
-                    result = result[:idx] + "au" + result[idx+2:]
+                    result = result[:idx] + "au" + result[idx + 2 :]
                 elif result[initial_idx] in ambiguous_cluster:
                     # The [h-] cluster can only occur if what follows is not an initial
                     initial_found = False
                     for initial_len in range(2, 0, -1):
-                        initial = result[idx+2:idx+2+initial_len]
+                        initial = result[idx + 2 : idx + 2 + initial_len]
                         if initial in JYUTPING_INITIALS or initial == "y":
                             initial_found = True
                     if initial_found:
-                        result = result[:idx] + "au" + result[idx+2:]
+                        result = result[:idx] + "au" + result[idx + 2 :]
                     else:
-                        result = result[:idx] + "o w" + result[idx+2:]
-        idx = result.find("ow", idx+1)
+                        result = result[:idx] + "o w" + result[idx + 2 :]
+        idx = result.find("ow", idx + 1)
 
     # 5. Check if the user intends to write an [ɐm] or [-uː  m-] cluster
     result = result.replace("um ", "am ")
     result = result.replace("um'", "am'")
     if result.endswith("um"):
-        result = result[:len(result)-2] + "am"
+        result = result[: len(result) - 2] + "am"
 
     # Initials for which <initial> + "-am" exist in Jyutping
-    open_mid_central_cluster = ("b", "p", "m", "d", "t", "n", "l", "k", "h", "z", "c", "s")
+    open_mid_central_cluster = (
+        "b",
+        "p",
+        "m",
+        "d",
+        "t",
+        "n",
+        "l",
+        "k",
+        "h",
+        "z",
+        "c",
+        "s",
+    )
     # Initials for which both "-o w-" and "-(a)au" exist in Jyutping
     close_back_cluster = ("f", "w", "a", "e", "i", "o")
 
@@ -710,21 +757,21 @@ def jyutping_autocorrect(
                     initial_idx = idx - 2
 
                 if result[initial_idx] in open_mid_central_cluster:
-                    result = result[:idx] + "am" + result[idx+2:]
+                    result = result[:idx] + "am" + result[idx + 2 :]
                 elif result[initial_idx] in close_back_cluster:
                     pass
                 elif result[initial_idx] == "g":
                     # The [m-] cluster can only occur if what follows is not an initial
                     initial_found = False
                     for initial_len in range(2, 0, -1):
-                        initial = result[idx+2:idx+2+initial_len]
+                        initial = result[idx + 2 : idx + 2 + initial_len]
                         if initial in JYUTPING_INITIALS or initial == "y":
                             initial_found = True
                     if initial_found:
-                        result = result[:idx] + "am" + result[idx+2:]
+                        result = result[:idx] + "am" + result[idx + 2 :]
                     else:
-                        result = result[:idx] + "u m" + result[idx+2:]
-        idx = result.find("um", idx+1)
+                        result = result[:idx] + "u m" + result[idx + 2 :]
+        idx = result.find("um", idx + 1)
 
     # 6. Check if the user intends to write an [-yː j-] or [-ɐm] cluster
     # Initials for which <initial> + "-yu m-" exist in Jyutping
@@ -741,10 +788,10 @@ def jyutping_autocorrect(
                     initial_idx = idx - 2
 
                 if result[initial_idx] in close_front_cluster:
-                    result = result[:idx] + "yu m" + result[idx+3:]
+                    result = result[:idx] + "yu m" + result[idx + 3 :]
                 else:
-                    result = result[:idx] + "jam" + result[idx+3:]
-        idx = result.find("yum", idx+1)
+                    result = result[:idx] + "jam" + result[idx + 3 :]
+        idx = result.find("yum", idx + 1)
 
     # 7. Check if the user intends to write an [-yː p-] or [-ɐp] cluster
     # Initials for which <initial> + "-yu p-" exist in Jyutping
@@ -761,10 +808,10 @@ def jyutping_autocorrect(
                     initial_idx = idx - 2
 
                 if result[initial_idx] in close_front_cluster:
-                    result = result[:idx] + "yu p" + result[idx+3:]
+                    result = result[:idx] + "yu p" + result[idx + 3 :]
                 else:
-                    result = result[:idx] + "jap" + result[idx+3:]
-        idx = result.find("yup", idx+1)
+                    result = result[:idx] + "jap" + result[idx + 3 :]
+        idx = result.find("yup", idx + 1)
 
     # 8. Check if the user intends to write an [-yː k-] or [jʊk] cluster
     # Initials for which <initial> + "-yu k-" exist in Jyutping
@@ -781,10 +828,10 @@ def jyutping_autocorrect(
                     initial_idx = idx - 2
 
                 if result[initial_idx] in close_front_cluster:
-                    result = result[:idx] + "yu k" + result[idx+3:]
+                    result = result[:idx] + "yu k" + result[idx + 3 :]
                 else:
-                    result = result[:idx] + "juk" + result[idx+3:]
-        idx = result.find("yuk", idx+1)
+                    result = result[:idx] + "juk" + result[idx + 3 :]
+        idx = result.find("yuk", idx + 1)
 
     # 9. Check if the user intends to write an [-yn g-] or [jʊŋ] cluster
     # Initials for which <initial> + "-yun g-" exist in Jyutping
@@ -801,10 +848,10 @@ def jyutping_autocorrect(
                     initial_idx = idx - 2
 
                 if result[initial_idx] in close_front_cluster:
-                    result = result[:idx] + "(yu)n g" + result[idx+4:]
+                    result = result[:idx] + "(yu)n g" + result[idx + 4 :]
                 else:
-                    result = result[:idx] + "jung" + result[idx+4:]
-        idx = result.find("yung", idx+1)
+                    result = result[:idx] + "jung" + result[idx + 4 :]
+        idx = result.find("yung", idx + 1)
 
     # 10. Check if the user intends to write an [-yn] or [jɐn], [jyn], [yn] cluster
     # Initials for which <initial> + "-yu n-" exist in Jyutping
@@ -821,10 +868,10 @@ def jyutping_autocorrect(
                     initial_idx = idx - 2
 
                 if result[initial_idx] in close_front_cluster:
-                    result = result[:idx] + "yun" + result[idx+3:]
+                    result = result[:idx] + "yun" + result[idx + 3 :]
                 else:
-                    result = result[:idx] + "(ja|jyu|yu)n" + result[idx+3:]
-        idx = result.find("yun", idx+1)
+                    result = result[:idx] + "(ja|jyu|yu)n" + result[idx + 3 :]
+        idx = result.find("yun", idx + 1)
 
     # 11. Check if the user intends to write an [-yt] or [jɐt], [jyt], [yt] cluster
     # Initials for which <initial> + "-yu t-" exist in Jyutping
@@ -841,10 +888,10 @@ def jyutping_autocorrect(
                     initial_idx = idx - 2
 
                 if result[initial_idx] in close_front_cluster:
-                    result = result[:idx] + "(yu)t" + result[idx+3:]
+                    result = result[:idx] + "(yu)t" + result[idx + 3 :]
                 else:
-                    result = result[:idx] + "(ja|jyu|yu)t" + result[idx+3:]
-        idx = result.find("yut", idx+1)
+                    result = result[:idx] + "(ja|jyu|yu)t" + result[idx + 3 :]
+        idx = result.find("yut", idx + 1)
 
     # Unsafe because it is ambiguous whether these are final + initial
     # or a "misspelling" of an initial
@@ -860,11 +907,11 @@ def jyutping_autocorrect(
     # This needs to happen before the final replacements
     idx = result.find("y")
     while idx != -1:
-        if result[idx:idx+2] == "yu" or result[idx:idx+3] in ("y!u", "y)u"):
+        if result[idx : idx + 2] == "yu" or result[idx : idx + 3] in ("y!u", "y)u"):
             pass
         else:
-            result = result[:idx] + "j" + result[idx+1:]
-        idx = result.find("y", idx+1)
+            result = result[:idx] + "j" + result[idx + 1 :]
+        idx = result.find("y", idx + 1)
 
     result = result.replace("ui", "(eo|u)i")
     result = result.replace("un", "(y!u|a|eo)n")
@@ -893,19 +940,29 @@ def jyutping_sound_changes(syllables: list[str]) -> list[str]:
         if res[i] == "ng" or res[i] == "m":
             res[i] = "(ng|m)"
             continue
-        elif (len(res[i]) == 3 and res[i][:-1] == "ng"
-              and (res[i][-1].isnumeric() or res[i][-1] == "?")):
+        elif (
+            len(res[i]) == 3
+            and res[i][:-1] == "ng"
+            and (res[i][-1].isnumeric() or res[i][-1] == "?")
+        ):
             res[i] = "(ng|m)" + res[i][-1]
             continue
-        elif (len(res[i]) == 2 and res[i][-2] == "m"
-              and (res[i][-1].isnumeric() or res[i][-1] == "?")):
+        elif (
+            len(res[i]) == 2
+            and res[i][-2] == "m"
+            and (res[i][-1].isnumeric() or res[i][-1] == "?")
+        ):
             res[i] = "(ng|m)" + res[i][-1]
             continue
 
         # 2. Initial sound changes
         # 2.1 "Lazy" pronunciations
-        if (len(res[i]) >= 3 and res[i].startswith("ng")
-                and not res[i][2].isnumeric() and res[i][2] != "?"):
+        if (
+            len(res[i]) >= 3
+            and res[i].startswith("ng")
+            and not res[i][2].isnumeric()
+            and res[i][2] != "?"
+        ):
             # loss of [ŋ] initial, replacement with null initial
             res[i] = "(ng)!" + res[i][2:]
         elif res[i][0] in "aou":
@@ -914,8 +971,12 @@ def jyutping_sound_changes(syllables: list[str]) -> list[str]:
         elif res[i][0] in "nl":
             # merge of [n] and [l] initials
             res[i] = "(n|l)" + res[i][1:]
-        elif (res[i].startswith("go") or res[i].startswith("ko")
-              or res[i].startswith("g(o") or res[i].startswith("k(o")):
+        elif (
+            res[i].startswith("go")
+            or res[i].startswith("ko")
+            or res[i].startswith("g(o")
+            or res[i].startswith("k(o")
+        ):
             # merging of [k]/[kʷ] and [kʰ]/[kʷʰ] initials before [ɔ]
             if res[i][0] == "g":
                 res[i] = "gw!" + res[i][1:]
@@ -933,40 +994,57 @@ def jyutping_sound_changes(syllables: list[str]) -> list[str]:
         # 3. Nucleus sound changes
         idx = res[i].find("a")
         while idx != -1:
-            if res[i][idx:idx+2] == "aa":
-                res[i] = res[i][:idx+2] + "!" + res[i][idx+2:]
-                idx = res[i].find("a", idx+3)
+            if res[i][idx : idx + 2] == "aa":
+                res[i] = res[i][: idx + 2] + "!" + res[i][idx + 2 :]
+                idx = res[i].find("a", idx + 3)
             else:
-                res[i] = res[i][:idx+1] + "a!" + res[i][idx+1:]
-                idx = res[i].find("a", idx+2)
+                res[i] = res[i][: idx + 1] + "a!" + res[i][idx + 1 :]
+                idx = res[i].find("a", idx + 2)
 
         # 4. Final sound changes
-        if (res[i].endswith("ang") or res[i].endswith("a!ng")
-                or res[i].endswith("ong")):
+        if res[i].endswith("ang") or res[i].endswith("a!ng") or res[i].endswith("ong"):
             # alveolarization of final [ŋ]
             res[i] = res[i] + "!"
-        elif (res[i][:-1].endswith("ang") or res[i][:-1].endswith("aa!ng")
-                or res[i][:-1].endswith("ong")):
+        elif (
+            res[i][:-1].endswith("ang")
+            or res[i][:-1].endswith("aa!ng")
+            or res[i][:-1].endswith("ong")
+        ):
             res[i] = res[i][:-1] + "!" + res[i][-1]
         elif res[i].endswith("an") or res[i].endswith("a!n") or res[i].endswith("on"):
             # velarization of final [n]
             res[i] = res[i] + "g!"
-        elif (res[i][:-1].endswith("an") or res[i][:-1].endswith("a!n")
-              or res[i][:-1].endswith("on")):
+        elif (
+            res[i][:-1].endswith("an")
+            or res[i][:-1].endswith("a!n")
+            or res[i][:-1].endswith("on")
+        ):
             res[i] = res[i][:-1] + "g!" + res[i][-1]
-        elif (res[i].endswith("t")
-              and not res[i].endswith("it") and not res[i].endswith(("ut"))):
+        elif (
+            res[i].endswith("t")
+            and not res[i].endswith("it")
+            and not res[i].endswith(("ut"))
+        ):
             # velarization of final [t]
             res[i] = res[i][:-1] + "(k|t)"
-        elif (res[i][:-1].endswith("t")
-              and not res[i][:-1].endswith("it") and not res[i][:-1].endswith(("ut"))):
+        elif (
+            res[i][:-1].endswith("t")
+            and not res[i][:-1].endswith("it")
+            and not res[i][:-1].endswith(("ut"))
+        ):
             res[i] = res[i][:-2] + "(k|t)" + res[i][-1]
-        elif (res[i].endswith("k")
-              and not res[i].endswith("ik") and not res[i].endswith(("uk"))):
+        elif (
+            res[i].endswith("k")
+            and not res[i].endswith("ik")
+            and not res[i].endswith(("uk"))
+        ):
             # alveolarization of final [k]
             res[i] = res[i][:-1] + "(k|t)"
-        elif (res[i][:-1].endswith("k")
-              and not res[i][:-1].endswith("ik") and not res[i][:-1].endswith(("uk"))):
+        elif (
+            res[i][:-1].endswith("k")
+            and not res[i][:-1].endswith("ik")
+            and not res[i][:-1].endswith(("uk"))
+        ):
             res[i] = res[i][:-2] + "(k|t)" + res[i][-1]
 
     return res
@@ -1104,7 +1182,7 @@ def segment_jyutping(
                     start_idx = end_idx
                     initial_found = False
 
-                    if (int(curr_string) < 1 or int(curr_string) > 6):
+                    if int(curr_string) < 1 or int(curr_string) > 6:
                         valid_jyutping = False
 
                     continue
@@ -1121,7 +1199,7 @@ def segment_jyutping(
             max_initial_len = min(17, len(jyutping) - end_idx)
 
         for initial_len in range(max_initial_len, 0, -1):
-            curr_string = jyutping[end_idx:end_idx+initial_len]
+            curr_string = jyutping[end_idx : end_idx + initial_len]
 
             if remove_regex_characters:
                 is_valid_initial = curr_string in JYUTPING_INITIALS
@@ -1175,7 +1253,7 @@ def segment_jyutping(
             max_final_len = min(17, len(jyutping) - end_idx)
 
         for final_len in range(max_final_len, 0, -1):
-            curr_string = jyutping[end_idx:end_idx+final_len]
+            curr_string = jyutping[end_idx : end_idx + final_len]
 
             if remove_regex_characters:
                 is_valid_final = curr_string in JYUTPING_FINALS
@@ -1191,7 +1269,7 @@ def segment_jyutping(
                 end_idx += final_len
                 if end_idx < len(jyutping):
                     if jyutping[end_idx].isnumeric():
-                        if (int(jyutping[end_idx]) < 1 or int(jyutping[end_idx]) > 6):
+                        if int(jyutping[end_idx]) < 1 or int(jyutping[end_idx]) > 6:
                             valid_jyutping = False
                         # Append the tone digit following the final to the
                         # syllable
