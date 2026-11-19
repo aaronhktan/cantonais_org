@@ -947,6 +947,9 @@ def jyutping_sound_changes(syllables: list[str]) -> list[str]:
 
     res = [x for x in syllables]
     for i in range(len(res)):
+        if not res[i]:
+            continue
+
         # 1. Whole-syllable sound changes
         if res[i] == "ng" or res[i] == "m":
             res[i] = "(ng|m)"
@@ -1001,6 +1004,10 @@ def jyutping_sound_changes(syllables: list[str]) -> list[str]:
             res[i] = "(c|z)" + res[i][1:]
         elif res[i][0] in "gk":
             res[i] = "(g|k)" + res[i][1:]
+
+        # 2.3 Palatization of alveolar affricate
+        if res[i][0] == "j":
+            res[i] = "(j|z)" + res[i][1:]
 
         # 3. Nucleus sound changes
         idx = res[i].find("a")
