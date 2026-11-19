@@ -2,6 +2,7 @@ from unittest import TestCase
 
 from ..utils import chinese_utils, default_settings
 
+
 class TestApplyColours(TestCase):
     def test_jyutping(self):
         string = "唔係"

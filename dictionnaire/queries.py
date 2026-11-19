@@ -15,6 +15,7 @@ GLOB_OPERATOR = "GLOB"
 
 print(f"database path: {DB_PATH}")
 
+
 def get_db():
     if "db" not in g:
         g.db = sqlite3.connect(DB_PATH)

@@ -25,6 +25,10 @@ class TestJyutpingToYale(TestCase):
         res = cantonese_utils.jyutping_to_yale("si1 zi2 saan1")
         self.assertEqual(res, "sī jí sāan")
 
+    def test_empty(self):
+        res = cantonese_utils.jyutping_to_yale("")
+        self.assertEqual(res, "")
+
     def test_reject_no_tone(self):
         res = cantonese_utils.jyutping_to_yale("joeng")
         self.assertEqual(res, "joeng")
@@ -50,6 +54,10 @@ class TestJyutpingToYale(TestCase):
     def test_special_final(self):
         res = cantonese_utils.jyutping_to_yale("goek3jyun5")
         self.assertEqual(res, "geuk yúhn")
+
+    def test_invalid_final(self):
+        res = cantonese_utils.jyutping_to_yale("bt1", use_spaces_to_segment=True)
+        self.assertEqual(res, "bt1")
 
     def test_light_tone(self):
         res = cantonese_utils.jyutping_to_yale("lok6 jyu5")
@@ -96,7 +104,9 @@ class TestJyutpingToIPA(TestCase):
         self.assertEqual(res, "fäː˥ sɪŋ˨˩")
 
     def test_spaces_to_segment(self):
-        res = cantonese_utils.jyutping_to_IPA("joeng4 sing4", use_spaces_to_segment=True)
+        res = cantonese_utils.jyutping_to_IPA(
+            "joeng4 sing4", use_spaces_to_segment=True
+        )
         self.assertEqual(res, "jœ̽ːŋ˨˩ sɪŋ˨˩")
 
     def test_preprocess_initial(self):
@@ -119,7 +129,9 @@ class TestJyutpingToIPA(TestCase):
         res = cantonese_utils.jyutping_to_IPA(
             "saam1 gau2 sei3 ling4 ng5 ji6 cat1 baat3 luk6"
         )
-        self.assertEqual(res, "säːm˥ kɐu̯˧˥ sei̯˧ lɪŋ˨˩ ŋ̍˩˧ jiː˨ t͡sʰɐt̚˥ päːt̚˧ lʊk̚˨")
+        self.assertEqual(
+            res, "säːm˥ kɐu̯˧˥ sei̯˧ lɪŋ˨˩ ŋ̍˩˧ jiː˨ t͡sʰɐt̚˥ päːt̚˧ lʊk̚˨"
+        )
 
     def test_no_tone(self):
         res = cantonese_utils.jyutping_to_yale("mok")
@@ -283,8 +295,12 @@ class TestJyutpingAutocorrect(TestCase):
         res = cantonese_utils.jyutping_autocorrect("geye")
         self.assertEqual(res, "ge je")
 
-        res = cantonese_utils.jyutping_autocorrect("geyegeye beycaamyeyeyeyeyeyeyepeylougeyheygeygey'gey")
-        self.assertEqual(res, "ge jege je beicaamje je je je je je jepeilougeiheigeigei'gei")
+        res = cantonese_utils.jyutping_autocorrect(
+            "geyegeye beycaamyeyeyeyeyeyeyepeylougeyheygeygey'gey"
+        )
+        self.assertEqual(
+            res, "ge jege je beicaamje je je je je je jepeilougeiheigeigei'gei"
+        )
 
     def test_oh(self):
         res = cantonese_utils.jyutping_autocorrect("moh ")
@@ -308,7 +324,9 @@ class TestJyutpingAutocorrect(TestCase):
         res = cantonese_utils.jyutping_autocorrect("lohon")
         self.assertEqual(res, "lo hon")
 
-        res = cantonese_utils.jyutping_autocorrect("mohmohmohlohonlohonlohjannohdoimoh moh")
+        res = cantonese_utils.jyutping_autocorrect(
+            "mohmohmohlohonlohonlohjannohdoimoh moh"
+        )
         self.assertEqual(res, "moumoumoulo honlo honloujannoudoimou mou")
 
     def test_ow(self):
@@ -399,7 +417,9 @@ class TestJyutpingAutocorrect(TestCase):
         res = cantonese_utils.jyutping_autocorrect("zeonyup")
         self.assertEqual(res, "zeonjap")
 
-        res = cantonese_utils.jyutping_autocorrect("zeonyupzeonyupsyupeisyupeiyupyupzeonyup")
+        res = cantonese_utils.jyutping_autocorrect(
+            "zeonyupzeonyupsyupeisyupeiyupyupzeonyup"
+        )
         self.assertEqual(res, "zeonjapzeonjapsyu peisyu peijapjapzeonjap")
 
     def test_yuk(self):
@@ -421,7 +441,9 @@ class TestJyutpingAutocorrect(TestCase):
         res = cantonese_utils.jyutping_autocorrect("jyu kap")
         self.assertEqual(res, "jyu kap")
 
-        res = cantonese_utils.jyutping_autocorrect("jyu kapgey yukgeyyukyukyukyukyuk yuk")
+        res = cantonese_utils.jyutping_autocorrect(
+            "jyu kapgey yukgeyyukyukyukyukyuk yuk"
+        )
         self.assertEqual(res, "jyu kapgei jukgeijukjukjukjukjuk juk")
 
     def test_jung(self):
@@ -441,7 +463,10 @@ class TestJyutpingAutocorrect(TestCase):
         self.assertEqual(res, "j(yu)n gin")
 
         res = cantonese_utils.jyutping_autocorrect("jyungingumyung yungyungyungzyungaa")
-        self.assertEqual(res, "j(yu)n gingamj(y!u|a|eo)ng j(y!u|a|eo)ngj(y!u|a|eo)ngj(y!u|a|eo)ngz(yu)n gaa")
+        self.assertEqual(
+            res,
+            "j(yu)n gingamj(y!u|a|eo)ng j(y!u|a|eo)ngj(y!u|a|eo)ngj(y!u|a|eo)ngz(yu)n gaa",
+        )
 
     def test_yun(self):
         res = cantonese_utils.jyutping_autocorrect("yun")
@@ -458,7 +483,9 @@ class TestJyutpingAutocorrect(TestCase):
 
         res = cantonese_utils.jyutping_autocorrect("syuntausyuntaugumyunyun yunyunyun")
         self.assertEqual(
-            res, "sy(y!u|a|eo)ntausy(y!u|a|eo)ntaugam(ja|jyu|yu)n(ja|jyu|yu)n (ja|jyu|yu)n(ja|jyu|yu)n(ja|jyu|yu)n")
+            res,
+            "sy(y!u|a|eo)ntausy(y!u|a|eo)ntaugam(ja|jyu|yu)n(ja|jyu|yu)n (ja|jyu|yu)n(ja|jyu|yu)n(ja|jyu|yu)n",
+        )
 
     def test_yut(self):
         res = cantonese_utils.jyutping_autocorrect("yut")
@@ -477,7 +504,10 @@ class TestJyutpingAutocorrect(TestCase):
         self.assertEqual(res, "z(yu)tai")
 
         res = cantonese_utils.jyutping_autocorrect("zyutaijyutjyugamyut yut yutyutyut")
-        self.assertEqual(res, "z(yu)taij(yu)tjyugam(ja|jyu|yu)t (ja|jyu|yu)t (ja|jyu|yu)t(ja|jyu|yu)t(ja|jyu|yu)t")
+        self.assertEqual(
+            res,
+            "z(yu)taij(yu)tjyugam(ja|jyu|yu)t (ja|jyu|yu)t (ja|jyu|yu)t(ja|jyu|yu)t(ja|jyu|yu)t",
+        )
 
     def test_y(self):
         res = cantonese_utils.jyutping_autocorrect("yaang")
@@ -864,7 +894,9 @@ class TestJyutpingSegmentation(TestCase):
         self.assertEqual(res, ["m", "goi"])
 
     def test_keep_glob_characters(self):
-        _, res = cantonese_utils.segment_jyutping("m* goi", remove_glob_characters=False)
+        _, res = cantonese_utils.segment_jyutping(
+            "m* goi", remove_glob_characters=False
+        )
         self.assertEqual(res, ["m", "* ", "goi"])
 
     def test_keep_glob_characters_invalid_previous_initial(self):
@@ -876,7 +908,9 @@ class TestJyutpingSegmentation(TestCase):
         self.assertEqual(res, ["m", "*", "goi"])
 
     def test_keep_multiple_glob_characters(self):
-        _, res = cantonese_utils.segment_jyutping("m?* goi", remove_glob_characters=False)
+        _, res = cantonese_utils.segment_jyutping(
+            "m?* goi", remove_glob_characters=False
+        )
         self.assertEqual(res, ["m", "?", "* ", "goi"])
 
     def test_keep_multiple_glob_characters_no_letters(self):
@@ -919,9 +953,7 @@ class TestJyutpingSegmentation(TestCase):
         self.assertEqual(res, ["mang!"])
 
     def test_unfold_previous_initial(self):
-        _, res = cantonese_utils.segment_jyutping(
-            "ng4", remove_regex_characters=False
-        )
+        _, res = cantonese_utils.segment_jyutping("ng4", remove_regex_characters=False)
         self.assertEqual(res, ["ng4"])
 
     def test_unfold_regex_fail(self):
@@ -992,60 +1024,72 @@ class TestJyutpingSegmentation(TestCase):
 
 class TestFuzzyJyutping(TestCase):
     def test_clarence(self):
-        cases = [("seut goh", ["s(eo|yu)(k|t)", "(g|k)w!ou"]),
-                 ("gongyeun", ["(g|k)w!(o|u)ng", "j(eo|yu)n"]),
-                 ("tsum4yut6", ["(c|z)aa!m4", "(jaa!|jyu|yu)(k|t)6"]),
-                 ("tsum yut", ["(c|z)aa!m", "(jaa!|jyu|yu)(k|t)"]),
-                 ("gum yut", ["(g|k)aa!m", "(jaa!|jyu|yu)(k|t)"]),
-                 ("gum man", ["(g|k)aa!m", "maa!ng!"]),
-                 ("sum", ["saa!m"]),
-                 ("sun", ["s(y!u|aa!|eo)n"]),
-                 ("cheung", ["(c|z)oeng"]),
-                 ("chun", ["(c|z)(y!u|aa!|eo)n"]),
-                 ("hui", ["heoi"]),
-                 ("yutback", ["j(aa!|yu)(k|t)", "baa!(k|t)"])]
+        cases = [
+            ("seut goh", ["s(eo|yu)(k|t)", "(g|k)w!ou"]),
+            ("gongyeun", ["(g|k)w!(o|u)ng", "j(eo|yu)n"]),
+            ("tsum4yut6", ["(c|z)aa!m4", "(jaa!|jyu|yu)(k|t)6"]),
+            ("tsum yut", ["(c|z)aa!m", "(jaa!|jyu|yu)(k|t)"]),
+            ("gum yut", ["(g|k)aa!m", "(jaa!|jyu|yu)(k|t)"]),
+            ("gum man", ["(g|k)aa!m", "maa!ng!"]),
+            ("sum", ["saa!m"]),
+            ("sun", ["s(y!u|aa!|eo)n"]),
+            ("cheung", ["(c|z)oeng"]),
+            ("chun", ["(c|z)(y!u|aa!|eo)n"]),
+            ("hui", ["heoi"]),
+            ("yutback", ["j(aa!|yu)(k|t)", "baa!(k|t)"]),
+        ]
 
         for case in cases:
             input = case[0]
             expected_output = case[1]
 
             intermediate = cantonese_utils.jyutping_autocorrect(input)
-            _, intermediate = cantonese_utils.segment_jyutping(intermediate, True, False, False)
+            _, intermediate = cantonese_utils.segment_jyutping(
+                intermediate, True, False, False
+            )
             output = cantonese_utils.jyutping_sound_changes(intermediate)
 
             self.assertEqual(expected_output, output)
 
     def test_michelle(self):
-        cases = [("xuet go", ["s(yu)(k|t)", "(g|k)w!o"]),
-                 ("gong yuen", ["(g|k)w!(o|u)ng", "jy(y!u|aa!|eo)n"]),
-                 ("kum yut", ["(g|k)aa!m", "(jaa!|jyu|yu)(k|t)"]),
-                 ("gai suen gay", ["(g|k)aa!i", "s(yu)n", "(g|k)ei"]),
-                 ("yut bak", ["j(aa!|yu)(k|t)", "baa!(k|t)"])]
+        cases = [
+            ("xuet go", ["s(yu)(k|t)", "(g|k)w!o"]),
+            ("gong yuen", ["(g|k)w!(o|u)ng", "jy(y!u|aa!|eo)n"]),
+            ("kum yut", ["(g|k)aa!m", "(jaa!|jyu|yu)(k|t)"]),
+            ("gai suen gay", ["(g|k)aa!i", "s(yu)n", "(g|k)ei"]),
+            ("yut bak", ["j(aa!|yu)(k|t)", "baa!(k|t)"]),
+        ]
 
         for case in cases:
             input = case[0]
             expected_output = case[1]
 
             intermediate = cantonese_utils.jyutping_autocorrect(input)
-            _, intermediate = cantonese_utils.segment_jyutping(intermediate, True, False, False)
+            _, intermediate = cantonese_utils.segment_jyutping(
+                intermediate, True, False, False
+            )
             output = cantonese_utils.jyutping_sound_changes(intermediate)
 
             self.assertEqual(expected_output, output)
 
     def test_yvonne(self):
-        cases = [("shyut go", ["s(yu)(k|t)", "(g|k)w!o"]),
-                 ("gong yun", ["(g|k)w!(o|u)ng", "(jaa!|jyu|yu)n"]),
-                 ("cum yut", ["(k)aa!m", "(jaa!|jyu|yu)(k|t)"]),
-                 ("cheun", ["(c|z)(eo|yu)n"]),
-                 ("gai syun gei", ["(g|k)aa!i", "sy(y!u|aa!|eo)n", "(g|k)ei"]),
-                 ("yut baat", ["j(aa!|yu)(k|t)", "baa!(k|t)"])]
+        cases = [
+            ("shyut go", ["s(yu)(k|t)", "(g|k)w!o"]),
+            ("gong yun", ["(g|k)w!(o|u)ng", "(jaa!|jyu|yu)n"]),
+            ("cum yut", ["(k)aa!m", "(jaa!|jyu|yu)(k|t)"]),
+            ("cheun", ["(c|z)(eo|yu)n"]),
+            ("gai syun gei", ["(g|k)aa!i", "sy(y!u|aa!|eo)n", "(g|k)ei"]),
+            ("yut baat", ["j(aa!|yu)(k|t)", "baa!(k|t)"]),
+        ]
 
         for case in cases:
             input = case[0]
             expected_output = case[1]
 
             intermediate = cantonese_utils.jyutping_autocorrect(input)
-            _, intermediate = cantonese_utils.segment_jyutping(intermediate, True, False, False)
+            _, intermediate = cantonese_utils.segment_jyutping(
+                intermediate, True, False, False
+            )
             output = cantonese_utils.jyutping_sound_changes(intermediate)
 
             self.assertEqual(expected_output, output)
@@ -1058,7 +1102,9 @@ class TestFuzzyJyutping(TestCase):
             expected_output = case[1]
 
             intermediate = cantonese_utils.jyutping_autocorrect(input)
-            _, intermediate = cantonese_utils.segment_jyutping(intermediate, True, False, False)
+            _, intermediate = cantonese_utils.segment_jyutping(
+                intermediate, True, False, False
+            )
             output = cantonese_utils.jyutping_sound_changes(intermediate)
 
             self.assertEqual(expected_output, output)

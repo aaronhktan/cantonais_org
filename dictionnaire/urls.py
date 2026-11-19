@@ -44,8 +44,12 @@ def index():
     return resp
 
 
-@dictionary_app.route("/recherche/auto/<search_term>", endpoint="/recherche/auto", methods=("GET", "POST"))
-@dictionary_app.route("/search/auto/<search_term>", endpoint="/search/auto", methods=("GET", "POST"))
+@dictionary_app.route(
+    "/recherche/auto/<search_term>", endpoint="/recherche/auto", methods=("GET", "POST")
+)
+@dictionary_app.route(
+    "/search/auto/<search_term>", endpoint="/search/auto", methods=("GET", "POST")
+)
 def search_auto(search_term):
     if request.method == "POST":
         return redirect_post()
@@ -60,8 +64,16 @@ def search_auto(search_term):
     return resp
 
 
-@dictionary_app.route("/recherche/traditionnel/<search_term>", endpoint="/recherche/traditionnel", methods=("GET", "POST"))
-@dictionary_app.route("/search/traditional/<search_term>", endpoint="/search/traditional", methods=("GET", "POST"))
+@dictionary_app.route(
+    "/recherche/traditionnel/<search_term>",
+    endpoint="/recherche/traditionnel",
+    methods=("GET", "POST"),
+)
+@dictionary_app.route(
+    "/search/traditional/<search_term>",
+    endpoint="/search/traditional",
+    methods=("GET", "POST"),
+)
 def search_traditional(search_term):
     if request.method == "POST":
         return redirect_post()
@@ -76,8 +88,16 @@ def search_traditional(search_term):
     return resp
 
 
-@dictionary_app.route("/recherche/simplifie/<search_term>", endpoint="/recherche/simplifie", methods=("GET", "POST"))
-@dictionary_app.route("/search/simplified/<search_term>", endpoint="/search/simplified", methods=("GET", "POST"))
+@dictionary_app.route(
+    "/recherche/simplifie/<search_term>",
+    endpoint="/recherche/simplifie",
+    methods=("GET", "POST"),
+)
+@dictionary_app.route(
+    "/search/simplified/<search_term>",
+    endpoint="/search/simplified",
+    methods=("GET", "POST"),
+)
 def search_simplified(search_term):
     if request.method == "POST":
         return redirect_post()
@@ -92,8 +112,16 @@ def search_simplified(search_term):
     return resp
 
 
-@dictionary_app.route("/recherche/jyutping/<search_term>", endpoint="/recherche/jyutping", methods=("GET", "POST"))
-@dictionary_app.route("/search/jyutping/<search_term>", endpoint="/search/jyutping", methods=("GET", "POST"))
+@dictionary_app.route(
+    "/recherche/jyutping/<search_term>",
+    endpoint="/recherche/jyutping",
+    methods=("GET", "POST"),
+)
+@dictionary_app.route(
+    "/search/jyutping/<search_term>",
+    endpoint="/search/jyutping",
+    methods=("GET", "POST"),
+)
 def search_jyutping(search_term):
     if request.method == "POST":
         return redirect_post()
@@ -108,12 +136,16 @@ def search_jyutping(search_term):
     return resp
 
 
-@dictionary_app.route("/recherche/jyutping-approximatif/<search_term>",
-                      endpoint="/recherche/jyutping-approximatif",
-                      methods=("GET", "POST"))
-@dictionary_app.route("/search/fuzzy-jyutping/<search_term>",
-                      endpoint="/search/fuzzy-jyutping",
-                      methods=("GET", "POST"))
+@dictionary_app.route(
+    "/recherche/jyutping-approximatif/<search_term>",
+    endpoint="/recherche/jyutping-approximatif",
+    methods=("GET", "POST"),
+)
+@dictionary_app.route(
+    "/search/fuzzy-jyutping/<search_term>",
+    endpoint="/search/fuzzy-jyutping",
+    methods=("GET", "POST"),
+)
 def search_fuzzy_jyutping(search_term):
     if request.method == "POST":
         return redirect_post()
@@ -128,8 +160,14 @@ def search_fuzzy_jyutping(search_term):
     return resp
 
 
-@dictionary_app.route("/recherche/pinyin/<search_term>", endpoint="/recherche/pinyin", methods=("GET", "POST"))
-@dictionary_app.route("/search/pinyin/<search_term>", endpoint="/search/pinyin", methods=("GET", "POST"))
+@dictionary_app.route(
+    "/recherche/pinyin/<search_term>",
+    endpoint="/recherche/pinyin",
+    methods=("GET", "POST"),
+)
+@dictionary_app.route(
+    "/search/pinyin/<search_term>", endpoint="/search/pinyin", methods=("GET", "POST")
+)
 def search_pinyin(search_term):
     if request.method == "POST":
         return redirect_post()
@@ -143,12 +181,17 @@ def search_pinyin(search_term):
 
     return resp
 
-@dictionary_app.route("/recherche/pinyin-approximatif/<search_term>",
-                      endpoint="/recherche/pinyin-approximatif",
-                      methods=("GET", "POST"))
-@dictionary_app.route("/search/fuzzy-pinyin/<search_term>",
-                      endpoint="/search/fuzzy-pinyin",
-                      methods=("GET", "POST"))
+
+@dictionary_app.route(
+    "/recherche/pinyin-approximatif/<search_term>",
+    endpoint="/recherche/pinyin-approximatif",
+    methods=("GET", "POST"),
+)
+@dictionary_app.route(
+    "/search/fuzzy-pinyin/<search_term>",
+    endpoint="/search/fuzzy-pinyin",
+    methods=("GET", "POST"),
+)
 def search_fuzzy_pinyin(search_term):
     if request.method == "POST":
         return redirect_post()
@@ -163,8 +206,12 @@ def search_fuzzy_pinyin(search_term):
     return resp
 
 
-@dictionary_app.route("/recherche/fr/<search_term>", endpoint="/recherche/fr", methods=("GET", "POST"))
-@dictionary_app.route("/search/en/<search_term>", endpoint="/search/en", methods=("GET", "POST"))
+@dictionary_app.route(
+    "/recherche/fr/<search_term>", endpoint="/recherche/fr", methods=("GET", "POST")
+)
+@dictionary_app.route(
+    "/search/en/<search_term>", endpoint="/search/en", methods=("GET", "POST")
+)
 def search_french(search_term):
     if request.method == "POST":
         return redirect_post()

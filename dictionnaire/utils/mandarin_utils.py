@@ -699,7 +699,7 @@ def pinyin_to_IPA(pinyin: str, use_spaces_to_segment: bool = False) -> str:
 
         # Figure out whether this syllable needs a glottal stop
         syllable_without_tone = (
-            syllable[:syllable_tone_idx] + syllable[syllable_tone_idx + 1:]
+            syllable[:syllable_tone_idx] + syllable[syllable_tone_idx + 1 :]
         )
         if syllable_without_tone in MANDARIN_IPA_GLOTTAL:
             glottal = "ˀ"
@@ -799,7 +799,9 @@ def pinyin_sound_changes(syllables: list[str]) -> list[str]:
             res[i] = "(n|l)" + res[i][1:]
         if res[i].startswith("r"):
             res[i] = "(l|r)" + res[i][1:]
-        if res[i].startswith(("li", "lie", "liao", "liu", "lian", "lin", "liang", "ling", "lu:", "lu:e")):
+        if res[i].startswith(
+            ("li", "lie", "liao", "liu", "lian", "lin", "liang", "ling", "lu:", "lu:e")
+        ):
             res[i] = "(l|n)" + res[i][1:]
         elif res[i].startswith("l"):
             res[i] = "(l|n|r)" + res[i][1:]
@@ -921,7 +923,7 @@ def segment_pinyin(
         for initial_len in range(2, 0, -1):
             # Initials can be length 2 or less; check for longer initials
             # before checking for shorter initials
-            curr_string = pinyin[end_idx: end_idx + initial_len]
+            curr_string = pinyin[end_idx : end_idx + initial_len]
             if curr_string in PINYIN_INITIALS:
                 if initial_found:
                     valid_pinyin = False
@@ -936,7 +938,7 @@ def segment_pinyin(
         for final_len in range(4, 0, -1):
             # Finals (nucleus + coda) can be length 4 or less; check for longer
             # finals before checking for shorter finals
-            curr_string = pinyin[end_idx: end_idx + final_len]
+            curr_string = pinyin[end_idx : end_idx + final_len]
             if curr_string in PINYIN_FINALS:
                 end_idx += final_len
                 if end_idx < len(pinyin) and pinyin[end_idx] == "r":

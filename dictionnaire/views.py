@@ -97,7 +97,9 @@ def render_search_french(search_term: str) -> str:
     )
 
 
-def render_entry(entry: str, search_term: str = "", search_type: str = "search_traditional") -> str:
+def render_entry(
+    entry: str, search_term: str = "", search_type: str = "search_traditional"
+) -> str:
     entries = queries.get_traditional(entry)
     example_sample = queries.get_example_sample(entry)
 

@@ -89,7 +89,7 @@ def prepare_jyutping_bind_values(jyutping: str, fuzzy_jyutping: bool) -> str:
             corrected_term,
             remove_special_characters=True,
             remove_glob_characters=False,
-            remove_regex_characters=not fuzzy_jyutping
+            remove_regex_characters=not fuzzy_jyutping,
         )
 
     if not search_exact_match and fuzzy_jyutping:
@@ -101,7 +101,9 @@ def prepare_jyutping_bind_values(jyutping: str, fuzzy_jyutping: bool) -> str:
         query_param = construct_romanization_query(jyutping_syllables, "?")
 
     if fuzzy_jyutping:
-        query_param = f"^{query_param.replace("*", ".*").replace("?", ".").replace("!", "?")}"
+        query_param = (
+            f"^{query_param.replace("*", ".*").replace("?", ".").replace("!", "?")}"
+        )
         if search_exact_match or not append_wildcard:
             query_param = f"{query_param}$"
         else:
@@ -144,7 +146,9 @@ def prepare_pinyin_bind_values(pinyin: str, fuzzy_pinyin: bool) -> str:
         query_param = construct_romanization_query(pinyin_syllables, "?")
 
     if fuzzy_pinyin:
-        query_param = f"^{query_param.replace("*", ".*").replace("?", ".").replace("!", "?")}"
+        query_param = (
+            f"^{query_param.replace("*", ".*").replace("?", ".").replace("!", "?")}"
+        )
         if search_exact_match or not append_wildcard:
             query_param = f"{query_param}$"
         else:
@@ -186,7 +190,7 @@ def parse_returned_records(records: list[str]) -> list[Entry]:
                             for translation in example["translations"]:
                                 target = Translation(
                                     translation=translation["translation"],
-                                    language=translation["language"]
+                                    language=translation["language"],
                                 )
                                 translations.append(target)
                         translation_set = TranslationSet(
@@ -256,7 +260,9 @@ def parse_returned_examples(records: list[str]) -> list[Example]:
         for source_set in translations_json:
             translations = []
             for translation in source_set["translations"]:
-                target = Translation(translation["translation"], translation["language"])
+                target = Translation(
+                    translation["translation"], translation["language"]
+                )
                 translations.append(target)
             translation_set = TranslationSet(
                 source=source_set["source"],
