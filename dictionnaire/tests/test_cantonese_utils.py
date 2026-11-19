@@ -87,6 +87,10 @@ class TestJyutpingToIPA(TestCase):
         res = cantonese_utils.jyutping_to_IPA("joeng4 sing4")
         self.assertEqual(res, "jœ̽ːŋ˨˩ sɪŋ˨˩")
 
+    def test_empty(self):
+        res = cantonese_utils.jyutping_to_IPA("")
+        self.assertEqual(res, "")
+
     def test_reject_no_tone(self):
         res = cantonese_utils.jyutping_to_IPA("joeng")
         self.assertEqual(res, "joeng")
@@ -120,6 +124,10 @@ class TestJyutpingToIPA(TestCase):
     def test_checked_tone(self):
         res = cantonese_utils.jyutping_to_IPA("sik6 si2 o1 faan6")
         self.assertEqual(res, "sɪk̚˨ siː˧˥ ɔː˥ fäːn˨")
+
+    def test_invalid_nucleus(self):
+        res = cantonese_utils.jyutping_to_IPA("bao1", use_spaces_to_segment=True)
+        self.assertEqual(res, "p@o˥")
 
     def test_special_final(self):
         res = cantonese_utils.jyutping_to_IPA("uk1 kei2 jan4")
