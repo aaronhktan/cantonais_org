@@ -584,7 +584,7 @@ def jyutping_autocorrect(jyutping: str) -> str:
     result = result.replace("ong", "(o|u)ng")
     result = result.replace("young", "jung")
 
-    result = result.replace("yue", "jyu")
+    result = result.replace("yue", "(j)yu")
     result = result.replace("ue", "(yu)")
     result = result.replace("tsz", "zi")
     result = result.replace("ck", "k")
@@ -622,7 +622,7 @@ def jyutping_autocorrect(jyutping: str) -> str:
                 if result[initial_idx] in close_front_cluster:
                     result = result[:idx] + "ei" + result[idx + 2 :]
                 elif result[initial_idx] in open_mid_cluster:
-                    result = result[:idx] + "e j" + result[idx + 2 :]
+                    result = result[:idx] + "e (j)" + result[idx + 2 :]
                 elif result[initial_idx] in ambiguous_cluster:
                     # The [j-] cluster can only occur if what follows is not an initial
                     initial_found = False
@@ -633,7 +633,7 @@ def jyutping_autocorrect(jyutping: str) -> str:
                     if initial_found:
                         result = result[:idx] + "ei" + result[idx + 2 :]
                     else:
-                        result = result[:idx] + "e j" + result[idx + 2 :]
+                        result = result[:idx] + "e (j)" + result[idx + 2 :]
         idx = result.find("ey", idx + 1)
 
     # 3. Check if the user intends to write an [-ɔː h-] or [-ou̯] cluster
@@ -781,7 +781,7 @@ def jyutping_autocorrect(jyutping: str) -> str:
     while idx != -1:
         match idx:
             case 0:
-                result = "jam" + result[3:]
+                result = "(j)am" + result[3:]
             case _:
                 initial_idx = idx - 1
                 if idx >= 2 and result[initial_idx] == ")":
@@ -790,7 +790,7 @@ def jyutping_autocorrect(jyutping: str) -> str:
                 if result[initial_idx] in close_front_cluster:
                     result = result[:idx] + "yu m" + result[idx + 3 :]
                 else:
-                    result = result[:idx] + "jam" + result[idx + 3 :]
+                    result = result[:idx] + "(j)am" + result[idx + 3 :]
         idx = result.find("yum", idx + 1)
 
     # 7. Check if the user intends to write an [-yː p-] or [-ɐp] cluster
@@ -801,7 +801,7 @@ def jyutping_autocorrect(jyutping: str) -> str:
     while idx != -1:
         match idx:
             case 0:
-                result = "jap" + result[3:]
+                result = "(j)ap" + result[3:]
             case _:
                 initial_idx = idx - 1
                 if idx >= 2 and result[initial_idx] == ")":
@@ -810,7 +810,7 @@ def jyutping_autocorrect(jyutping: str) -> str:
                 if result[initial_idx] in close_front_cluster:
                     result = result[:idx] + "yu p" + result[idx + 3 :]
                 else:
-                    result = result[:idx] + "jap" + result[idx + 3 :]
+                    result = result[:idx] + "(j)ap" + result[idx + 3 :]
         idx = result.find("yup", idx + 1)
 
     # 8. Check if the user intends to write an [-yː k-] or [jʊk] cluster
@@ -841,7 +841,7 @@ def jyutping_autocorrect(jyutping: str) -> str:
     while idx != -1:
         match idx:
             case 0:
-                result = "jung" + result[4:]
+                result = "(j)ung" + result[4:]
             case _:
                 initial_idx = idx - 1
                 if idx >= 2 and result[initial_idx] == ")":
@@ -850,7 +850,7 @@ def jyutping_autocorrect(jyutping: str) -> str:
                 if result[initial_idx] in close_front_cluster:
                     result = result[:idx] + "(yu)n g" + result[idx + 4 :]
                 else:
-                    result = result[:idx] + "jung" + result[idx + 4 :]
+                    result = result[:idx] + "(j)ung" + result[idx + 4 :]
         idx = result.find("yung", idx + 1)
 
     # 10. Check if the user intends to write an [-yn] or [jɐn], [jyn], [yn] cluster
@@ -861,7 +861,7 @@ def jyutping_autocorrect(jyutping: str) -> str:
     while idx != -1:
         match idx:
             case 0:
-                result = "j(a|yu)n" + result[3:]
+                result = "(j)(a|yu)n" + result[3:]
             case _:
                 initial_idx = idx - 1
                 if idx >= 2 and result[initial_idx] == ")":
@@ -881,7 +881,7 @@ def jyutping_autocorrect(jyutping: str) -> str:
     while idx != -1:
         match idx:
             case 0:
-                result = "j(a|yu)t" + result[3:]
+                result = "(j)(a|yu)t" + result[3:]
             case _:
                 initial_idx = idx - 1
                 if idx >= 2 and result[initial_idx] == ")":
@@ -910,12 +910,23 @@ def jyutping_autocorrect(jyutping: str) -> str:
         if result[idx : idx + 2] == "yu" or result[idx : idx + 3] in ("y!u", "y)u"):
             pass
         else:
-            result = result[:idx] + "j" + result[idx + 1 :]
+            result = result[:idx] + "(j)" + result[idx + 1 :]
         idx = result.find("y", idx + 1)
 
     result = result.replace("ui", "(eo|u)i")
     result = result.replace("un", "(y!u|a|eo)n")
     result = result.replace("ut", "(a|y!u)t")
+
+    result = result.replace("o ", "(ou!) ")
+    result = result.replace("o'", "(ou!)'")
+    if result.endswith("o"):
+        result = result[:-1] + "(ou!)"
+    idx = result.find("o")
+    while idx != -1:
+        letter_after = result[idx + 1]
+        if letter_after not in ["k", "t", "e", "i", "u", "n", ")", "|"]:
+            result = result[:idx] + "(ou!)" + result[idx + 1 :]
+        idx = result.find("o", idx + 1)
 
     return result
 
