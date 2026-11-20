@@ -616,6 +616,7 @@ def pinyin_to_IPA(pinyin: str, use_spaces_to_segment: bool = False) -> str:
 
     def convert_ipa_syllable(syllable):
         initial, final = "", ""
+        initial_match, final_match = "", ""
         if syllable == "ng":
             final = MANDARIN_IPA_FINALS[syllable]
         else:
@@ -625,15 +626,17 @@ def pinyin_to_IPA(pinyin: str, use_spaces_to_segment: bool = False) -> str:
 
             conversion_failure = False
             if match.group(1):
-                if match.group(1) not in MANDARIN_IPA_INITIALS:
+                initial_match = match.group(1)
+                if initial_match not in MANDARIN_IPA_INITIALS:
                     conversion_failure = True
                 else:
-                    initial = MANDARIN_IPA_INITIALS[match.group(1)]
+                    initial = MANDARIN_IPA_INITIALS[initial_match]
             if match.group(2):
-                if match.group(2) not in MANDARIN_IPA_FINALS:
+                final_match = match.group(2)
+                if final_match not in MANDARIN_IPA_FINALS:
                     conversion_failure = True
                 else:
-                    final = MANDARIN_IPA_FINALS[match.group(2)]
+                    final = MANDARIN_IPA_FINALS[final_match]
 
             # Exit early if any initial or final could not be converted
             if conversion_failure:
@@ -643,19 +646,19 @@ def pinyin_to_IPA(pinyin: str, use_spaces_to_segment: bool = False) -> str:
         # fricative (+ voiced retroflex approximant if erhua) in Pinyin
         # starting with ch, sh, zh, or r
         if initial in ("ʈ͡ʂʰ", "ʂ", "ʈ͡ʂ", "ʐ"):
-            if final == "ir":
+            if final_match == "ir":
                 final = "ʐ̩ɻ"
-            elif final == "i":
+            elif final_match == "i":
                 final = "ʐ̩"
 
         # Replace close front unrounded vowel with syllablic alveolar sibilant
         # fricative (+ voiced retroflex approximant if erhua) in Pinyin
         # starting with c, s, or z
         if initial in ("t͡sʰ", "s", "t͡s"):
-            if final == "ir":
+            if final_match == "ir":
                 final = "z̩ɻ"
-            elif final == "i":
-                final = "z̩̩"
+            elif final_match == "i":
+                final = "z̩"
 
         if initial == "ʐ" and final == "ʐ̩":
             initial = ""
