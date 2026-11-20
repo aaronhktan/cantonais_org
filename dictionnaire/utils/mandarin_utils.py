@@ -583,6 +583,8 @@ def pinyin_to_zhuyin(pinyin: str, use_spaces_to_segment: bool = False) -> str:
             if match.group(2):
                 er = "ㄦ"
             syllable = ZHUYIN_FINAL_REGEX.sub(final + er, syllable)
+        else:
+            return pinyin
 
         er_idx = syllable.find("ㄦ")
         if tone == 5:
