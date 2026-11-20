@@ -89,6 +89,10 @@ class TestPinyinToZhuyin(TestCase):
         res = mandarin_utils.pinyin_to_zhuyin("ba1 da2 tong1")
         self.assertEqual(res, "ㄅㄚ ㄉㄚˊ ㄊㄨㄥ")
 
+    def test_empty(self):
+        res = mandarin_utils.pinyin_to_zhuyin("")
+        self.assertEqual(res, "")
+
     def test_reject_no_tone(self):
         res = mandarin_utils.pinyin_to_zhuyin("ba")
         self.assertEqual(res, "ba")
@@ -134,6 +138,21 @@ class TestPinyinToZhuyin(TestCase):
     def test_erhua(self):
         res = mandarin_utils.pinyin_to_zhuyin("quanr1")
         self.assertEqual(res, "ㄑㄩㄢㄦ")
+
+    def test_invalid_final(self):
+        res = mandarin_utils.pinyin_to_zhuyin("ma1n", use_spaces_to_segment=True)
+        self.assertEqual(res, "ma1n")
+
+    def test_invalid_tone(self):
+        res = mandarin_utils.pinyin_to_zhuyin("ba0")
+        self.assertEqual(res, "ㄅㄚ")
+
+        res = mandarin_utils.pinyin_to_zhuyin("ba6")
+        self.assertEqual(res, "ba6")
+
+    def test_empty(self):
+        res = mandarin_utils.pinyin_to_zhuyin("")
+        self.assertEqual(res, "")
 
     def test_malformed(self):
         res = mandarin_utils.pinyin_to_zhuyin("chzng2 quanr1")
