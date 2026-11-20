@@ -86,7 +86,7 @@ PINYIN_FINALS = (
     "o",
 )
 
-PINYIN_TONES = (1, 2, 3, 4, 5)
+PINYIN_TONES = (0, 1, 2, 3, 4, 5)
 
 PINYIN_PRIORITY_DIACRITIC = ("a", "e", "o")
 PINYIN_SECONDARY_DIACRITIC = ("i", "u", "ü")
@@ -444,6 +444,8 @@ def pretty_pinyin(pinyin: str) -> str:
         if tone == -1:
             res.append(syllable)
             continue
+        if tone < 1 or tone > 5:
+            tone = 5
 
         syllable = syllable.replace("u:", "ü")
 
