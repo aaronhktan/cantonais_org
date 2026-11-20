@@ -887,11 +887,17 @@ def segment_pinyin(
                 initial_found = False
 
             if not remove_glob_characters and is_glob_character:
+                if end_idx > 0 and end_idx > start_idx:
+                    syllable = pinyin[start_idx:end_idx]
+                    res.append(syllable)
+                    if syllable not in PINYIN_FINALS:
+                        valid_pinyin = False
+                    initial_found = False
+
                 # Whitespace matters for glob characters! Consume
                 # the next or previous whitespace if it exists and the
                 # whitespace was not consumed by another syllable
                 glob_start_idx = end_idx
-                glob_end_idx = glob_start_idx + 1
 
                 if (
                     (end_idx >= 1)
@@ -905,10 +911,9 @@ def segment_pinyin(
                     # If there is whitespace succeeding the glob character,
                     # add it to this syllable, and mark the whitespace as
                     # being consumed by incrementing end_idx
-                    glob_end_idx += 1
                     end_idx += 1
 
-                glob_str = pinyin[glob_start_idx:glob_end_idx]
+                glob_str = pinyin[glob_start_idx:end_idx+1]
                 res.append(glob_str)
 
                 start_idx = end_idx
