@@ -25,6 +25,10 @@ class TestPrettyPinyin(TestCase):
         res = mandarin_utils.pretty_pinyin("shuai4 ge1")
         self.assertEqual(res, "shuài gē")
 
+    def test_empty(self):
+        res = mandarin_utils.pretty_pinyin("")
+        self.assertEqual(res, "")
+
     def test_reject_no_tone(self):
         res = mandarin_utils.pretty_pinyin("ba")
         self.assertEqual(res, "ba")
@@ -45,9 +49,23 @@ class TestPrettyPinyin(TestCase):
         res = mandarin_utils.pretty_pinyin("nu:3 hai2")
         self.assertEqual(res, "nǚ hái")
 
+    def test_no_vowel(self):
+        res = mandarin_utils.pretty_pinyin("mmm")
+        self.assertEqual(res, "mmm")
+
+        res = mandarin_utils.pretty_pinyin("hng5")
+        self.assertEqual(res, "hng5")
+
     def test_tones(self):
         res = mandarin_utils.pretty_pinyin("ma1 ma2 ma3 ma4")
         self.assertEqual(res, "mā má mǎ mà")
+
+    def test_invalid_tone(self):
+        res = mandarin_utils.pretty_pinyin("ma0")
+        self.assertEqual(res, "ma")
+
+        res = mandarin_utils.pretty_pinyin("ma6")
+        self.assertEqual(res, "ma6")
 
     def test_no_tone(self):
         res = mandarin_utils.pretty_pinyin("nu")
