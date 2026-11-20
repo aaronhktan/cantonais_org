@@ -164,6 +164,10 @@ class TestPinyinToIPA(TestCase):
         res = mandarin_utils.pinyin_to_IPA("ba1 da2 tong1")
         self.assertEqual(res, "pä˥˥ tä˧˥ tʰʊŋ˥˥")
 
+    def test_empty(self):
+        res = mandarin_utils.pinyin_to_IPA("")
+        self.assertEqual(res, "")
+
     def test_reject_no_tone(self):
         res = mandarin_utils.pinyin_to_IPA("ba")
         self.assertEqual(res, "ba")
@@ -206,6 +210,10 @@ class TestPinyinToIPA(TestCase):
         res = mandarin_utils.pinyin_to_IPA("yi1 ge5")
         self.assertEqual(res, "i˥˥ g̊ə˨")
 
+    def test_invalid_initial_and_final(self):
+        res = mandarin_utils.pinyin_to_IPA("wz1")
+        self.assertEqual(res, "wz˥˥")
+
     def test_tone_three(self):
         res = mandarin_utils.pinyin_to_IPA("ke3")
         self.assertEqual(res, "kʰɤ˨˩˦")
@@ -230,12 +238,32 @@ class TestPinyinToIPA(TestCase):
         res = mandarin_utils.pinyin_to_IPA("ma5")
         self.assertEqual(res, "mä")
 
+    def test_only_tone(self):
+        res = mandarin_utils.pinyin_to_IPA("66", use_spaces_to_segment=True)
+        self.assertEqual(res, "66")
+
     def test_erhua(self):
         res = mandarin_utils.pinyin_to_IPA("huar1")
         self.assertEqual(res, "xu̯ɑɻ˥˥")
 
         res = mandarin_utils.pinyin_to_IPA("quanr1")
         self.assertEqual(res, "t͡ɕʰɥɑɻ˥˥")
+
+        res = mandarin_utils.pinyin_to_IPA("shi2")
+        self.assertEqual(res, "ʂʐ̩˧˥")
+
+        res = mandarin_utils.pinyin_to_IPA("shir2")
+        self.assertEqual(res, "ʂʐ̩ɻ˧˥")
+
+        res = mandarin_utils.pinyin_to_IPA("ci2")
+        self.assertEqual(res, "t͡sʰz̩˧˥")
+
+        res = mandarin_utils.pinyin_to_IPA("cir2")
+        self.assertEqual(res, "t͡sʰz̩ɻ˧˥")
+
+    def test_glottal(self):
+        res = mandarin_utils.pinyin_to_IPA("e2")
+        self.assertEqual(res, "ˀɤ˧˥")
 
 
 class TestPinyinSoundChanges(TestCase):
