@@ -307,7 +307,8 @@ class TestJyutpingAutocorrect(TestCase):
             "geyegeye beycaamyeyeyeyeyeyeyepeylougeyheygeygey'gey"
         )
         self.assertEqual(
-            res, "ge (j)ege (j)e beicaam(j)e (j)e (j)e (j)e (j)e (j)e (j)epeilougeiheigeigei'gei"
+            res,
+            "ge (j)ege (j)e beicaam(j)e (j)e (j)e (j)e (j)e (j)e (j)epeilougeiheigeigei'gei",
         )
 
         res = cantonese_utils.jyutping_autocorrect("eyb")
@@ -600,6 +601,10 @@ class TestJyutpingAutocorrect(TestCase):
 
 
 class TestJyutpingSoundChanges(TestCase):
+    def test_empty(self):
+        res = cantonese_utils.jyutping_sound_changes([""])
+        self.assertEqual(res, [""])
+
     def test_ng(self):
         res = cantonese_utils.jyutping_sound_changes(["ng"])
         self.assertEqual(res, ["(ng|m)"])
@@ -775,6 +780,16 @@ class TestJyutpingSoundChanges(TestCase):
 
         res = cantonese_utils.jyutping_sound_changes(["king?"])
         self.assertEqual(res, ["(g|k)ing?"])
+
+    def test_j_initial(self):
+        res = cantonese_utils.jyutping_sound_changes(["jyut"])
+        self.assertEqual(res, ["(j|z)yut"])
+
+        res = cantonese_utils.jyutping_sound_changes(["jyut6"])
+        self.assertEqual(res, ["(j|z)yut6"])
+
+        res = cantonese_utils.jyutping_sound_changes(["jyut?"])
+        self.assertEqual(res, ["(j|z)yut?"])
 
     def test_aa(self):
         res = cantonese_utils.jyutping_sound_changes(["mak"])
