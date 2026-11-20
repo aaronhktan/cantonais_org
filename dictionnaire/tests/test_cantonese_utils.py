@@ -307,7 +307,8 @@ class TestJyutpingAutocorrect(TestCase):
             "geyegeye beycaamyeyeyeyeyeyeyepeylougeyheygeygey'gey"
         )
         self.assertEqual(
-            res, "ge (j)ege (j)e beicaam(j)e (j)e (j)e (j)e (j)e (j)e (j)epeilougeiheigeigei'gei"
+            res,
+            "ge (j)ege (j)e beicaam(j)e (j)e (j)e (j)e (j)e (j)e (j)epeilougeiheigeigei'gei",
         )
 
         res = cantonese_utils.jyutping_autocorrect("eyb")
