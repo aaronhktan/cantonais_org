@@ -277,6 +277,15 @@ class TestPinyinSoundChanges(TestCase):
         res = mandarin_utils.pinyin_sound_changes(["zuan?"])
         self.assertEqual(res, ["z(h)!uang!?"])
 
+        res = mandarin_utils.pinyin_sound_changes(["zhuan"])
+        self.assertEqual(res, ["z(h)!uang!"])
+
+        res = mandarin_utils.pinyin_sound_changes(["zhuan3"])
+        self.assertEqual(res, ["z(h)!uang!3"])
+
+        res = mandarin_utils.pinyin_sound_changes(["zhuan?"])
+        self.assertEqual(res, ["z(h)!uang!?"])
+
     def test_c(self):
         res = mandarin_utils.pinyin_sound_changes(["cuan"])
         self.assertEqual(res, ["c(h)!uang!"])
@@ -287,6 +296,15 @@ class TestPinyinSoundChanges(TestCase):
         res = mandarin_utils.pinyin_sound_changes(["cuan?"])
         self.assertEqual(res, ["c(h)!uang!?"])
 
+        res = mandarin_utils.pinyin_sound_changes(["chuan"])
+        self.assertEqual(res, ["c(h)!uang!"])
+
+        res = mandarin_utils.pinyin_sound_changes(["chuan3"])
+        self.assertEqual(res, ["c(h)!uang!3"])
+
+        res = mandarin_utils.pinyin_sound_changes(["chuan?"])
+        self.assertEqual(res, ["c(h)!uang!?"])
+
     def test_s(self):
         res = mandarin_utils.pinyin_sound_changes(["se"])
         self.assertEqual(res, ["s(h)!e"])
@@ -295,6 +313,15 @@ class TestPinyinSoundChanges(TestCase):
         self.assertEqual(res, ["s(h)!e2"])
 
         res = mandarin_utils.pinyin_sound_changes(["se?"])
+        self.assertEqual(res, ["s(h)!e?"])
+
+        res = mandarin_utils.pinyin_sound_changes(["she"])
+        self.assertEqual(res, ["s(h)!e"])
+
+        res = mandarin_utils.pinyin_sound_changes(["she2"])
+        self.assertEqual(res, ["s(h)!e2"])
+
+        res = mandarin_utils.pinyin_sound_changes(["she?"])
         self.assertEqual(res, ["s(h)!e?"])
 
     def test_n(self):
