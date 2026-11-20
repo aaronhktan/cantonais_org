@@ -376,6 +376,10 @@ class TestPinyinSegmentation(TestCase):
         _, res = mandarin_utils.segment_pinyin("xi1'an")
         self.assertEqual(res, ["xi1", "an"])
 
+    def test_dangling_initial_before_whitespace(self):
+        _, res = mandarin_utils.segment_pinyin("guang3 b dong1")
+        self.assertEqual(res, ["guang3", "b", "dong1"])
+
     def test_remove_special_characters(self):
         _, res = mandarin_utils.segment_pinyin("guang*dong!!")
         self.assertEqual(res, ["guang", "dong"])
@@ -416,6 +420,10 @@ class TestPinyinSegmentation(TestCase):
         )
         self.assertEqual(res, ["guang", " ? ", "* ", "dong"])
 
+    def test_keep_glob_character_after_invalid_character(self):
+        _, res = mandarin_utils.segment_pinyin("9*", remove_glob_characters=False)
+        self.assertEqual(res, ["9", "*"])
+
     def test_keep_special_characters(self):
         _, res = mandarin_utils.segment_pinyin(
             "guang？ dong1", remove_special_characters=False
@@ -443,6 +451,23 @@ class TestPinyinSegmentation(TestCase):
     def test_multiple_finals(self):
         _, res = mandarin_utils.segment_pinyin("angang")
         self.assertEqual(res, ["ang", "ang"])
+
+    def test_erhua(self):
+        _, res = mandarin_utils.segment_pinyin("huar")
+        self.assertEqual(res, ["huar"])
+
+        _, res = mandarin_utils.segment_pinyin("huar1")
+        self.assertEqual(res, ["huar1"])
+
+        _, res = mandarin_utils.segment_pinyin("huar4 dong1")
+        self.assertEqual(res, ["huar4", "dong1"])
+
+    def test_invalid_tone(self):
+        _, res = mandarin_utils.segment_pinyin("heng0")
+        self.assertEqual(res, ["heng0"])
+
+        _, res = mandarin_utils.segment_pinyin("heng6")
+        self.assertEqual(res, ["heng6"])
 
     def test_garbage(self):
         _, res = mandarin_utils.segment_pinyin("kljnxclkjvnl")
