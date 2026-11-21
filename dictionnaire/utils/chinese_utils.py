@@ -62,6 +62,10 @@ def apply_colours(original: str, tones: list[int], tone_colours: list[str]) -> s
             continue
 
         tone = tones[tone_idx]
+        if tone >= len(tone_colours):
+            res += codepoint
+            tone_idx += 1
+            continue
         res += f'<span style="color: {tone_colours[tone]}">{codepoint}</span>'
         tone_idx += 1
 
