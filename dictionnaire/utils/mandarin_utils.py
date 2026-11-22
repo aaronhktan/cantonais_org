@@ -920,7 +920,7 @@ def segment_pinyin(
                     # being consumed by incrementing end_idx
                     end_idx += 1
 
-                glob_str = pinyin[glob_start_idx:end_idx+1]
+                glob_str = pinyin[glob_start_idx : end_idx + 1]
                 res.append(glob_str)
 
                 start_idx = end_idx
