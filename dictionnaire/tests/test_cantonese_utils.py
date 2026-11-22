@@ -1169,3 +1169,11 @@ class TestFuzzyJyutping(TestCase):
             output = cantonese_utils.jyutping_sound_changes(intermediate)
 
             self.assertEqual(expected_output, output)
+
+
+class TestExtractJyutpingTones(TestCase):
+    def test_simple(self):
+        self.assertEqual([1, 5], cantonese_utils.extract_jyutping_tones("cing1 jyun5"))
+
+    def test_invalid_tones(self):
+        self.assertEqual([1, 5], cantonese_utils.extract_jyutping_tones("cing1 cing7 jyun5"))

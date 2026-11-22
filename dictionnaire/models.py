@@ -118,7 +118,7 @@ class Entry:
             default_settings.DEFAULT_JYUTPING_TONES,
         )
         self._coloured_simplified = chinese_utils.apply_colours(
-            self.traditional,
+            self.simplified,
             cantonese_utils.extract_jyutping_tones(self.jyutping),
             default_settings.DEFAULT_JYUTPING_TONES,
         )

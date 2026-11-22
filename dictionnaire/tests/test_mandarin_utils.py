@@ -564,3 +564,10 @@ class TestPinyinSegmentation(TestCase):
     def test_garbage(self):
         _, res = mandarin_utils.segment_pinyin("kljnxclkjvnl")
         self.assertEqual(res, ["kljnxclkjvnl"])
+
+class TestExtractPinyinTones(TestCase):
+    def test_simple(self):
+        self.assertEqual([1, 3], mandarin_utils.extract_pinyin_tones("qing1 yuan3"))
+
+    def test_invalid_tones(self):
+        self.assertEqual([1, 3], mandarin_utils.extract_pinyin_tones("qing1 qing6 yuan3"))
