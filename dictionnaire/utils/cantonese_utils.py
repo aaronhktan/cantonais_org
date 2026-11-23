@@ -290,11 +290,12 @@ def jyutping_to_yale(jyutping: str, use_spaces_to_segment: bool = False) -> str:
             yale_syllable = YALE_LIGHT_TONE_REGEX.sub(r"h\g<0>", yale_syllable)
 
         # Find first vowel and convert it to display the tone
-        for vowel in ("a", "e", "i", "o", "u"):
-            vowel_idx = final.find(vowel)
+        for vowel_idx, c in enumerate(yale_syllable):
+            if c not in ("a", "e", "i", "o", "u"):
+                continue
             if vowel_idx != -1:
                 yale_syllable = yale_syllable.replace(
-                    vowel, YALE_VOWEL_REPLACEMENTS[vowel][tone - 1], 1
+                    c, YALE_VOWEL_REPLACEMENTS[c][tone - 1], 1
                 )
                 break
 
