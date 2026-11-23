@@ -32,3 +32,10 @@ class TestDefinitionsSet(TestCase):
             definitions=[])
 
         self.assertEqual(definitionsSet._definitions_snippet, "")
+
+    def test_source_simple(self):
+        definitionsSet = DefinitionsSet(
+            source="CC-CANTO",
+            definitions=[])
+
+        self.assertEqual(definitionsSet.source, "CC-CANTO")
