@@ -822,7 +822,7 @@ def jyutping_autocorrect(jyutping: str) -> str:
     while idx != -1:
         match idx:
             case 0:
-                result = "juk" + result[3:]
+                result = "(j)uk" + result[3:]
             case _:
                 initial_idx = idx - 1
                 if idx >= 2 and result[initial_idx] == ")":
@@ -831,7 +831,7 @@ def jyutping_autocorrect(jyutping: str) -> str:
                 if result[initial_idx] in close_front_cluster:
                     result = result[:idx] + "yu k" + result[idx + 3 :]
                 else:
-                    result = result[:idx] + "juk" + result[idx + 3 :]
+                    result = result[:idx] + "(j)uk" + result[idx + 3 :]
         idx = result.find("yuk", idx + 1)
 
     # 9. Check if the user intends to write an [-yn g-] or [jʊŋ] cluster
@@ -917,6 +917,8 @@ def jyutping_autocorrect(jyutping: str) -> str:
     result = result.replace("ui", "(eo|u)i")
     result = result.replace("un", "(y!u|a|eo)n")
     result = result.replace("ut", "(a|y!u)t")
+    result = result.replace("uk", "(a|u)k")
+    result = result.replace("up", "(a|u)p")
 
     result = result.replace("o ", "(ou!) ")
     result = result.replace("o'", "(ou!)'")

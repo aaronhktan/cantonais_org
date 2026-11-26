@@ -454,16 +454,16 @@ class TestJyutpingAutocorrect(TestCase):
 
     def test_yuk(self):
         res = cantonese_utils.jyutping_autocorrect("yuk")
-        self.assertEqual(res, "juk")
+        self.assertEqual(res, "(j)(a|u)k")
 
         res = cantonese_utils.jyutping_autocorrect(" yuk")
-        self.assertEqual(res, " juk")
+        self.assertEqual(res, " (j)(a|u)k")
 
         res = cantonese_utils.jyutping_autocorrect("geyyuk")
-        self.assertEqual(res, "geijuk")
+        self.assertEqual(res, "gei(j)(a|u)k")
 
         res = cantonese_utils.jyutping_autocorrect("gey yuk")
-        self.assertEqual(res, "gei juk")
+        self.assertEqual(res, "gei (j)(a|u)k")
 
         res = cantonese_utils.jyutping_autocorrect("jyukap")
         self.assertEqual(res, "jyu kap")
@@ -474,7 +474,7 @@ class TestJyutpingAutocorrect(TestCase):
         res = cantonese_utils.jyutping_autocorrect(
             "jyu kapgey yukgeyyukyukyukyukyuk yuk"
         )
-        self.assertEqual(res, "jyu kapgei jukgeijukjukjukjukjuk juk")
+        self.assertEqual(res, "jyu kapgei (j)(a|u)kgei(j)(a|u)k(j)(a|u)k(j)(a|u)k(j)(a|u)k(j)(a|u)k (j)(a|u)k")
 
         res = cantonese_utils.jyutping_autocorrect("(z)yuk")
         self.assertEqual(res, "(z)yu k")
@@ -587,6 +587,26 @@ class TestJyutpingAutocorrect(TestCase):
 
         res = cantonese_utils.jyutping_autocorrect("shut goh")
         self.assertEqual(res, "s(a|y!u)t gou")
+
+    def test_up(self):
+        res = cantonese_utils.jyutping_autocorrect("gup")
+        self.assertEqual(res, "g(a|u)p")
+
+        res = cantonese_utils.jyutping_autocorrect(" gup")
+        self.assertEqual(res, " g(a|u)p")
+
+        res = cantonese_utils.jyutping_autocorrect("gupzyu")
+        self.assertEqual(res, "g(a|u)pzyu")
+
+    def test_uk(self):
+        res = cantonese_utils.jyutping_autocorrect("suk")
+        self.assertEqual(res, "s(a|u)k")
+
+        res = cantonese_utils.jyutping_autocorrect(" suk")
+        self.assertEqual(res, " s(a|u)k")
+
+        res = cantonese_utils.jyutping_autocorrect("sukce")
+        self.assertEqual(res, "s(a|u)kce")
 
     def test_oh_after_regex_final(self):
         res = cantonese_utils.jyutping_autocorrect("(n)oha")
